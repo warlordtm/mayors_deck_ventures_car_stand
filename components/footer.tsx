@@ -7,15 +7,15 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
-            <h3 className="mb-4 text-lg font-bold text-white">ELITE MOTORS</h3>
-            <p className="text-sm text-zinc-400">Where Luxury Meets Performance</p>
+            <h3 className="mb-4 text-lg font-bold text-white">Sarkin Mota Autos</h3>
+            <p className="text-sm text-zinc-400">Luxury. Confidence. Trust.</p>
           </div>
 
           <div>
             <h4 className="mb-4 text-sm font-semibold text-white">Quick Links</h4>
             <div className="flex flex-col gap-2">
-              <Link href="/cars" className="text-sm text-zinc-400 transition-colors hover:text-white">
-                All Cars
+              <Link href="/inventory" className="text-sm text-zinc-400 transition-colors hover:text-white">
+                Inventory
               </Link>
               <Link href="/categories" className="text-sm text-zinc-400 transition-colors hover:text-white">
                 Categories
@@ -55,22 +55,22 @@ export function Footer() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2 text-sm text-zinc-400">
                 <Phone className="h-4 w-4" />
-                <span>+1 (234) 567-8900</span>
+                <span>+234 800 000 0000</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-zinc-400">
                 <Mail className="h-4 w-4" />
-                <span>contact@elitemotors.com</span>
+                <span>hello@sarkimota.autos</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-zinc-400">
                 <MapPin className="h-4 w-4" />
-                <span>Beverly Hills, CA</span>
+                <span>Kano, Nigeria</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="mt-8 border-t border-white/10 pt-8 text-center text-sm text-zinc-500">
-          <p>&copy; {new Date().getFullYear()} Elite Motors. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Sarkin Mota Autos. All rights reserved.</p>
         </div>
       </div>
     </footer>
