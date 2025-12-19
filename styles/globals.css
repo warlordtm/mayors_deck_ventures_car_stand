@@ -123,3 +123,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Ensure utility classes that hardcode light text colors adapt when the page
+   is in explicit light mode (next-themes sets the `light` class on <html>). */
+.light .text-white {
+  color: var(--color-foreground) !important;
+}
+.light .text-zinc-400,
+.light .text-zinc-300,
+.light .text-zinc-500 {
+  color: var(--color-muted-foreground) !important;
+}
+
+/* For borders and subtle text that assume dark background, adapt them too */
+.light .border-white\/10 {
+  border-color: color-mix(in srgb, var(--color-border) 10%, transparent) !important;
+}
+

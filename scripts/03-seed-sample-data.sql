@@ -7,17 +7,20 @@ BEGIN;
 INSERT INTO categories (id, name, slug, description, created_at)
 VALUES
   ('sample-supercars', 'Supercars', 'supercars', 'Ultra-high-performance road cars from the world\'s top marques.', now()),
+  ('sample-suvs', 'SUVs', 'suvs', 'Premium SUVs blending space, presence, and performance.', now()),
+  ('sample-sedans', 'Sedans', 'sedans', 'Refined saloons offering comfort and craftsmanship.', now()),
   ('sample-performance', 'Performance Cars', 'performance-cars', 'Track-capable and driver-focused models with sport-tuned dynamics.', now()),
-  ('sample-luxury', 'Luxury Sedans', 'luxury-sedans', 'Refined executive saloons with best-in-class comfort and craftsmanship.', now())
+  ('sample-electric', 'Electric Cars', 'electric-cars', 'Cutting-edge electric vehicles offering range, tech, and instant torque.', now())
 ON CONFLICT (id) DO NOTHING;
 
 -- Cars (linked to sample categories)
 INSERT INTO cars (id, name, model, year, category_id, brand, price, show_price, description, status, is_featured, created_at, updated_at)
 VALUES
   ('sample-car-1', 'Ferrari Roma', 'Roma', 2022, 'sample-supercars', 'Ferrari', 245000, true, 'Sample Ferrari Roma for development', 'available', true, now(), now()),
-  ('sample-car-2', 'Lamborghini Huracan', 'Huracan', 2022, 'sample-supercars', 'Lamborghini', 310000, true, 'Sample Lamborghini Huracan for development', 'available', false, now(), now()),
-  ('sample-car-3', 'Mercedes AMG GT', 'AMG GT', 2023, 'sample-performance', 'Mercedes', 165000, true, 'Sample Mercedes AMG GT for development', 'available', false, now(), now()),
-  ('sample-car-4', 'Rolls-Royce Phantom', 'Phantom', 2020, 'sample-luxury', 'Rolls-Royce', 450000, true, 'Sample Rolls-Royce Phantom for development', 'available', false, now(), now())
+  ('sample-car-2', 'Lamborghini Urus', 'Urus', 2023, 'sample-suvs', 'Lamborghini', 240000, true, 'Sample Lamborghini Urus (SUV) for development', 'available', false, now(), now()),
+  ('sample-car-3', 'Mercedes S-Class', 'S-Class', 2023, 'sample-sedans', 'Mercedes', 130000, true, 'Sample Mercedes S-Class for development', 'available', false, now(), now()),
+  ('sample-car-4', 'Porsche 911 Carrera', '911 Carrera', 2023, 'sample-performance', 'Porsche', 185000, true, 'Sample Porsche 911 for development', 'available', false, now(), now()),
+  ('sample-car-5', 'Tesla Model S', 'Model S', 2024, 'sample-electric', 'Tesla', 109990, true, 'Sample Tesla Model S for development', 'available', false, now(), now())
 ON CONFLICT (id) DO NOTHING;
 
 -- Car images

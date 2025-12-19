@@ -29,22 +29,19 @@ export function Footer() {
           <div>
             <h4 className="mb-4 text-sm font-semibold text-white">Categories</h4>
             <div className="flex flex-col gap-2">
-              <Link href="/category/supercars" className="text-sm text-zinc-400 transition-colors hover:text-white">
+              <Link href="/categories" className="text-sm text-zinc-400 transition-colors hover:text-white">
                 Supercars
               </Link>
-              <Link href="/category/suvs" className="text-sm text-zinc-400 transition-colors hover:text-white">
+              <Link href="/categories" className="text-sm text-zinc-400 transition-colors hover:text-white">
                 SUVs
               </Link>
-              <Link href="/category/sedans" className="text-sm text-zinc-400 transition-colors hover:text-white">
+              <Link href="/categories" className="text-sm text-zinc-400 transition-colors hover:text-white">
                 Sedans
               </Link>
-              <Link
-                href="/category/performance-cars"
-                className="text-sm text-zinc-400 transition-colors hover:text-white"
-              >
+              <Link href="/categories" className="text-sm text-zinc-400 transition-colors hover:text-white">
                 Performance Cars
               </Link>
-              <Link href="/category/electric-cars" className="text-sm text-zinc-400 transition-colors hover:text-white">
+              <Link href="/categories" className="text-sm text-zinc-400 transition-colors hover:text-white">
                 Electric Cars
               </Link>
             </div>

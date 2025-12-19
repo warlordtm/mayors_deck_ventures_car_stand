@@ -10,27 +10,11 @@ export default async function CategoriesPage() {
 
   // Development fallback: sample categories when DB is empty locally
   const sampleCategories: Category[] = [
-    {
-      id: "sample-supercars",
-      name: "Supercars",
-      slug: "supercars",
-      description: "Ultra-high-performance road cars from the world's top marques.",
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: "sample-performance",
-      name: "Performance Cars",
-      slug: "performance-cars",
-      description: "Track-capable and driver-focused models with sport-tuned dynamics.",
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: "sample-luxury",
-      name: "Luxury Sedans",
-      slug: "luxury-sedans",
-      description: "Refined executive saloons with best-in-class comfort and craftsmanship.",
-      created_at: new Date().toISOString(),
-    },
+    { id: "sample-supercars", name: "Supercars", slug: "supercars", description: "Ultra-high-performance road cars from the world's top marques.", created_at: new Date().toISOString() },
+    { id: "sample-suvs", name: "SUVs", slug: "suvs", description: "Premium SUVs blending space, presence, and performance.", created_at: new Date().toISOString() },
+    { id: "sample-sedans", name: "Sedans", slug: "sedans", description: "Refined saloons offering comfort and craftsmanship.", created_at: new Date().toISOString() },
+    { id: "sample-performance", name: "Performance Cars", slug: "performance-cars", description: "Track-capable and driver-focused models with sport-tuned dynamics.", created_at: new Date().toISOString() },
+    { id: "sample-electric", name: "Electric Cars", slug: "electric-cars", description: "Cutting-edge electric vehicles offering range, tech, and instant torque.", created_at: new Date().toISOString() },
   ]
 
   const usingSample = !(categories && categories.length > 0) && process.env.NODE_ENV === "development"
