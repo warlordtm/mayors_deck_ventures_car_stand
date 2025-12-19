@@ -42,30 +42,30 @@ function SuccessContent() {
   if (!booking) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <Loader2 className="mx-auto h-12 w-12 animate-spin text-white" />
+        <Loader2 className="mx-auto h-12 w-12 animate-spin text-muted-foreground" />
       </div>
     )
   }
 
   return (
     <div className="container mx-auto px-4 py-20">
-      <Card className="mx-auto max-w-2xl border-white/10 bg-zinc-950/50 backdrop-blur">
+      <Card className="mx-auto max-w-2xl border-border bg-card/50 backdrop-blur">
         <CardContent className="p-12 text-center">
           <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-500/20">
             <CheckCircle2 className="h-10 w-10 text-green-500" />
           </div>
 
-          <h1 className="mb-4 font-display text-4xl font-bold text-white">Booking Confirmed!</h1>
-          <p className="mb-8 text-lg text-zinc-400">
+          <h1 className="mb-4 font-display text-4xl font-bold text-foreground">Booking Confirmed!</h1>
+          <p className="mb-8 text-lg text-muted-foreground">
             Your test drive has been confirmed and payment processed successfully.
           </p>
 
-          <div className="mb-8 space-y-4 rounded-lg border border-white/10 bg-black/30 p-6 text-left">
+          <div className="mb-8 space-y-4 rounded-lg border border-border bg-card/30 p-6 text-left">
             <div className="flex items-start gap-3">
-              <Car className="mt-1 h-5 w-5 text-zinc-400" />
+              <Car className="mt-1 h-5 w-5 text-muted-foreground" />
               <div>
-                <p className="text-sm text-zinc-500">Vehicle</p>
-                <p className="font-semibold text-white">
+                <p className="text-sm text-muted-foreground">Vehicle</p>
+                <p className="font-semibold text-foreground">
                   {booking.car?.name} ({booking.car?.year})
                 </p>
               </div>
@@ -74,8 +74,8 @@ function SuccessContent() {
             <div className="flex items-start gap-3">
               <Calendar className="mt-1 h-5 w-5 text-zinc-400" />
               <div>
-                <p className="text-sm text-zinc-500">Scheduled For</p>
-                <p className="font-semibold text-white">
+                <p className="text-sm text-muted-foreground">Scheduled For</p>
+                <p className="font-semibold text-foreground">
                   {new Date(booking.booking_date).toLocaleDateString()} at {booking.booking_time}
                 </p>
               </div>
@@ -84,8 +84,8 @@ function SuccessContent() {
             <div className="flex items-start gap-3">
               <MapPin className="mt-1 h-5 w-5 text-zinc-400" />
               <div>
-                <p className="text-sm text-zinc-500">Location</p>
-                <p className="font-semibold text-white">{booking.location}</p>
+                <p className="text-sm text-muted-foreground">Location</p>
+                <p className="font-semibold text-foreground">{booking.location}</p>
               </div>
             </div>
           </div>
@@ -101,7 +101,7 @@ function SuccessContent() {
             <Button asChild className="bg-white text-black hover:bg-zinc-200">
               <Link href="/">Return Home</Link>
             </Button>
-            <Button asChild variant="outline" className="border-white/20 text-white hover:bg-white/10 bg-transparent">
+            <Button asChild variant="outline" className="border-border text-foreground hover:bg-white/10 bg-transparent">
               <Link href="/cars">Browse More Cars</Link>
             </Button>
           </div>

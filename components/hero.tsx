@@ -31,8 +31,8 @@ export function Hero() {
         <h1 className="mb-6 font-display text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-6xl md:text-7xl">
           Driving Excellence. Defining Prestige.
         </h1>
-        <p className="mx-auto mb-8 max-w-2xl text-lg text-zinc-300 md:text-xl">
-          Gaskiya Auto curates the world's finest vehicles — verified, meticulously maintained, and presented with
+        <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-400 md:text-xl">
+          Gaskiya Auto curates the world's finest vehicles, verified, meticulously maintained, and presented with
           uncompromising luxury. Your next chapter of extraordinary begins here.
         </p>
 
@@ -45,7 +45,7 @@ export function Hero() {
           </Link>
           <a
             href="#contact"
-            className="inline-flex h-14 items-center justify-center rounded-md border border-white/10 bg-transparent px-8 text-base font-semibold text-white transition-colors hover:bg-white/5"
+            className="inline-flex h-14 items-center justify-center text-white rounded-md border border-border bg-transparent px-8 text-base font-semibold text-foreground transition-colors hover:bg-card/10"
           >
             Contact Us
           </a>

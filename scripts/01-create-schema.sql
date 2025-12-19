@@ -88,9 +88,22 @@ CREATE TABLE site_settings (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Content blocks table (for managing site content)
+CREATE TABLE content_blocks (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  key TEXT NOT NULL UNIQUE,
+  title TEXT,
+  content TEXT,
+  image_url TEXT,
+  display_order INTEGER DEFAULT 0,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Insert default categories
 INSERT INTO categories (name, slug, image_url, seo_title, seo_description, description) VALUES
-  ('Supercars', 'supercars', 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=60', 'Supercars - Gaskiya Auto', 'Ultra-high-performance road cars from the world\'s top marques.', 'High-performance luxury sports cars'),
+  ('Supercars', 'supercars', 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=60', 'Supercars - Gaskiya Auto', 'Ultra-high-performance road cars from the world''s top marques.', 'High-performance luxury sports cars'),
   ('Performance Cars', 'performance-cars', 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=60', 'Performance Cars - Gaskiya Auto', 'Track-capable and driver-focused models with sport-tuned dynamics.', 'Track-ready performance vehicles'),
   ('Luxury Sedans', 'luxury-sedans', 'https://images.unsplash.com/photo-1549921296-3a4e6d0f3f6b?auto=format&fit=crop&w=1200&q=60', 'Luxury Sedans - Gaskiya Auto', 'Refined executive saloons with best-in-class comfort and craftsmanship.', 'Premium luxury sedans'),
   ('SUVs & Crossovers', 'suvs', 'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1200&q=60', 'SUVs & Crossovers - Gaskiya Auto', 'Premium SUVs blending space, presence, and performance.', 'Luxury sport utility vehicles'),

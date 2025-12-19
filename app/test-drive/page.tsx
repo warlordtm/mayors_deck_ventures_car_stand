@@ -124,55 +124,55 @@ function TestDriveForm() {
   return (
     <div className="container mx-auto px-4 py-20">
       <div className="mb-12 text-center">
-        <h1 className="mb-4 font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl">Book a Test Drive</h1>
-        <p className="text-lg text-zinc-400">Experience luxury with our premium agent-delivered test drive service</p>
+        <h1 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">Book a Test Drive</h1>
+        <p className="text-lg text-muted-foreground">Experience luxury with our premium agent-delivered test drive service</p>
       </div>
 
       <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-3">
         {/* Info Cards */}
         <div className="space-y-4 lg:col-span-1">
-          <Card className="border-white/10 bg-zinc-950/50 backdrop-blur">
+          <Card className="border-border bg-card/50 backdrop-blur">
             <CardContent className="p-6">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
-                <Calendar className="h-6 w-6 text-white" />
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
+                <Calendar className="h-6 w-6 text-foreground" />
               </div>
-              <h3 className="mb-2 text-lg font-semibold text-white">Flexible Scheduling</h3>
-              <p className="text-sm text-zinc-400">Choose your preferred date and time</p>
+              <h3 className="mb-2 text-lg font-semibold text-foreground">Flexible Scheduling</h3>
+              <p className="text-sm text-muted-foreground">Choose your preferred date and time</p>
             </CardContent>
           </Card>
 
-          <Card className="border-white/10 bg-zinc-950/50 backdrop-blur">
+          <Card className="border-border bg-card/50 backdrop-blur">
             <CardContent className="p-6">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
-                <MapPin className="h-6 w-6 text-white" />
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
+                <MapPin className="h-6 w-6 text-foreground" />
               </div>
-              <h3 className="mb-2 text-lg font-semibold text-white">Your Location</h3>
-              <p className="text-sm text-zinc-400">We bring the car to you</p>
+              <h3 className="mb-2 text-lg font-semibold text-foreground">Your Location</h3>
+              <p className="text-sm text-muted-foreground">We bring the car to you</p>
             </CardContent>
           </Card>
 
-          <Card className="border-white/10 bg-zinc-950/50 backdrop-blur">
+          <Card className="border-border bg-card/50 backdrop-blur">
             <CardContent className="p-6">
-              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
-                <DollarSign className="h-6 w-6 text-white" />
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
+                <DollarSign className="h-6 w-6 text-foreground" />
               </div>
-              <h3 className="mb-2 text-lg font-semibold text-white">Test Drive Fee</h3>
-              <p className="text-sm text-zinc-400">$99.99 booking fee (refundable on purchase)</p>
+              <h3 className="mb-2 text-lg font-semibold text-foreground">Test Drive Fee</h3>
+              <p className="text-sm text-muted-foreground">$99.99 booking fee (refundable on purchase)</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Booking Form */}
-        <Card className="lg:col-span-2 border-white/10 bg-zinc-950/50 backdrop-blur">
+        <Card className="lg:col-span-2 border-border bg-card/50 backdrop-blur">
           <CardHeader>
-            <CardTitle className="text-2xl text-white">Complete Your Booking</CardTitle>
-            <CardDescription className="text-zinc-400">Fill in your details to reserve your test drive</CardDescription>
+            <CardTitle className="text-2xl text-foreground">Complete Your Booking</CardTitle>
+            <CardDescription className="text-muted-foreground">Fill in your details to reserve your test drive</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Select Car */}
               <div>
-                <Label htmlFor="car" className="text-zinc-200">
+                <Label htmlFor="car" className="text-muted-foreground">
                   Select Vehicle
                 </Label>
                 <select
@@ -180,7 +180,7 @@ function TestDriveForm() {
                   required
                   value={selectedCarId}
                   onChange={(e) => setSelectedCarId(e.target.value)}
-                  className="mt-2 w-full rounded-md border border-zinc-800 bg-zinc-900 px-3 py-2 text-white"
+                  className="mt-2 w-full rounded-md border border-border bg-card text-foreground px-3 py-2"
                   disabled={loading}
                 >
                   <option value="">Choose a vehicle...</option>
@@ -195,7 +195,7 @@ function TestDriveForm() {
               {/* Personal Info */}
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <Label htmlFor="name" className="text-zinc-200">
+                  <Label htmlFor="name" className="text-muted-foreground">
                     Full Name
                   </Label>
                   <Input
@@ -203,12 +203,12 @@ function TestDriveForm() {
                     required
                     value={formData.customer_name}
                     onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
-                    className="mt-2 border-zinc-800 bg-zinc-900 text-white"
+                    className="mt-2 border-border bg-card text-foreground"
                     placeholder="John Doe"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="phone" className="text-zinc-200">
+                  <Label htmlFor="phone" className="text-muted-foreground">
                     Phone Number
                   </Label>
                   <Input
@@ -217,14 +217,14 @@ function TestDriveForm() {
                     required
                     value={formData.customer_phone}
                     onChange={(e) => setFormData({ ...formData, customer_phone: e.target.value })}
-                    className="mt-2 border-zinc-800 bg-zinc-900 text-white"
+                    className="mt-2 border-border bg-card text-foreground"
                     placeholder="+1 (234) 567-8900"
                   />
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="email" className="text-zinc-200">
+                <Label htmlFor="email" className="text-muted-foreground">
                   Email Address
                 </Label>
                 <Input
@@ -233,7 +233,7 @@ function TestDriveForm() {
                   required
                   value={formData.customer_email}
                   onChange={(e) => setFormData({ ...formData, customer_email: e.target.value })}
-                  className="mt-2 border-zinc-800 bg-zinc-900 text-white"
+                  className="mt-2 border-border bg-card text-foreground"
                   placeholder="john@example.com"
                 />
               </div>
@@ -241,7 +241,7 @@ function TestDriveForm() {
               {/* Booking Details */}
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                  <Label htmlFor="date" className="text-zinc-200">
+                  <Label htmlFor="date" className="text-muted-foreground">
                     Preferred Date
                   </Label>
                   <Input
@@ -250,12 +250,12 @@ function TestDriveForm() {
                     required
                     value={formData.booking_date}
                     onChange={(e) => setFormData({ ...formData, booking_date: e.target.value })}
-                    className="mt-2 border-zinc-800 bg-zinc-900 text-white"
+                    className="mt-2 border-border bg-card text-foreground"
                     min={new Date().toISOString().split("T")[0]}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="time" className="text-zinc-200">
+                  <Label htmlFor="time" className="text-muted-foreground">
                     Preferred Time
                   </Label>
                   <Input
@@ -264,13 +264,13 @@ function TestDriveForm() {
                     required
                     value={formData.booking_time}
                     onChange={(e) => setFormData({ ...formData, booking_time: e.target.value })}
-                    className="mt-2 border-zinc-800 bg-zinc-900 text-white"
+                    className="mt-2 border-border bg-card text-foreground"
                   />
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="location" className="text-zinc-200">
+                <Label htmlFor="location" className="text-muted-foreground">
                   Test Drive Location
                 </Label>
                 <Input
@@ -278,20 +278,20 @@ function TestDriveForm() {
                   required
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  className="mt-2 border-zinc-800 bg-zinc-900 text-white"
+                  className="mt-2 border-border bg-card text-foreground"
                   placeholder="123 Main St, Beverly Hills, CA 90210"
                 />
               </div>
 
               <div>
-                <Label htmlFor="notes" className="text-zinc-200">
+                <Label htmlFor="notes" className="text-muted-foreground">
                   Additional Notes (Optional)
                 </Label>
                 <Textarea
                   id="notes"
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  className="mt-2 border-zinc-800 bg-zinc-900 text-white"
+                  className="mt-2 border-border bg-card text-foreground"
                   placeholder="Any special requests or preferences..."
                   rows={3}
                 />
@@ -308,7 +308,7 @@ function TestDriveForm() {
                 {submitting ? "Processing..." : "Continue to Payment"}
               </Button>
 
-              <p className="text-center text-xs text-zinc-500">
+              <p className="text-center text-xs text-muted-foreground">
                 You will be redirected to secure payment after submitting
               </p>
             </form>

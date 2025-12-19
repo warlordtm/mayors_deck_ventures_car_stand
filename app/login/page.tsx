@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
-export default function AdminLoginPage() {
+export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -29,7 +30,7 @@ export default function AdminLoginPage() {
         password,
       })
       if (error) throw error
-      router.push("/admin")
+      router.push("/")
       router.refresh()
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred")
@@ -43,9 +44,9 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         <Card className="border-border bg-card/50 backdrop-blur">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground">Admin Login</CardTitle>
+            <CardTitle className="text-2xl text-foreground">Login</CardTitle>
             <CardDescription className="text-muted-foreground">
-              Enter your credentials to access the admin panel
+              Enter your credentials to access your account
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -58,7 +59,7 @@ export default function AdminLoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="admin@example.com"
+                    placeholder="user@example.com"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -84,6 +85,12 @@ export default function AdminLoginPage() {
                 </Button>
               </div>
             </form>
+            <div className="mt-4 text-center text-sm">
+              <span className="text-muted-foreground">Don't have an account? </span>
+              <Link href="/signup" className="text-primary hover:underline">
+                Sign up
+              </Link>
+            </div>
           </CardContent>
         </Card>
       </div>

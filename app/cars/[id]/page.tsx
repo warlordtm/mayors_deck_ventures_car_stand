@@ -39,16 +39,16 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-sm text-zinc-400">
-          <Link href="/" className="hover:text-white">
+        <div className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
+          <Link href="/" className="hover:text-accent">
             Home
           </Link>
           <span>/</span>
-          <Link href="/cars" className="hover:text-white">
+          <Link href="/cars" className="hover:text-accent">
             Cars
           </Link>
           <span>/</span>
-          <span className="text-white">{car.name}</span>
+          <span className="text-foreground">{car.name}</span>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
@@ -62,8 +62,8 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
             <div className="mb-6">
               <div className="mb-3 flex items-start justify-between">
                 <div>
-                  <h1 className="mb-2 font-display text-4xl font-bold text-white md:text-5xl">{car.name}</h1>
-                  <p className="text-xl text-zinc-400">
+                  <h1 className="mb-2 font-display text-4xl font-bold text-foreground md:text-5xl">{car.name}</h1>
+                  <p className="text-xl text-muted-foreground">
                     {car.model} • {car.year}
                   </p>
                 </div>
@@ -77,11 +77,11 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
 
               <div className="mb-4 flex flex-wrap gap-2">
                 {car.category && (
-                  <Badge variant="outline" className="border-zinc-700 text-zinc-300">
+                  <Badge variant="outline" className="border-border text-muted-foreground">
                     {car.category.name}
                   </Badge>
                 )}
-                <Badge variant="outline" className="border-zinc-700 text-zinc-300">
+                <Badge variant="outline" className="border-border text-muted-foreground">
                   {car.brand}
                 </Badge>
                 {car.status !== "available" && (
@@ -93,7 +93,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
 
               {car.show_price && car.price ? (
                 <div className="mb-6">
-                  <p className="text-4xl font-bold text-white">${car.price.toLocaleString()}</p>
+                  <p className="text-4xl font-bold text-foreground">${car.price.toLocaleString()}</p>
                 </div>
               ) : (
                 <div className="mb-6">
@@ -103,41 +103,41 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
             </div>
 
             {/* Quick Specs */}
-            <Card className="mb-6 border-white/10 bg-zinc-950/50 backdrop-blur">
+            <Card className="mb-6 border-border bg-card/50 backdrop-blur">
               <CardContent className="grid grid-cols-2 gap-4 p-6">
                 {car.year && (
                   <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-zinc-400" />
+                    <Calendar className="h-5 w-5 text-muted-foreground" />
                     <div>
-                      <p className="text-xs text-zinc-500">Year</p>
-                      <p className="font-semibold text-white">{car.year}</p>
+                      <p className="text-xs text-muted-foreground">Year</p>
+                      <p className="font-semibold text-foreground">{car.year}</p>
                     </div>
                   </div>
                 )}
                 {car.mileage && (
                   <div className="flex items-center gap-3">
-                    <Gauge className="h-5 w-5 text-zinc-400" />
+                    <Gauge className="h-5 w-5 text-muted-foreground" />
                     <div>
-                      <p className="text-xs text-zinc-500">Mileage</p>
-                      <p className="font-semibold text-white">{car.mileage}</p>
+                      <p className="text-xs text-muted-foreground">Mileage</p>
+                      <p className="font-semibold text-foreground">{car.mileage}</p>
                     </div>
                   </div>
                 )}
                 {car.fuel_type && (
                   <div className="flex items-center gap-3">
-                    <Fuel className="h-5 w-5 text-zinc-400" />
+                    <Fuel className="h-5 w-5 text-muted-foreground" />
                     <div>
-                      <p className="text-xs text-zinc-500">Fuel</p>
-                      <p className="font-semibold text-white">{car.fuel_type}</p>
+                      <p className="text-xs text-muted-foreground">Fuel</p>
+                      <p className="font-semibold text-foreground">{car.fuel_type}</p>
                     </div>
                   </div>
                 )}
                 {car.transmission && (
                   <div className="flex items-center gap-3">
-                    <Settings className="h-5 w-5 text-zinc-400" />
+                    <Settings className="h-5 w-5 text-muted-foreground" />
                     <div>
-                      <p className="text-xs text-zinc-500">Transmission</p>
-                      <p className="font-semibold text-white">{car.transmission}</p>
+                      <p className="text-xs text-muted-foreground">Transmission</p>
+                      <p className="font-semibold text-foreground">{car.transmission}</p>
                     </div>
                   </div>
                 )}
@@ -156,7 +156,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
                 <Button
                   asChild
                   variant="outline"
-                  className="flex-1 border-white/20 text-white hover:bg-white/10 bg-transparent"
+                  className="flex-1 border-border text-foreground hover:bg-card/10 bg-transparent"
                   size="lg"
                 >
                   <a
@@ -172,21 +172,21 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
             )}
 
             {/* Contact Card */}
-            <Card className="border-white/10 bg-zinc-950/50 backdrop-blur">
+            <Card className="border-border bg-card/50 backdrop-blur">
               <CardContent className="p-6">
-                <h3 className="mb-4 text-lg font-semibold text-white">Contact Seller</h3>
+                <h3 className="mb-4 text-lg font-semibold text-foreground">Contact Seller</h3>
                 <div className="flex flex-col gap-3">
                   <a
                     href={`tel:${whatsappNumber}`}
-                    className="flex items-center gap-3 text-zinc-300 transition-colors hover:text-white"
+                    className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-accent"
                   >
-                    <Phone className="h-5 w-5" />
-                    <span>{whatsappNumber}</span>
+                    <Phone className="h-5 w-5 text-foreground" />
+                    <span className="text-foreground">{whatsappNumber}</span>
                   </a>
                   {car.location && (
-                    <div className="flex items-center gap-3 text-zinc-300">
-                      <MapPin className="h-5 w-5" />
-                      <span>{car.location}</span>
+                    <div className="flex items-center gap-3 text-muted-foreground">
+                      <MapPin className="h-5 w-5 text-foreground" />
+                      <span className="text-foreground">{car.location}</span>
                     </div>
                   )}
                 </div>
@@ -199,35 +199,35 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
         <div className="mt-12 grid gap-8 lg:grid-cols-3">
           {/* Description */}
           {car.description && (
-            <Card className="lg:col-span-2 border-white/10 bg-zinc-950/50 backdrop-blur">
+            <Card className="lg:col-span-2 border-border bg-card/50 backdrop-blur">
               <CardContent className="p-6">
-                <h2 className="mb-4 text-2xl font-bold text-white">Description</h2>
-                <p className="leading-relaxed text-zinc-300">{car.description}</p>
+                <h2 className="mb-4 text-2xl font-bold text-foreground">Description</h2>
+                <p className="leading-relaxed text-muted-foreground">{car.description}</p>
               </CardContent>
             </Card>
           )}
 
           {/* Additional Info */}
-          <Card className="border-white/10 bg-zinc-950/50 backdrop-blur">
+          <Card className="border-border bg-card/50 backdrop-blur">
             <CardContent className="p-6">
-              <h3 className="mb-4 text-xl font-bold text-white">Additional Information</h3>
+              <h3 className="mb-4 text-xl font-bold text-foreground">Additional Information</h3>
               <div className="flex flex-col gap-3 text-sm">
                 {car.condition && (
                   <div>
-                    <p className="text-zinc-500">Condition</p>
-                    <p className="font-semibold text-white">{car.condition}</p>
+                    <p className="text-muted-foreground">Condition</p>
+                    <p className="font-semibold text-foreground">{car.condition}</p>
                   </div>
                 )}
                 {car.warranty && (
                   <div>
-                    <p className="text-zinc-500">Warranty</p>
-                    <p className="font-semibold text-white">{car.warranty}</p>
+                    <p className="text-muted-foreground">Warranty</p>
+                    <p className="font-semibold text-foreground">{car.warranty}</p>
                   </div>
                 )}
                 {car.engine && (
                   <div>
-                    <p className="text-zinc-500">Engine</p>
-                    <p className="font-semibold text-white">{car.engine}</p>
+                    <p className="text-muted-foreground">Engine</p>
+                    <p className="font-semibold text-foreground">{car.engine}</p>
                   </div>
                 )}
               </div>
@@ -236,26 +236,26 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
 
           {/* Features */}
           {(car.interior_features || car.exterior_features) && (
-            <Card className="lg:col-span-3 border-white/10 bg-zinc-950/50 backdrop-blur">
+            <Card className="lg:col-span-3 border-border bg-card/50 backdrop-blur">
               <CardContent className="p-6">
-                <h2 className="mb-6 text-2xl font-bold text-white">Features</h2>
+                <h2 className="mb-6 text-2xl font-bold text-foreground">Features</h2>
                 <div className="grid gap-6 md:grid-cols-2">
                   {car.interior_features && (
                     <div>
-                      <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-white">
-                        <Shield className="h-5 w-5" />
+                      <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
+                        <Shield className="h-5 w-5 text-foreground" />
                         Interior Features
                       </h3>
-                      <p className="leading-relaxed text-zinc-300">{car.interior_features}</p>
+                      <p className="leading-relaxed text-muted-foreground">{car.interior_features}</p>
                     </div>
                   )}
                   {car.exterior_features && (
                     <div>
-                      <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-white">
-                        <Award className="h-5 w-5" />
+                      <h3 className="mb-3 flex items-center gap-2 text-lg font-semibold text-foreground">
+                        <Award className="h-5 w-5 text-foreground" />
                         Exterior Features
                       </h3>
-                      <p className="leading-relaxed text-zinc-300">{car.exterior_features}</p>
+                      <p className="leading-relaxed text-muted-foreground">{car.exterior_features}</p>
                     </div>
                   )}
                 </div>
@@ -266,10 +266,10 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
 
         {/* CTA Section */}
         {car.status === "available" && (
-          <Card className="mt-12 border-white/10 bg-zinc-950/50 backdrop-blur">
+          <Card className="mt-12 border-border bg-card/50 backdrop-blur">
             <CardContent className="p-8 text-center">
-              <h2 className="mb-4 font-display text-3xl font-bold text-white">Ready to Experience This Vehicle?</h2>
-              <p className="mb-6 text-lg text-zinc-400">
+              <h2 className="mb-4 font-display text-3xl font-bold text-foreground">Ready to Experience This Vehicle?</h2>
+              <p className="mb-6 text-lg text-muted-foreground">
                 Book a premium test drive with agent-delivered service at your location
               </p>
               <Button asChild size="lg" className="bg-white text-black hover:bg-zinc-200">

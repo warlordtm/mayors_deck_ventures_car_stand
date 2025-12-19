@@ -47,26 +47,26 @@ export function ContactForm() {
 
   return (
     <form id="contact" onSubmit={submit} className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8">
-      <h3 className="mb-4 text-2xl font-bold text-white">Get in touch</h3>
-      <p className="mb-6 text-sm text-zinc-400">Send us a message and our team will respond within 24 hours.</p>
+      <h3 className="mb-4 text-2xl font-bold text-foreground">Get in touch</h3>
+      <p className="mb-6 text-sm text-muted-foreground">Send us a message and our team will respond within 24 hours.</p>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex w-full flex-col">
-          <span className="mb-2 text-sm text-zinc-300">Name</span>
+          <span className="mb-2 text-sm text-muted-foreground">Name</span>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="rounded-md border border-border bg-transparent px-3 py-2 text-white placeholder:text-zinc-500"
+            className="rounded-md border border-border bg-transparent px-3 py-2 text-foreground placeholder:text-muted-foreground"
             placeholder="Your full name"
             required
           />
         </label>
         <label className="flex w-full flex-col">
-          <span className="mb-2 text-sm text-zinc-300">Email</span>
+          <span className="mb-2 text-sm text-muted-foreground">Email</span>
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="rounded-md border border-border bg-transparent px-3 py-2 text-white placeholder:text-zinc-500"
+            className="rounded-md border border-border bg-transparent px-3 py-2 text-foreground placeholder:text-muted-foreground"
             placeholder="you@domain.com"
             type="email"
             required
@@ -75,11 +75,11 @@ export function ContactForm() {
       </div>
 
       <label className="mt-4 flex flex-col">
-        <span className="mb-2 text-sm text-zinc-300">Message</span>
+        <span className="mb-2 text-sm text-muted-foreground">Message</span>
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="min-h-[120px] rounded-md border border-border bg-transparent px-3 py-2 text-white placeholder:text-zinc-500"
+          className="min-h-[120px] rounded-md border border-border bg-transparent px-3 py-2 text-foreground placeholder:text-muted-foreground"
           placeholder="How can we help you today?"
           required
         />

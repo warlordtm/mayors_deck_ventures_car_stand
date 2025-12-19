@@ -24,10 +24,10 @@ export default async function CategoriesPage() {
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
         <div className="mb-12">
-          <h1 className="mb-4 font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl">
+          <h1 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
             Vehicle Categories
           </h1>
-          <p className="text-lg text-zinc-400">Browse our luxury collection by category</p>
+          <p className="text-lg text-muted-foreground">Browse our luxury collection by category</p>
         </div>
 
         {usingSample && (
@@ -43,7 +43,7 @@ export default async function CategoriesPage() {
             <Link
               key={category.id}
               href={`/category/${category.slug}`}
-              className="group relative overflow-hidden rounded-lg border border-white/10 bg-zinc-950/50 backdrop-blur transition-all hover:border-white/20"
+              className="group relative overflow-hidden rounded-lg border border-border bg-card/50 backdrop-blur transition-all hover:border-border"
             >
               <div className="relative aspect-[16/9] overflow-hidden">
                 <Image
@@ -55,8 +55,8 @@ export default async function CategoriesPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="mb-2 font-display text-2xl font-bold text-white">{category.name}</h3>
-                {category.description && <p className="text-sm text-zinc-300">{category.description}</p>}
+                <h3 className="mb-2 font-display text-2xl font-bold text-foreground">{category.name}</h3>
+                {category.description && <p className="text-sm text-muted-foreground">{category.description}</p>}
               </div>
             </Link>
           ))}

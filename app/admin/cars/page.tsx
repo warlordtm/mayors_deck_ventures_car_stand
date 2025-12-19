@@ -35,18 +35,18 @@ export default async function AdminCarsPage() {
     .order("created_at", { ascending: false })
 
   return (
-    <div className="min-h-screen bg-black py-8">
+    <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="mb-2 text-3xl font-bold text-white">Manage Cars</h1>
-            <p className="text-zinc-400">Add, edit, or remove vehicles from your inventory</p>
+            <h1 className="mb-2 text-3xl font-bold text-foreground">Manage Cars</h1>
+            <p className="text-muted-foreground">Add, edit, or remove vehicles from your inventory</p>
           </div>
           <div className="flex gap-2">
             <Button
               asChild
               variant="outline"
-              className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 bg-transparent"
+              className="border-border text-muted-foreground hover:bg-card/10 bg-transparent"
             >
               <Link href="/admin">Back to Dashboard</Link>
             </Button>
@@ -64,7 +64,7 @@ export default async function AdminCarsPage() {
             {cars.map((car: Car) => {
               const primaryImage = car.images?.find((img) => img.is_primary) || car.images?.[0]
               return (
-                <Card key={car.id} className="border-zinc-800 bg-zinc-950/50 backdrop-blur">
+                <Card key={car.id} className="border-border bg-card/50 backdrop-blur">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg">
                     <Image
                       src={
@@ -89,21 +89,21 @@ export default async function AdminCarsPage() {
                     </Badge>
                   </div>
                   <CardContent className="p-4">
-                    <h3 className="mb-1 text-lg font-bold text-white">{car.name}</h3>
-                    <p className="mb-3 text-sm text-zinc-400">
+                    <h3 className="mb-1 text-lg font-bold text-foreground">{car.name}</h3>
+                    <p className="mb-3 text-sm text-muted-foreground">
                       {car.model} • {car.year}
                     </p>
                     {car.show_price && car.price ? (
-                      <p className="mb-4 text-xl font-bold text-white">${car.price.toLocaleString()}</p>
+                      <p className="mb-4 text-xl font-bold text-foreground">${car.price.toLocaleString()}</p>
                     ) : (
-                      <p className="mb-4 text-sm text-zinc-400">Price hidden</p>
+                      <p className="mb-4 text-sm text-muted-foreground">Price hidden</p>
                     )}
                     <div className="flex gap-2">
                       <Button
                         asChild
                         size="sm"
                         variant="outline"
-                        className="flex-1 border-zinc-700 text-zinc-300 bg-transparent"
+                        className="flex-1 border-border text-muted-foreground bg-transparent"
                       >
                         <Link href={`/admin/cars/${car.id}/edit`}>
                           <Edit className="mr-1 h-3 w-3" />

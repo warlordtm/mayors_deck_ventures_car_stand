@@ -89,7 +89,7 @@ function CheckoutForm() {
   if (!bookingId) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <p className="text-xl text-zinc-400">No booking found</p>
+        <p className="text-xl text-muted-foreground">No booking found</p>
       </div>
     )
   }
@@ -105,7 +105,7 @@ function CheckoutForm() {
   if (!booking) {
     return (
       <div className="container mx-auto px-4 py-20 text-center">
-        <Loader2 className="mx-auto h-12 w-12 animate-spin text-white" />
+        <Loader2 className="mx-auto h-12 w-12 animate-spin text-muted-foreground" />
       </div>
     )
   }
@@ -114,43 +114,43 @@ function CheckoutForm() {
     <div className="container mx-auto px-4 py-20">
       <div className="mx-auto max-w-2xl">
         <div className="mb-8 text-center">
-          <h1 className="mb-4 font-display text-4xl font-bold text-white md:text-5xl">Complete Payment</h1>
-          <p className="text-lg text-zinc-400">Secure your test drive booking</p>
-        </div>
+            <h1 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl">Complete Payment</h1>
+            <p className="text-lg text-muted-foreground">Secure your test drive booking</p>
+          </div>
 
-        <Card className="border-white/10 bg-zinc-950/50 backdrop-blur">
-          <CardHeader>
-            <CardTitle className="text-2xl text-white">Booking Summary</CardTitle>
-            <CardDescription className="text-zinc-400">Review your test drive details</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-3 border-b border-zinc-800 pb-6">
-              <div className="flex justify-between">
-                <span className="text-zinc-400">Vehicle</span>
-                <span className="font-semibold text-white">
-                  {booking.car?.name} ({booking.car?.year})
-                </span>
+          <Card className="border-border bg-card/50 backdrop-blur">
+            <CardHeader>
+              <CardTitle className="text-2xl text-foreground">Booking Summary</CardTitle>
+              <CardDescription className="text-muted-foreground">Review your test drive details</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-3 border-b border-border pb-6">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Vehicle</span>
+                  <span className="font-semibold text-foreground">
+                    {booking.car?.name} ({booking.car?.year})
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Customer</span>
+                  <span className="font-semibold text-foreground">{booking.customer_name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Date & Time</span>
+                  <span className="font-semibold text-foreground">
+                    {new Date(booking.booking_date).toLocaleDateString()} at {booking.booking_time}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Location</span>
+                  <span className="font-semibold text-foreground">{booking.location}</span>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-400">Customer</span>
-                <span className="font-semibold text-white">{booking.customer_name}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-400">Date & Time</span>
-                <span className="font-semibold text-white">
-                  {new Date(booking.booking_date).toLocaleDateString()} at {booking.booking_time}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-zinc-400">Location</span>
-                <span className="font-semibold text-white">{booking.location}</span>
-              </div>
-            </div>
 
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-6">
-              <span className="text-lg font-semibold text-white">Test Drive Fee</span>
-              <span className="text-2xl font-bold text-white">${booking.payment_amount?.toFixed(2)}</span>
-            </div>
+              <div className="flex items-center justify-between border-b border-border pb-6">
+                <span className="text-lg font-semibold text-foreground">Test Drive Fee</span>
+                <span className="text-2xl font-bold text-foreground">${booking.payment_amount?.toFixed(2)}</span>
+              </div>
 
             {error && (
               <div className="rounded-lg border border-red-800 bg-red-950/50 p-4">
@@ -180,7 +180,7 @@ function CheckoutForm() {
                 )}
               </Button>
 
-              <p className="text-center text-xs text-zinc-500">
+              <p className="text-center text-xs text-muted-foreground">
                 This fee is refundable upon vehicle purchase. Secure payment powered by Stripe.
               </p>
             </div>
@@ -196,7 +196,7 @@ export default function CheckoutPage() {
     <Suspense
       fallback={
         <div className="container mx-auto px-4 py-20 text-center">
-          <Loader2 className="mx-auto h-12 w-12 animate-spin text-white" />
+          <Loader2 className="mx-auto h-12 w-12 animate-spin text-muted-foreground" />
         </div>
       }
     >

@@ -29,8 +29,8 @@ export function TrustPillars() {
     <section className="py-20">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 className="mb-3 text-4xl font-bold text-white">Why Gaskiya Auto</h2>
-          <p className="text-lg text-zinc-300">Trust pillars that define our promise to every customer.</p>
+          <h2 className="mb-3 text-4xl font-bold text-foreground">Why Gaskiya Auto</h2>
+          <p className="text-lg text-muted-foreground">Trust pillars that define our promise to every customer.</p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -39,8 +39,8 @@ export function TrustPillars() {
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-accent/10">
                 {p.icon}
               </div>
-              <h3 className="mb-2 text-xl font-semibold text-white">{p.title}</h3>
-              <p className="text-sm text-zinc-400">{p.desc}</p>
+              <h3 className="mb-2 text-xl font-semibold text-foreground">{p.title}</h3>
+              <p className="text-sm text-muted-foreground">{p.desc}</p>
             </div>
           ))}
         </div>

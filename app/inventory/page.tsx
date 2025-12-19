@@ -19,24 +19,24 @@ export default function InventoryPage() {
       <SectionWrapper>
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold text-white">Inventory</h1>
-            <p className="text-zinc-400">A refined collection of premium vehicles. Filter and explore.</p>
+            <h1 className="text-4xl font-bold text-foreground">Inventory</h1>
+            <p className="text-muted-foreground">A refined collection of premium vehicles. Filter and explore.</p>
           </div>
 
           <div className="hidden items-center gap-4 md:flex">
-            <select className="rounded-md border border-border bg-transparent px-3 py-2 text-white">
+            <select className="rounded-md border border-border bg-transparent px-3 py-2 text-foreground">
               <option>All Brands</option>
               <option>Ferrari</option>
               <option>Lamborghini</option>
               <option>Porsche</option>
             </select>
-            <select className="rounded-md border border-border bg-transparent px-3 py-2 text-white">
+            <select className="rounded-md border border-border bg-transparent px-3 py-2 text-foreground">
               <option>Any Price</option>
               <option>Under $100k</option>
               <option>$100k - $250k</option>
               <option>Over $250k</option>
             </select>
-            <button className="rounded-md border border-white/10 px-4 py-2 text-sm text-white">Apply</button>
+            <button className="rounded-md border border-border px-4 py-2 text-sm text-foreground">Apply</button>
           </div>
         </div>
 
@@ -58,10 +58,10 @@ export default function InventoryPage() {
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-white">{car.name}</h3>
-                <p className="text-sm text-zinc-400">{car.year} • Premium</p>
+                <h3 className="text-lg font-semibold text-foreground">{car.name}</h3>
+                <p className="text-sm text-muted-foreground">{car.year} • Premium</p>
                 <div className="mt-4 flex items-center justify-between">
-                  <p className="text-xl font-bold text-white">${car.price.toLocaleString()}</p>
+                  <p className="text-xl font-bold text-foreground">${car.price.toLocaleString()}</p>
                   <a href={`#/cars/${car.id}`} className="text-sm font-semibold text-accent">
                     View
                   </a>

@@ -1,12 +1,38 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
-import { Menu, X } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Menu, X, User, LogOut } from "lucide-react"
 import ThemeToggle from "@/components/theme-toggle"
+import { createClient } from "@/lib/supabase/client"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [user, setUser] = useState<any>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    const supabase = createClient()
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+    }
+    getUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push("/")
+  }
 
   return (
     <header className="fixed top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur-xl shadow-sm">
@@ -40,7 +66,41 @@ export function Header() {
           >
             Contact
           </Link>
-          <div className="ml-2">
+
+          {/* Auth Buttons */}
+          <div className="flex items-center gap-2 ml-2">
+            {user ? (
+              <div className="flex items-center gap-2">
+                <Link href="/admin">
+                  <Button variant="outline" size="sm" className="border-border text-muted-foreground hover:bg-card/10">
+                    <User className="mr-2 h-4 w-4" />
+                    Admin
+                  </Button>
+                </Link>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleLogout}
+                  className="border-border text-muted-foreground hover:bg-card/10"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link href="/login">
+                  <Button variant="outline" size="sm" className="border-border text-muted-foreground hover:bg-card/10">
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/signup">
+                  <Button size="sm" className="bg-white text-black hover:bg-zinc-200">
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
+            )}
             <ThemeToggle />
           </div>
         </nav>
@@ -93,10 +153,48 @@ export function Header() {
             >
               Contact
             </Link>
-          </div>
-            <div className="border-t border-border p-4">
-              <ThemeToggle />
+
+            {/* Mobile Auth Buttons */}
+            <div className="border-t border-border pt-4 mt-2">
+              {user ? (
+                <div className="flex flex-col gap-2">
+                  <Link href="/admin" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="outline" className="w-full justify-start border-border text-muted-foreground hover:bg-card/10">
+                      <User className="mr-2 h-4 w-4" />
+                      Admin Panel
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      handleLogout()
+                      setIsMenuOpen(false)
+                    }}
+                    className="w-full justify-start border-border text-muted-foreground hover:bg-card/10"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="outline" className="w-full border-border text-muted-foreground hover:bg-card/10">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link href="/signup" onClick={() => setIsMenuOpen(false)}>
+                    <Button className="w-full bg-white text-black hover:bg-zinc-200">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              )}
+              <div className="mt-4">
+                <ThemeToggle />
+              </div>
             </div>
+          </div>
         </nav>
       )}
     </header>

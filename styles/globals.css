@@ -140,3 +140,125 @@
   border-color: color-mix(in srgb, var(--color-border) 10%, transparent) !important;
 }
 
+/* Fix common dark background utilities so explicit light mode shows readable surfaces */
+.light .bg-zinc-900,
+.light .bg-zinc-950,
+.light .bg-zinc-800,
+.light .bg-zinc-700 {
+  background-color: var(--color-card) !important;
+}
+
+.light .bg-zinc-900\/50,
+.light .bg-zinc-950\/50,
+.light .bg-zinc-950\/70 {
+  background-color: color-mix(in srgb, var(--color-card) 70%, transparent) !important;
+}
+
+/* Make subtle white overlays (used for glassy buttons/cards) neutral in light mode */
+.light .bg-white\/5,
+.light .bg-white\/10,
+.light .bg-white\/20 {
+  background-color: color-mix(in srgb, var(--color-border) 6%, transparent) !important;
+}
+
+.light .border-zinc-800,
+.light .border-zinc-900 {
+  border-color: var(--color-border) !important;
+}
+
+.light .border-white\/20 {
+  border-color: color-mix(in srgb, var(--color-border) 20%, transparent) !important;
+}
+
+/* Hover utilities that rely on white tints need an override */
+.light .hover\:bg-white\/10:hover,
+.light .hover\:bg-white\/5:hover {
+  background-color: color-mix(in srgb, var(--color-border) 10%, transparent) !important;
+}
+
+/* Preserve white text for colored buttons (primary/colored backgrounds) */
+.light .bg-green-500.text-white,
+.light .bg-green-600.text-white,
+.light .bg-red-500.text-white,
+.light .bg-blue-500.text-white {
+  color: white !important;
+}
+
+/* Fallback: very common muted text tokens */
+.light .text-zinc-300,
+.light .text-zinc-400,
+.light .text-zinc-500 {
+  color: var(--color-muted-foreground) !important;
+}
+
+/* Broad normalization for remaining dark utilities used across components */
+/* Map dark backgrounds and black-heavy utilities to the card/background tokens */
+.light .bg-black,
+.light .bg-zinc-950,
+.light .bg-zinc-900,
+.light .bg-zinc-800,
+.light .bg-zinc-700,
+.light .bg-zinc-600,
+.light [class*="bg-zinc-"] {
+  background-color: var(--color-card) !important;
+}
+
+/* Make translucent dark overlays lighter in explicit light mode */
+.light .bg-zinc-900\/50,
+.light .bg-zinc-950\/50,
+.light .bg-zinc-800\/50,
+.light .bg-zinc-700\/50 {
+  background-color: color-mix(in srgb, var(--color-card) 80%, transparent) !important;
+}
+
+/* Headings and important text often use text-white; force them to use the semantic foreground */
+.light h1,
+.light h2,
+.light h3,
+.light h4,
+.light h5,
+.light h6,
+.light p,
+.light a,
+.light span,
+.light strong,
+.light label,
+.light .text-white {
+  color: var(--color-foreground) !important;
+}
+
+/* Buttons that use transparent + white-tint backgrounds (e.g. ghost buttons) */
+.light .bg-transparent.bg-white\/5,
+.light .bg-transparent.bg-white\/10,
+.light .bg-transparent.bg-white\/20,
+.light .rounded-md.bg-white\/5 {
+  background-color: color-mix(in srgb, var(--color-border) 6%, transparent) !important;
+}
+
+/* Borders that were using white tints should use semantic border */
+.light .border-white\/10,
+.light .border-white\/20,
+.light .border-white\/30,
+.light .border-white\/40,
+.light .border-white\/50 {
+  border-color: color-mix(in srgb, var(--color-border) 20%, transparent) !important;
+}
+
+/* Ensure icon fills and svg currentColor map correctly */
+.light svg[class*="text-"],
+.light [class*="text-"] svg {
+  color: var(--color-foreground) !important;
+  fill: currentColor !important;
+}
+
+/* WhatsApp / floating buttons keep white text regardless */
+.light .bg-green-500,
+.light .bg-green-600,
+.light .bg-blue-500,
+.light .bg-red-500 {
+  color: white !important;
+}
+
+/* If something still uses explicit white for backgrounds, make sure foreground is readable */
+/* removed catch-all invalid selector; specific overrides above cover common cases */
+

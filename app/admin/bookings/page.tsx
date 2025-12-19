@@ -33,14 +33,14 @@ export default async function AdminBookingsPage() {
     .order("created_at", { ascending: false })
 
   return (
-    <div className="min-h-screen bg-black py-8">
+    <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="mb-2 text-3xl font-bold text-white">Test Drive Bookings</h1>
-            <p className="text-zinc-400">View and manage customer test drive requests</p>
+            <h1 className="mb-2 text-3xl font-bold text-foreground">Test Drive Bookings</h1>
+            <p className="text-muted-foreground">View and manage customer test drive requests</p>
           </div>
-          <Button asChild variant="outline" className="border-zinc-700 text-zinc-300 hover:bg-zinc-800 bg-transparent">
+          <Button asChild variant="outline" className="border-border text-muted-foreground hover:bg-card/10 bg-transparent">
             <Link href="/admin">Back to Dashboard</Link>
           </Button>
         </div>
@@ -48,13 +48,13 @@ export default async function AdminBookingsPage() {
         {bookings && bookings.length > 0 ? (
           <div className="space-y-4">
             {bookings.map((booking: TestDriveBooking) => (
-              <Card key={booking.id} className="border-zinc-800 bg-zinc-950/50 backdrop-blur">
+              <Card key={booking.id} className="border-border bg-card/50 backdrop-blur">
                 <CardContent className="p-6">
                   <div className="grid gap-6 md:grid-cols-2">
                     <div>
                       <div className="mb-4 flex items-start justify-between">
                         <div>
-                          <h3 className="mb-1 text-lg font-bold text-white">{booking.customer_name}</h3>
+                          <h3 className="mb-1 text-lg font-bold text-foreground">{booking.customer_name}</h3>
                           <div className="flex gap-2">
                             <Badge
                               className={`capitalize ${
@@ -74,7 +74,7 @@ export default async function AdminBookingsPage() {
                               className={`capitalize ${
                                 booking.payment_status === "paid"
                                   ? "border-green-500 text-green-400"
-                                  : "border-zinc-700 text-zinc-400"
+                                  : "border-border text-muted-foreground"
                               }`}
                             >
                               {booking.payment_status}
@@ -84,15 +84,15 @@ export default async function AdminBookingsPage() {
                       </div>
 
                       <div className="space-y-2 text-sm">
-                        <div className="flex items-center gap-2 text-zinc-300">
-                          <Phone className="h-4 w-4 text-zinc-500" />
-                          <a href={`tel:${booking.customer_phone}`} className="hover:text-white">
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                          <Phone className="h-4 w-4 text-muted-foreground" />
+                          <a href={`tel:${booking.customer_phone}`} className="hover:text-accent text-foreground">
                             {booking.customer_phone}
                           </a>
                         </div>
-                        <div className="flex items-center gap-2 text-zinc-300">
-                          <Mail className="h-4 w-4 text-zinc-500" />
-                          <a href={`mailto:${booking.customer_email}`} className="hover:text-white">
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                          <Mail className="h-4 w-4 text-muted-foreground" />
+                          <a href={`mailto:${booking.customer_email}`} className="hover:text-accent text-foreground">
                             {booking.customer_email}
                           </a>
                         </div>
@@ -103,41 +103,41 @@ export default async function AdminBookingsPage() {
                       <div className="space-y-3 text-sm">
                         {booking.car && (
                           <div className="flex items-start gap-2">
-                            <Car className="mt-0.5 h-4 w-4 text-zinc-500" />
+                            <Car className="mt-0.5 h-4 w-4 text-muted-foreground" />
                             <div>
-                              <p className="text-zinc-500">Vehicle</p>
-                              <p className="font-semibold text-white">
+                              <p className="text-muted-foreground">Vehicle</p>
+                              <p className="font-semibold text-foreground">
                                 {booking.car.name} ({booking.car.year})
                               </p>
                             </div>
                           </div>
                         )}
                         <div className="flex items-start gap-2">
-                          <Calendar className="mt-0.5 h-4 w-4 text-zinc-500" />
+                          <Calendar className="mt-0.5 h-4 w-4 text-muted-foreground" />
                           <div>
-                            <p className="text-zinc-500">Date & Time</p>
-                            <p className="font-semibold text-white">
+                            <p className="text-muted-foreground">Date & Time</p>
+                            <p className="font-semibold text-foreground">
                               {new Date(booking.booking_date).toLocaleDateString()} at {booking.booking_time}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-start gap-2">
-                          <MapPin className="mt-0.5 h-4 w-4 text-zinc-500" />
+                          <MapPin className="mt-0.5 h-4 w-4 text-muted-foreground" />
                           <div>
-                            <p className="text-zinc-500">Location</p>
-                            <p className="font-semibold text-white">{booking.location}</p>
+                            <p className="text-muted-foreground">Location</p>
+                            <p className="font-semibold text-foreground">{booking.location}</p>
                           </div>
                         </div>
                         {booking.payment_amount && (
                           <div>
-                            <p className="text-zinc-500">Booking Fee</p>
-                            <p className="font-semibold text-white">${booking.payment_amount.toFixed(2)}</p>
+                            <p className="text-muted-foreground">Booking Fee</p>
+                            <p className="font-semibold text-foreground">${booking.payment_amount.toFixed(2)}</p>
                           </div>
                         )}
                         {booking.notes && (
                           <div>
-                            <p className="text-zinc-500">Notes</p>
-                            <p className="text-white">{booking.notes}</p>
+                            <p className="text-muted-foreground">Notes</p>
+                            <p className="text-foreground">{booking.notes}</p>
                           </div>
                         )}
                       </div>
@@ -148,7 +148,7 @@ export default async function AdminBookingsPage() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-zinc-700 text-zinc-300 bg-transparent"
+                      className="border-border text-muted-foreground bg-transparent"
                       asChild
                     >
                       <Link href={`/admin/bookings/${booking.id}`}>View Details</Link>
