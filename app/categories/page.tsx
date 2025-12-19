@@ -8,6 +8,34 @@ export default async function CategoriesPage() {
 
   const { data: categories } = await supabase.from("categories").select("*").order("name")
 
+  // Development fallback: sample categories when DB is empty locally
+  const sampleCategories: Category[] = [
+    {
+      id: "sample-supercars",
+      name: "Supercars",
+      slug: "supercars",
+      description: "Ultra-high-performance road cars from the world's top marques.",
+      created_at: new Date().toISOString(),
+    },
+    {
+      id: "sample-performance",
+      name: "Performance Cars",
+      slug: "performance-cars",
+      description: "Track-capable and driver-focused models with sport-tuned dynamics.",
+      created_at: new Date().toISOString(),
+    },
+    {
+      id: "sample-luxury",
+      name: "Luxury Sedans",
+      slug: "luxury-sedans",
+      description: "Refined executive saloons with best-in-class comfort and craftsmanship.",
+      created_at: new Date().toISOString(),
+    },
+  ]
+
+  const usingSample = !(categories && categories.length > 0) && process.env.NODE_ENV === "development"
+  const displayCategories = usingSample ? sampleCategories : (categories || [])
+
   return (
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
@@ -18,8 +46,16 @@ export default async function CategoriesPage() {
           <p className="text-lg text-zinc-400">Browse our luxury collection by category</p>
         </div>
 
+        {usingSample && (
+          <div className="mb-6 rounded-md border border-yellow-700/20 bg-yellow-950/30 p-4">
+            <p className="text-sm text-yellow-300">
+              Showing sample categories because your local database has no categories. Run the seed SQL to populate real data.
+            </p>
+          </div>
+        )}
+
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {categories?.map((category: Category) => (
+          {displayCategories.map((category: Category) => (
             <Link
               key={category.id}
               href={`/category/${category.slug}`}
@@ -27,7 +63,7 @@ export default async function CategoriesPage() {
             >
               <div className="relative aspect-[16/9] overflow-hidden">
                 <Image
-                  src={`/.jpg?height=300&width=500&query=${encodeURIComponent(category.name)}`}
+                  src={(category as any).image_url || `https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=60`}
                   alt={category.name}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"

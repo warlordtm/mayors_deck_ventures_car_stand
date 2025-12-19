@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
+import type { TestDriveBooking } from "@/lib/types"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle2, Calendar, MapPin, Car, Loader2 } from "lucide-react"
 import Link from "next/link"
@@ -11,7 +12,7 @@ import Link from "next/link"
 function SuccessContent() {
   const searchParams = useSearchParams()
   const bookingId = searchParams.get("bookingId")
-  const [booking, setBooking] = useState<any>(null)
+  const [booking, setBooking] = useState<TestDriveBooking | null>(null)
 
   useEffect(() => {
     if (bookingId) {

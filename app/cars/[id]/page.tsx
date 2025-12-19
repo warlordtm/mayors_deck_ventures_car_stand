@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 import { Calendar, Gauge, Fuel, Settings, MapPin, Phone, MessageCircle, Shield, Award, ArrowRight } from "lucide-react"
 import { CarImageGallery } from "@/components/car-image-gallery"
+import type { CarImage } from "@/lib/types"
 
 export default async function CarDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -25,7 +26,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
     notFound()
   }
 
-  const sortedImages = car.images?.sort((a, b) => {
+  const sortedImages = car.images?.sort((a: CarImage, b: CarImage) => {
     if (a.is_primary) return -1
     if (b.is_primary) return 1
     return a.display_order - b.display_order

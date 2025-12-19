@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
+import type { TestDriveBooking } from "@/lib/types"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2, CheckCircle2 } from "lucide-react"
 
@@ -13,7 +14,7 @@ function CheckoutForm() {
   const bookingId = searchParams.get("bookingId")
 
   const [loading, setLoading] = useState(false)
-  const [booking, setBooking] = useState<any>(null)
+  const [booking, setBooking] = useState<TestDriveBooking | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {

@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
+import ThemeToggle from "@/components/theme-toggle"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -39,6 +40,9 @@ export function Header() {
           >
             Contact
           </Link>
+          <div className="ml-2">
+            <ThemeToggle />
+          </div>
         </nav>
         {/* Mobile Menu Button */}
         <button
@@ -90,6 +94,9 @@ export function Header() {
               Contact
             </Link>
           </div>
+            <div className="border-t border-border p-4">
+              <ThemeToggle />
+            </div>
         </nav>
       )}
     </header>

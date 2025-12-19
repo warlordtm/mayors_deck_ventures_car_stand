@@ -4,8 +4,8 @@ import { CarCard } from "@/components/car-card"
 import { notFound } from "next/navigation"
 import React from "react"
 
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const supabase = await createClient()
 
   // Fetch category
@@ -27,6 +27,46 @@ export default async function CategoryPage({ params }: { params: { slug: string 
     .eq("status", "available")
     .order("created_at", { ascending: false })
 
+  // Local development fallback: show sample cars if none are returned so the page
+  // isn't empty while developing without a seeded DB.
+  const sampleCars: Car[] = [
+    {
+      id: "sample-1",
+      name: "Ferrari Roma",
+      model: "Roma",
+      year: 2022,
+      category_id: category.id,
+      brand: "Ferrari",
+      price: 245000,
+      show_price: true,
+      description: "Sample Ferrari Roma",
+      engine: null,
+      mileage: null,
+      transmission: null,
+      fuel_type: null,
+      interior_features: null,
+      exterior_features: null,
+      condition: null,
+      warranty: null,
+      location: null,
+      status: "available",
+      is_featured: true,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      category: category,
+      images: [
+        {
+          id: "img-s1",
+          car_id: "sample-1",
+          image_url: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1400&q=60",
+          is_primary: true,
+          display_order: 0,
+          created_at: new Date().toISOString(),
+        },
+      ],
+    },
+  ]
+
   return (
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
@@ -35,9 +75,9 @@ export default async function CategoryPage({ params }: { params: { slug: string 
           {category.description && <p className="text-lg text-zinc-400">{category.description}</p>}
         </div>
 
-        {cars && cars.length > 0 ? (
+        {((cars && cars.length > 0) || process.env.NODE_ENV === "development") ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {cars.map((car: Car) => (
+            {(cars && cars.length > 0 ? cars : sampleCars).map((car: Car) => (
               <CarCard key={car.id} car={car} />
             ))}
           </div>

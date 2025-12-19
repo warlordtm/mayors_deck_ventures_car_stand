@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { /* motion */ MotionDiv } from "@/components/motion-wrappers"
 import Image from "next/image"
 import React from "react"
 
@@ -19,7 +19,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-transparent to-black/60" />
       </div>
 
-      <motion.div
+      <MotionDiv
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -50,7 +50,7 @@ export function Hero() {
             Contact Us
           </a>
         </div>
-      </motion.div>
+  </MotionDiv>
 
       <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2">
         <div className="flex h-12 w-8 items-start justify-center rounded-full border-2 border-accent/40 p-2">

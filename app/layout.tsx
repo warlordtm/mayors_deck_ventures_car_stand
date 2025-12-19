@@ -6,6 +6,7 @@ import "./globals.css"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
+import { ThemeProvider } from "@/components/theme-provider"
 
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -45,12 +46,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`dark font-sans antialiased ${_playfair.variable}`}>
-        <Header />
-        {children}
-        <Footer />
-        <WhatsAppFloat />
-        <Analytics />
+      <body className={`font-sans antialiased ${_playfair.variable}`}>
+        <ThemeProvider attribute="class" defaultTheme="system">
+          <Header />
+          {children}
+          <Footer />
+          <WhatsAppFloat />
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )

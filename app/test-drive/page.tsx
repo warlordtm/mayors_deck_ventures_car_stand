@@ -44,7 +44,35 @@ function TestDriveForm() {
       const { data, error } = await supabase.from("cars").select("id, name, model, year").eq("status", "available")
 
       if (error) throw error
-      setCars(data || [])
+      // Data from this query is a narrow projection (id, name, model, year).
+      // Map the projection into the full `Car` shape with sensible defaults
+      // so the UI can render consistently in the dropdown.
+      const mapped = (data || []).map((d: any) => ({
+        id: d.id,
+        name: d.name,
+        model: d.model || "",
+        year: Number(d.year) || new Date().getFullYear(),
+        category_id: null,
+        brand: "",
+        price: null,
+        show_price: false,
+        description: null,
+        engine: null,
+        mileage: null,
+        transmission: null,
+        fuel_type: null,
+        interior_features: null,
+        exterior_features: null,
+        condition: null,
+        warranty: null,
+        location: null,
+        status: "available",
+        is_featured: false,
+        created_at: "",
+        updated_at: "",
+      } as Car))
+
+      setCars(mapped)
     } catch (err) {
       console.error("[v0] Error loading cars:", err)
       setError("Failed to load available cars")
