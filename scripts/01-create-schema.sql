@@ -6,6 +6,9 @@ CREATE TABLE categories (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL UNIQUE,
   slug TEXT NOT NULL UNIQUE,
+  image_url TEXT,
+  seo_title TEXT,
+  seo_description TEXT,
   description TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -86,12 +89,14 @@ CREATE TABLE site_settings (
 );
 
 -- Insert default categories
-INSERT INTO categories (name, slug, description) VALUES
-  ('Supercars', 'supercars', 'High-performance luxury sports cars'),
-  ('SUVs', 'suvs', 'Luxury sport utility vehicles'),
-  ('Sedans', 'sedans', 'Premium luxury sedans'),
-  ('Performance Cars', 'performance-cars', 'Track-ready performance vehicles'),
-  ('Electric Cars', 'electric-cars', 'Luxury electric vehicles');
+INSERT INTO categories (name, slug, image_url, seo_title, seo_description, description) VALUES
+  ('Supercars', 'supercars', 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=60', 'Supercars - Gaskiya Auto', 'Ultra-high-performance road cars from the world\'s top marques.', 'High-performance luxury sports cars'),
+  ('Performance Cars', 'performance-cars', 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=60', 'Performance Cars - Gaskiya Auto', 'Track-capable and driver-focused models with sport-tuned dynamics.', 'Track-ready performance vehicles'),
+  ('Luxury Sedans', 'luxury-sedans', 'https://images.unsplash.com/photo-1549921296-3a4e6d0f3f6b?auto=format&fit=crop&w=1200&q=60', 'Luxury Sedans - Gaskiya Auto', 'Refined executive saloons with best-in-class comfort and craftsmanship.', 'Premium luxury sedans'),
+  ('SUVs & Crossovers', 'suvs', 'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1200&q=60', 'SUVs & Crossovers - Gaskiya Auto', 'Premium SUVs blending space, presence, and performance.', 'Luxury sport utility vehicles'),
+  ('Electric Cars', 'electric-cars', 'https://images.unsplash.com/photo-1549921296-3a4e6d0f3f6b?auto=format&fit=crop&w=1200&q=60', 'Electric Cars - Gaskiya Auto', 'Cutting-edge electric vehicles offering range, tech, and instant torque.', 'Luxury electric vehicles'),
+  ('Convertibles & Coupes', 'coupes-convertibles', 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=1200&q=60', 'Convertibles & Coupes - Gaskiya Auto', 'Designer two-doors for dramatic styling and spirited driving.', 'Designer two-doors for dramatic styling and spirited driving'),
+  ('Classic & Collector', 'classic-cars', 'https://images.unsplash.com/photo-1541446654331-6f4d3b7e4c6a?auto=format&fit=crop&w=1200&q=60', 'Classic & Collector - Gaskiya Auto', 'Iconic and collectible cars maintained to exacting standards.', 'Iconic and collectible cars maintained to exacting standards');
 
 -- Insert default site settings
 INSERT INTO site_settings (key, value) VALUES

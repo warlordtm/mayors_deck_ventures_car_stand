@@ -2,9 +2,10 @@ import { createClient } from "@/lib/supabase/server"
 import type { Car } from "@/lib/types"
 import { CarCard } from "@/components/car-card"
 import { notFound } from "next/navigation"
+import React from "react"
 
-export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+export default async function CategoryPage({ params }: { params: { slug: string } }) {
+  const { slug } = params
   const supabase = await createClient()
 
   // Fetch category

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { MotionArticle } from "@/components/motion-wrappers"
 import React from "react"
 
 const CARS = [
@@ -11,7 +11,7 @@ const CARS = [
     year: 2022,
     price: 245000,
     image:
-      "https://images.unsplash.com/photo-1610088257866-6d15d5b2f1b6?auto=format&fit=crop&w=1400&q=60",
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1400&q=60",
   },
   {
     id: "aston-martin-db11",
@@ -19,21 +19,21 @@ const CARS = [
     year: 2021,
     price: 198000,
     image:
-      "https://images.unsplash.com/photo-1523987355523-c7b5b86a1f03?auto=format&fit=crop&w=1400&q=60",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=60",
   },
   {
     id: "mercedes-amg-gt",
     name: "Mercedes AMG GT",
     year: 2023,
     price: 165000,
-    image: "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1400&q=60",
+    image: "https://images.unsplash.com/photo-1549921296-3a4e6d0f3f6b?auto=format&fit=crop&w=1400&q=60",
   },
   {
     id: "lamborghini-huracan",
     name: "Lamborghini Huracan",
     year: 2022,
     price: 310000,
-    image: "https://images.unsplash.com/photo-1549923746-c502d488b3ea?auto=format&fit=crop&w=1400&q=60",
+    image: "https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1400&q=60",
   },
   {
     id: "porsche-911",
@@ -47,7 +47,7 @@ const CARS = [
     name: "Rolls-Royce Phantom",
     year: 2020,
     price: 450000,
-    image: "https://images.unsplash.com/photo-1615874959474-8df1b3be6d6c?auto=format&fit=crop&w=1400&q=60",
+    image: "https://images.unsplash.com/photo-1541446654331-6f4d3b7e4c6a?auto=format&fit=crop&w=1400&q=60",
   },
 ]
 
@@ -62,7 +62,7 @@ export function FeaturedVehicles() {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {CARS.map((car, idx) => (
-            <motion.article
+            <MotionArticle
               key={car.id}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -85,7 +85,7 @@ export function FeaturedVehicles() {
                   </a>
                 </div>
               </div>
-            </motion.article>
+            </MotionArticle>
           ))}
         </div>
       </div>

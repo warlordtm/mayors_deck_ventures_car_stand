@@ -1,6 +1,8 @@
+"use client"
+
 import React from "react"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { MotionArticle } from "@/components/motion-wrappers"
 import SectionWrapper from "@/components/section-wrapper"
 
 const SAMPLE_CARS = Array.from({ length: 8 }).map((_, i) => ({
@@ -40,7 +42,7 @@ export default function InventoryPage() {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {SAMPLE_CARS.map((car, idx) => (
-            <motion.article
+            <MotionArticle
               key={car.id}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -65,7 +67,7 @@ export default function InventoryPage() {
                   </a>
                 </div>
               </div>
-            </motion.article>
+            </MotionArticle>
           ))}
         </div>
       </SectionWrapper>
