@@ -11,7 +11,7 @@ export function Header() {
     <header className="fixed top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur-xl shadow-sm">
       <div className="container mx-auto flex h-20 items-center justify-between px-4">
         <Link href="/" className="font-display text-2xl font-bold tracking-tight text-primary">
-          Sarkin Mota Autos
+          Gaskiya Auto
         </Link>
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-10 md:flex">

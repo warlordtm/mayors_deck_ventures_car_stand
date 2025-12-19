@@ -51,7 +51,7 @@ export default async function AdminSettingsPage() {
               <div className="grid gap-2">
                 <label className="text-sm font-medium text-zinc-300">Brand Name</label>
                 <div className="rounded-md border border-zinc-800 bg-zinc-900 px-3 py-2 text-white">
-                  {settingsMap["brand_name"] || "Elite Motors"}
+                  {settingsMap["brand_name"] || "Gaskiya Auto"}
                 </div>
               </div>
               <div className="grid gap-2">

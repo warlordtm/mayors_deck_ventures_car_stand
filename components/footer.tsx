@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
-            <h3 className="mb-4 text-lg font-bold text-white">Sarkin Mota Autos</h3>
+            <h3 className="mb-4 text-lg font-bold text-white">Gaskiya Auto</h3>
             <p className="text-sm text-zinc-400">Luxury. Confidence. Trust.</p>
           </div>
 
@@ -59,7 +59,7 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-2 text-sm text-zinc-400">
                 <Mail className="h-4 w-4" />
-                <span>hello@sarkimota.autos</span>
+                <span>hello@gaskiya.autos</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-zinc-400">
                 <MapPin className="h-4 w-4" />
@@ -70,7 +70,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 border-t border-white/10 pt-8 text-center text-sm text-zinc-500">
-          <p>&copy; {new Date().getFullYear()} Sarkin Mota Autos. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Gaskiya Auto. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -32,7 +32,7 @@ export function Hero() {
           Driving Excellence. Defining Prestige.
         </h1>
         <p className="mx-auto mb-8 max-w-2xl text-lg text-zinc-300 md:text-xl">
-          Sarkin Mota Autos curates the world's finest vehicles — verified, meticulously maintained, and presented with
+          Gaskiya Auto curates the world's finest vehicles — verified, meticulously maintained, and presented with
           uncompromising luxury. Your next chapter of extraordinary begins here.
         </p>
 

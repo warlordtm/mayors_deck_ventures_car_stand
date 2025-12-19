@@ -33,7 +33,7 @@ export function ContactForm() {
       if (error) {
         setStatus({ ok: false, message: error.message })
       } else {
-        setStatus({ ok: true, message: "Thank you — your message has been submitted." })
+        setStatus({ ok: true, message: "Thank you, your message has been submitted." })
         setName("")
         setEmail("")
         setMessage("")

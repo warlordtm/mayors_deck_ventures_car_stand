@@ -36,7 +36,7 @@ export default function ContactPage() {
               <h3 className="mb-2 text-xl font-semibold text-white">Email</h3>
               <p className="mb-4 text-zinc-400">Send us a message anytime</p>
               <a href="mailto:contact@elitemotors.com" className="text-lg text-white hover:underline">
-                contact@elitemotors.com
+                hello@gaskiya.auto
               </a>
             </CardContent>
           </Card>
@@ -48,7 +48,7 @@ export default function ContactPage() {
               </div>
               <h3 className="mb-2 text-xl font-semibold text-white">Location</h3>
               <p className="mb-4 text-zinc-400">Visit our showroom</p>
-              <p className="text-lg text-white">Beverly Hills, California</p>
+              <p className="text-lg text-white">Abuja, Nigeria</p>
             </CardContent>
           </Card>
 

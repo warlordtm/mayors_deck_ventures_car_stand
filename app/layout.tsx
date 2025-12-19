@@ -16,8 +16,8 @@ const _playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "Elite Motors - Luxury Car Dealership",
-  description: "Where Luxury Meets Performance. Discover the finest collection of luxury vehicles.",
+  title: "Gaskiya Auto - Luxury Car Dealership",
+  description: "Gaskiya Auto — where luxury meets performance. Discover our curated collection of premium vehicles.",
   generator: "v0.app",
   icons: {
     icon: [

@@ -99,7 +99,7 @@ INSERT INTO site_settings (key, value) VALUES
   ('contact_phone', '+1234567890'),
   ('contact_email', 'contact@luxurycars.com'),
   ('test_drive_fee', '99.99'),
-  ('brand_name', 'Elite Motors'),
+  ('brand_name', 'Gaskiya Auto'),
   ('brand_tagline', 'Where Luxury Meets Performance');
 
 -- Create indexes for better performance

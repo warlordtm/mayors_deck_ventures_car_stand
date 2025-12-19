@@ -29,7 +29,7 @@ export function TrustPillars() {
     <section className="py-20">
       <div className="container mx-auto px-4">
         <div className="mb-12 text-center">
-          <h2 className="mb-3 text-4xl font-bold text-white">Why Sarkin Mota Autos</h2>
+          <h2 className="mb-3 text-4xl font-bold text-white">Why Gaskiya Auto</h2>
           <p className="text-lg text-zinc-300">Trust pillars that define our promise to every customer.</p>
         </div>
 
