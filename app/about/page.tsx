@@ -26,9 +26,9 @@ export default function AboutPage() {
             <div className="order-1 lg:order-2 space-y-6">
               <h2 className="text-3xl font-bold font-display text-foreground">Our Founder</h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Founded by visionary entrepreneur Godwin Bamisaye, Gaskiya Auto was born from a passion for
+                Founded by visionary entrepreneur Gaskiya Kasim, Gaskiya Auto was born from a passion for
                 exceptional automobiles and a commitment to integrity. With years of experience in the automotive
-                industry, Godwin envisioned a dealership that prioritizes transparency, quality, and customer
+                industry, Gaskiya envisioned a dealership that prioritizes transparency, quality, and customer
                 satisfaction above all else.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
