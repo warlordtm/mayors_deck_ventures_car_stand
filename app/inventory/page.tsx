@@ -8,8 +8,11 @@ import SectionWrapper from "@/components/section-wrapper"
 const SAMPLE_CARS = Array.from({ length: 8 }).map((_, i) => ({
   id: `car-${i + 1}`,
   name: ["Aston Martin DB11", "Ferrari Roma", "Porsche 911", "Lamborghini Huracan"][i % 4],
+  model: ["DB11", "Roma", "911 Carrera", "Huracan"][i % 4],
   year: 2020 + (i % 4),
-  price: 150000 + i * 25000,
+  brand: ["Aston Martin", "Ferrari", "Porsche", "Lamborghini"][i % 4],
+  price: (150000 + i * 25000) * 1600,
+  show_price: true,
   image: `https://images.unsplash.com/photo-15${i}371?auto=format&fit=crop&w=1400&q=60`,
 }))
 
@@ -61,9 +64,9 @@ export default function InventoryPage() {
                 <h3 className="text-lg font-semibold text-foreground">{car.name}</h3>
                 <p className="text-sm text-muted-foreground">{car.year} • Premium</p>
                 <div className="mt-4 flex items-center justify-between">
-                  <p className="text-xl font-bold text-foreground">${car.price.toLocaleString()}</p>
-                  <a href={`#/cars/${car.id}`} className="text-sm font-semibold text-accent">
-                    View
+                  <p className="text-xl font-bold text-foreground">₦{car.price.toLocaleString('en-NG')}</p>
+                  <a href={`/cars/${car.id}`} className="text-sm font-semibold text-accent">
+                    View Details
                   </a>
                 </div>
               </div>

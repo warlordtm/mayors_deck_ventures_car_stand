@@ -45,10 +45,23 @@ function TestDriveForm() {
       const { data, error } = await supabase.from("cars").select("id, name, model, year").eq("status", "available")
 
       if (error) throw error
+
+      let carsData = data || []
+
+      // If no cars in database, use sample cars
+      if (carsData.length === 0) {
+        carsData = [
+          { id: "car-1", name: "Aston Martin DB11", model: "DB11", year: 2020 },
+          { id: "car-2", name: "Ferrari Roma", model: "Roma", year: 2021 },
+          { id: "car-3", name: "Porsche 911", model: "911 Carrera", year: 2022 },
+          { id: "car-4", name: "Lamborghini Huracan", model: "Huracan", year: 2023 },
+        ]
+      }
+
       // Data from this query is a narrow projection (id, name, model, year).
       // Map the projection into the full `Car` shape with sensible defaults
       // so the UI can render consistently in the dropdown.
-      const mapped = (data || []).map((d: any) => ({
+      const mapped = carsData.map((d: any) => ({
         // Ensure id is always a string so comparisons with query params work
         id: String(d.id),
         name: d.name,
@@ -196,6 +209,25 @@ function TestDriveForm() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Select Car */}
+              {carIdMismatch && (
+                <div className="mb-4 rounded-md border border-yellow-400 bg-yellow-50 p-3 text-yellow-800">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <strong className="block">Preselected vehicle unavailable</strong>
+                      <p className="text-sm">The vehicle referenced in the link isn't available right now. Please choose another vehicle from the list below.</p>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => setCarIdMismatch(false)}
+                        className="ml-4 rounded-md bg-yellow-100 px-2 py-1 text-sm font-medium text-yellow-800"
+                      >
+                        Dismiss
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div>
                 <Label htmlFor="car" className="text-muted-foreground">
                   Select Vehicle
@@ -229,7 +261,6 @@ function TestDriveForm() {
                     value={formData.customer_name}
                     onChange={(e) => setFormData({ ...formData, customer_name: e.target.value })}
                     className="mt-2 border-border bg-card text-foreground"
-                    placeholder="John Doe"
                   />
                 </div>
                 <div>
@@ -243,7 +274,6 @@ function TestDriveForm() {
                     value={formData.customer_phone}
                     onChange={(e) => setFormData({ ...formData, customer_phone: e.target.value })}
                     className="mt-2 border-border bg-card text-foreground"
-                    placeholder="+1 (234) 567-8900"
                   />
                 </div>
               </div>
@@ -259,7 +289,6 @@ function TestDriveForm() {
                   value={formData.customer_email}
                   onChange={(e) => setFormData({ ...formData, customer_email: e.target.value })}
                   className="mt-2 border-border bg-card text-foreground"
-                  placeholder="john@example.com"
                 />
               </div>
 
@@ -304,7 +333,6 @@ function TestDriveForm() {
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   className="mt-2 border-border bg-card text-foreground"
-                  placeholder="123 Main St, Beverly Hills, CA 90210"
                 />
               </div>
 

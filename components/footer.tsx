@@ -3,10 +3,12 @@
 import Link from "next/link"
 import { Phone, Mail, MapPin } from "lucide-react"
 import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 
 export function Footer() {
   const [user, setUser] = useState<any>(null)
+  const pathname = usePathname()
 
   useEffect(() => {
     const supabase = createClient()
@@ -23,7 +25,8 @@ export function Footer() {
     return () => subscription.unsubscribe()
   }, [])
 
-  if (user) return null
+  // Hide footer on admin pages
+  if (pathname?.startsWith('/admin')) return null
   return (
   <footer className="border-t border-border bg-card">
       <div className="container mx-auto px-4 py-12">

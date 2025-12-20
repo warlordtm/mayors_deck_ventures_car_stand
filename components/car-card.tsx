@@ -51,7 +51,7 @@ export function CarCard({ car }: CarCardProps) {
 
         <div className="mb-4">
           {car.show_price && car.price ? (
-            <p className="text-2xl font-bold text-foreground">${car.price.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-foreground">₦{car.price.toLocaleString('en-NG')}</p>
           ) : (
             <p className="text-lg text-muted-foreground">Contact for best price</p>
           )}

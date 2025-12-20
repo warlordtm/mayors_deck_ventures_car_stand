@@ -35,11 +35,108 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
       .eq("slug", id)
       .single()
 
-    if (!carBySlug) {
+    car = carBySlug
+  }
+
+  // Fallback to sample cars if not found in database
+  if (!car) {
+    const sampleCars = [
+      {
+        id: "car-1",
+        name: "Aston Martin DB11",
+        model: "DB11",
+        year: 2020,
+        brand: "Aston Martin",
+        price: 150000 * 1600,
+        show_price: true,
+        description: "Experience the pinnacle of automotive excellence with this 2020 Aston Martin DB11. This masterpiece combines breathtaking performance with unparalleled luxury, featuring cutting-edge technology and premium materials throughout.",
+        engine: "V12 5.2L",
+        mileage: "10000",
+        transmission: "Automatic",
+        fuel_type: "Petrol",
+        interior_features: "Leather upholstery, Premium audio system, Climate control, Navigation",
+        exterior_features: "LED headlights, Alloy wheels, Carbon fiber accents, Sport exhaust",
+        condition: "Excellent",
+        warranty: "2 years remaining",
+        location: "Lagos, Nigeria",
+        status: "available",
+        is_featured: true,
+        images: [{ image_url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=60", is_primary: true }],
+      },
+      {
+        id: "car-2",
+        name: "Ferrari Roma",
+        model: "Roma",
+        year: 2021,
+        brand: "Ferrari",
+        price: 175000 * 1600,
+        show_price: true,
+        description: "Experience the pinnacle of automotive excellence with this 2021 Ferrari Roma. This masterpiece combines breathtaking performance with unparalleled luxury, featuring cutting-edge technology and premium materials throughout.",
+        engine: "V8 3.9L Twin-Turbo",
+        mileage: "15000",
+        transmission: "Automatic",
+        fuel_type: "Petrol",
+        interior_features: "Leather upholstery, Premium audio system, Climate control, Navigation",
+        exterior_features: "LED headlights, Alloy wheels, Carbon fiber accents, Sport exhaust",
+        condition: "Excellent",
+        warranty: "2 years remaining",
+        location: "Lagos, Nigeria",
+        status: "available",
+        is_featured: true,
+        images: [{ image_url: "https://images.unsplash.com/photo-1544829099-b9a0e3421ec4?auto=format&fit=crop&w=1400&q=60", is_primary: true }],
+      },
+      {
+        id: "car-3",
+        name: "Porsche 911",
+        model: "911 Carrera",
+        year: 2022,
+        brand: "Porsche",
+        price: 200000 * 1600,
+        show_price: true,
+        description: "Experience the pinnacle of automotive excellence with this 2022 Porsche 911 Carrera. This masterpiece combines breathtaking performance with unparalleled luxury, featuring cutting-edge technology and premium materials throughout.",
+        engine: "Flat-6 3.0L Twin-Turbo",
+        mileage: "20000",
+        transmission: "Automatic",
+        fuel_type: "Petrol",
+        interior_features: "Leather upholstery, Premium audio system, Climate control, Navigation",
+        exterior_features: "LED headlights, Alloy wheels, Carbon fiber accents, Sport exhaust",
+        condition: "Excellent",
+        warranty: "2 years remaining",
+        location: "Lagos, Nigeria",
+        status: "available",
+        is_featured: true,
+        images: [{ image_url: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=60", is_primary: true }],
+      },
+      {
+        id: "car-4",
+        name: "Lamborghini Huracan",
+        model: "Huracan",
+        year: 2023,
+        brand: "Lamborghini",
+        price: 225000 * 1600,
+        show_price: true,
+        description: "Experience the pinnacle of automotive excellence with this 2023 Lamborghini Huracan. This masterpiece combines breathtaking performance with unparalleled luxury, featuring cutting-edge technology and premium materials throughout.",
+        engine: "V10 5.2L",
+        mileage: "25000",
+        transmission: "Automatic",
+        fuel_type: "Petrol",
+        interior_features: "Leather upholstery, Premium audio system, Climate control, Navigation",
+        exterior_features: "LED headlights, Alloy wheels, Carbon fiber accents, Sport exhaust",
+        condition: "Excellent",
+        warranty: "2 years remaining",
+        location: "Lagos, Nigeria",
+        status: "available",
+        is_featured: true,
+        images: [{ image_url: "https://images.unsplash.com/photo-1544829099-b9a0e3421ec4?auto=format&fit=crop&w=1400&q=60", is_primary: true }],
+      },
+    ]
+
+    const sampleCar = sampleCars.find(c => c.id === id)
+    if (!sampleCar) {
       notFound()
     }
 
-    car = carBySlug
+    car = sampleCar as any // Type assertion for sample data
   }
 
   const sortedImages = car.images?.sort((a: CarImage, b: CarImage) => {
@@ -172,16 +269,15 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
                 <Button
                   asChild
                   variant="outline"
-                  className="flex-1 border-border text-foreground hover:bg-card/10 bg-transparent"
+                  className="flex-1 border-border text-foreground hover:bg-accent hover:text-accent-foreground"
                   size="lg"
                 >
                   <a
-                    href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hi, I'm interested in purchasing the ${car.name} (${car.year})`)}`}
                     target="_blank"
                     rel="noreferrer noopener"
                   >
-                    <MessageCircle className="mr-2 h-5 w-5" />
-                    WhatsApp
+                    Buy Now
                   </a>
                 </Button>
               </div>
@@ -306,15 +402,26 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
         {car.status === "available" && (
           <Card className="mt-12 border-border bg-card/50 backdrop-blur">
             <CardContent className="p-8 text-center">
-              <h2 className="mb-4 font-display text-3xl font-bold text-foreground">Ready to Experience This Vehicle?</h2>
+              <h2 className="mb-4 font-display text-3xl font-bold text-foreground">Ready to Own This Vehicle?</h2>
               <p className="mb-6 text-lg text-muted-foreground">
-                Book a premium test drive with agent-delivered service at your location
+                Book a test drive or contact us to start the purchase process
               </p>
-              <Button asChild size="lg" className="bg-white text-black hover:bg-zinc-200">
-                <Link href={`/test-drive?carId=${car.id}`}>
-                  Book Test Drive <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
+              <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+                <Button asChild size="lg" className="bg-white text-black hover:bg-zinc-200">
+                  <Link href={`/test-drive?carId=${car.id}`}>
+                    Book Test Drive <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                  <a
+                    href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hi, I'm interested in purchasing the ${car.name} (${car.year})`)}`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    Buy Now <ArrowRight className="ml-2 h-5 w-5" />
+                  </a>
+                </Button>
+              </div>
             </CardContent>
           </Card>
         )}
