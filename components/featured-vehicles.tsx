@@ -94,7 +94,7 @@ export function FeaturedVehicles() {
                       ) : (
                         <p className="text-2xl font-bold text-foreground">Price on Request</p>
                       )}
-                      <span className="inline-flex items-center gap-2 rounded-md bg-card/5 px-4 py-2 text-sm font-semibold text-foreground">
+                      <span className="inline-flex items-center gap-2 rounded-md bg-accent/10 border border-accent/20 px-4 py-2 text-sm font-semibold text-accent hover:bg-accent/20 transition-colors">
                         View Details →
                       </span>
                     </div>

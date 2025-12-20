@@ -29,7 +29,7 @@ export default async function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background py-8">
+    <div className="min-h-screen bg-background pt-24 pb-8">
       <div className="container mx-auto px-4">
         <div className="mb-8 flex items-center justify-between">
           <div>
@@ -37,7 +37,11 @@ export default async function AdminDashboardPage() {
             <p className="text-muted-foreground">Welcome {user.email}</p>
           </div>
           <form action="/api/auth/signout" method="POST">
-            <Button variant="outline" className="border-border text-muted-foreground hover:bg-card/10 bg-transparent">
+            <Button
+              type="submit"
+              variant="outline"
+              className="border-red-500 text-red-600 hover:bg-red-50 hover:text-red-700 bg-transparent"
+            >
               Sign Out
             </Button>
           </form>
