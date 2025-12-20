@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
+import { createClient as createServerSupabase } from "@/lib/supabase/server"
 
 // Only initialize Stripe if the secret key is available at build/runtime. This avoids
 // throwing during Next.js build when environment variables are not present.
@@ -18,12 +19,33 @@ export async function POST(request: Request) {
     }
     const { bookingId, amount } = await request.json()
 
-    if (!bookingId || !amount) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    if (!bookingId) {
+      return NextResponse.json({ error: "Missing bookingId" }, { status: 400 })
     }
 
-    // Convert amount to cents for Stripe
-    const amountInCents = Math.round(amount * 100)
+  // Validate booking exists and get canonical amount
+      const supabase = await createServerSupabase()
+      const { data: booking, error: bookingError } = await supabase
+        .from("test_drive_bookings")
+        .select("id, payment_amount, payment_status, status")
+        .eq("id", bookingId)
+        .single()
+
+      if (bookingError || !booking) {
+        return NextResponse.json({ error: "Booking not found" }, { status: 404 })
+      }
+
+      if (booking.payment_status === "paid" || booking.status === "confirmed") {
+        return NextResponse.json({ error: "Booking already paid" }, { status: 400 })
+      }
+
+      const canonicalAmount = booking.payment_amount ?? amount
+      if (canonicalAmount == null) {
+        return NextResponse.json({ error: "Invalid booking amount" }, { status: 400 })
+      }
+
+      // Convert amount to cents for Stripe
+      const amountInCents = Math.round(Number(canonicalAmount) * 100)
 
     // Create a PaymentIntent
     const paymentIntent = await stripe.paymentIntents.create({

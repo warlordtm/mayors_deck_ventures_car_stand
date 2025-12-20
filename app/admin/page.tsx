@@ -54,8 +54,8 @@ export default async function AdminDashboardPage() {
       <div className="container mx-auto px-4">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="mb-2 text-3xl font-bold text-foreground">Admin Dashboard</h1>
-            <p className="text-muted-foreground">Welcome back, {adminUser.full_name || adminUser.email}</p>
+            <h1 className="mb-4 text-3xl font-bold text-foreground">Admin Dashboard</h1>
+            <p className="text-muted-foreground">Welcome {adminUser.full_name || adminUser.email}</p>
           </div>
           <form action="/api/auth/signout" method="POST">
             <Button variant="outline" className="border-border text-muted-foreground hover:bg-card/10 bg-transparent">

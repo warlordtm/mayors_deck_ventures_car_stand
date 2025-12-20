@@ -41,7 +41,7 @@ export function Hero() {
           </Link>
           <a
             href="#contact"
-            className="inline-flex h-14 items-center justify-center text-white rounded-md border border-border bg-transparent px-8 text-base font-semibold text-foreground transition-colors hover:bg-card/10"
+            className="inline-flex h-14 items-center justify-center text-white rounded-md border border-white bg-transparent px-8 text-base font-semibold transition-colors hover:bg-white hover:text-black"
           >
             Contact Us
           </a>

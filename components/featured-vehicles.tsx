@@ -78,11 +78,8 @@ export function FeaturedVehicles() {
                 <p className="text-sm text-muted-foreground">{car.year} • Premium</p>
                 <div className="mt-4 flex items-center justify-between">
                   <p className="text-2xl font-bold text-foreground">₦{car.price.toLocaleString('en-NG')}</p>
-                  <Link
-                    href="/cars"
-                    className="inline-flex items-center gap-2 rounded-md bg-card/5 px-4 py-2 text-sm font-semibold text-foreground hover:bg-card/10"
-                  >
-                    View
+                  <Link href={`/cars`} className="inline-flex items-center gap-2 rounded-md bg-card/5 px-4 py-2 text-sm font-semibold text-foreground hover:bg-card/10">
+                    View Inventory
                   </Link>
                 </div>
               </div>

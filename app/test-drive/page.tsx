@@ -23,6 +23,7 @@ function TestDriveForm() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [carIdMismatch, setCarIdMismatch] = useState<boolean>(false)
 
   const [formData, setFormData] = useState({
     customer_name: "",
@@ -48,7 +49,8 @@ function TestDriveForm() {
       // Map the projection into the full `Car` shape with sensible defaults
       // so the UI can render consistently in the dropdown.
       const mapped = (data || []).map((d: any) => ({
-        id: d.id,
+        // Ensure id is always a string so comparisons with query params work
+        id: String(d.id),
         name: d.name,
         model: d.model || "",
         year: Number(d.year) || new Date().getFullYear(),
@@ -73,6 +75,24 @@ function TestDriveForm() {
       } as Car))
 
       setCars(mapped)
+      // Reconcile selectedCarId with loaded cars:
+      // - If a carId query param exists and matches a loaded car, select it.
+      // - Else if there's exactly one available car and nothing selected, default to it.
+      if (carId) {
+        const found = mapped.find((c: Car) => String(c.id) === String(carId))
+        if (found) {
+          setSelectedCarId(String(carId))
+          setCarIdMismatch(false)
+        } else {
+          // indicate early that the provided carId isn't available
+          setCarIdMismatch(true)
+        }
+      } else if (!selectedCarId && mapped.length === 1) {
+        setSelectedCarId(String(mapped[0].id))
+        setCarIdMismatch(false)
+      } else {
+        setCarIdMismatch(false)
+      }
     } catch (err) {
       console.error("[v0] Error loading cars:", err)
       setError("Failed to load available cars")
@@ -87,31 +107,36 @@ function TestDriveForm() {
     setError(null)
 
     try {
-      const supabase = createClient()
+      // Basic client-side validation: ensure a vehicle is selected and it's in the loaded list
+      if (!selectedCarId) {
+        setError("Please select a vehicle before continuing.")
+        setSubmitting(false)
+        return
+      }
 
-      // Get test drive fee from settings
-      const { data: settings } = await supabase
-        .from("site_settings")
-        .select("value")
-        .eq("key", "test_drive_fee")
-        .single()
+      const selected = cars.find((c) => String(c.id) === String(selectedCarId))
+      if (!selected) {
+        setError("The selected vehicle is not available. Please choose another vehicle.")
+        setSubmitting(false)
+        return
+      }
 
-      const testDriveFee = settings?.value ? Number.parseFloat(settings.value) : 99.99
-
-      const { data: booking, error: insertError } = await supabase
-        .from("test_drive_bookings")
-        .insert({
+      // Create booking via server API which enforces availability and canonical fee
+      const response = await fetch("/api/test-drive/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           car_id: selectedCarId,
           ...formData,
-          payment_amount: testDriveFee,
-          payment_status: "pending",
-          status: "pending",
-        })
-        .select()
-        .single()
+        }),
+      })
 
-      if (insertError) throw insertError
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || "Booking failed")
+      }
 
+      const booking = data.booking
       router.push(`/test-drive/checkout?bookingId=${booking.id}`)
     } catch (err) {
       console.error("[v0] Error submitting booking:", err)
@@ -157,7 +182,7 @@ function TestDriveForm() {
                 <DollarSign className="h-6 w-6 text-foreground" />
               </div>
               <h3 className="mb-2 text-lg font-semibold text-foreground">Test Drive Fee</h3>
-              <p className="text-sm text-muted-foreground">$99.99 booking fee (refundable on purchase)</p>
+              <p className="text-sm text-muted-foreground">₦159,984 booking fee (refundable on purchase)</p>
             </CardContent>
           </Card>
         </div>

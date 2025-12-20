@@ -1,7 +1,29 @@
+"use client"
+
 import Link from "next/link"
 import { Phone, Mail, MapPin } from "lucide-react"
+import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 export function Footer() {
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    const supabase = createClient()
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+    }
+    getUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  if (user) return null
   return (
   <footer className="border-t border-border bg-card">
       <div className="container mx-auto px-4 py-12">

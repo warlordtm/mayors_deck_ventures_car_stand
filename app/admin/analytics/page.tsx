@@ -3,6 +3,10 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart3, Users, Car, DollarSign, Calendar } from "lucide-react"
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js'
+import { Bar, Pie } from 'react-chartjs-2'
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement)
 
 interface AnalyticsData {
   overview: {
@@ -104,14 +108,25 @@ export default function AnalyticsPage() {
             <CardTitle>Monthly Bookings</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              {data.monthlyBookings.slice(-6).map((item) => (
-                <div key={item.month} className="flex items-center justify-between">
-                  <span className="text-sm">{item.month}</span>
-                  <span className="font-medium">{item.count}</span>
-                </div>
-              ))}
-            </div>
+            <Bar
+              data={{
+                labels: data.monthlyBookings.slice(-6).map(item => item.month),
+                datasets: [{
+                  label: 'Bookings',
+                  data: data.monthlyBookings.slice(-6).map(item => item.count),
+                  backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                  borderColor: 'rgba(75, 192, 192, 1)',
+                  borderWidth: 1,
+                }],
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { position: 'top' },
+                  title: { display: true, text: 'Monthly Bookings' },
+                },
+              }}
+            />
           </CardContent>
         </Card>
 
@@ -120,14 +135,23 @@ export default function AnalyticsPage() {
             <CardTitle>Booking Status</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              {data.statusStats.map((item) => (
-                <div key={item.status} className="flex items-center justify-between">
-                  <span className="text-sm capitalize">{item.status}</span>
-                  <span className="font-medium">{item.count}</span>
-                </div>
-              ))}
-            </div>
+            <Pie
+              data={{
+                labels: data.statusStats.map(item => item.status),
+                datasets: [{
+                  data: data.statusStats.map(item => item.count),
+                  backgroundColor: data.statusStats.map((_, index) => `hsl(${index * 45}, 70%, 50%)`),
+                  borderWidth: 1,
+                }],
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { position: 'top' },
+                  title: { display: true, text: 'Booking Status Distribution' },
+                },
+              }}
+            />
           </CardContent>
         </Card>
       </div>
@@ -138,14 +162,26 @@ export default function AnalyticsPage() {
           <CardTitle>Cars by Category</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2">
-            {data.categoryStats.map((item) => (
-              <div key={item.name} className="flex items-center justify-between">
-                <span className="text-sm">{item.name}</span>
-                <span className="font-medium">{item.count} cars</span>
-              </div>
-            ))}
-          </div>
+          <Bar
+            data={{
+              labels: data.categoryStats.map(item => item.name),
+              datasets: [{
+                label: 'Number of Cars',
+                data: data.categoryStats.map(item => item.count),
+                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1,
+              }],
+            }}
+            options={{
+              indexAxis: 'y',
+              responsive: true,
+              plugins: {
+                legend: { position: 'top' },
+                title: { display: true, text: 'Cars by Category' },
+              },
+            }}
+          />
         </CardContent>
       </Card>
     </div>

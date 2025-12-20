@@ -75,7 +75,7 @@ export function Header() {
             {user ? (
               <div className="flex items-center gap-2">
                 <Link href="/admin">
-                  <Button variant="outline" size="sm" className="border-border text-muted-foreground hover:bg-card/10">
+                  <Button variant="outline" size="sm" className="border-border text-muted-foreground">
                     <User className="mr-2 h-4 w-4" />
                     Admin
                   </Button>
@@ -84,7 +84,7 @@ export function Header() {
                   variant="outline"
                   size="sm"
                   onClick={handleLogout}
-                  className="border-border text-muted-foreground hover:bg-card/10"
+                  className="border-border text-muted-foreground hover:bg-red-500 hover:text-white hover:border-red-500"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   Logout
@@ -173,7 +173,7 @@ export function Header() {
                       handleLogout()
                       setIsMenuOpen(false)
                     }}
-                    className="w-full justify-start border-border text-muted-foreground hover:bg-card/10"
+                    className="w-full justify-start border-border text-muted-foreground hover:bg-red-500 hover:text-white hover:border-red-500"
                   >
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout

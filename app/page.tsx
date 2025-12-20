@@ -28,7 +28,7 @@ export default function HomePage() {
         </div>
       </SectionWrapper>
 
-      <SectionWrapper>
+      <SectionWrapper id="contact">
         <div className="mx-auto max-w-3xl">
           <ContactForm />
         </div>

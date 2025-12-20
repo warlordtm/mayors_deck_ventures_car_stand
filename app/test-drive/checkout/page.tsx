@@ -149,7 +149,7 @@ function CheckoutForm() {
 
               <div className="flex items-center justify-between border-b border-border pb-6">
                 <span className="text-lg font-semibold text-foreground">Test Drive Fee</span>
-                <span className="text-2xl font-bold text-foreground">${booking.payment_amount?.toFixed(2)}</span>
+                <span className="text-2xl font-bold text-foreground">₦{((booking.payment_amount ?? 0) * 1600).toFixed(2)}</span>
               </div>
 
             {error && (
@@ -161,7 +161,7 @@ function CheckoutForm() {
             <div className="space-y-3">
               <Button
                 onClick={handlePayment}
-                disabled={loading || booking.payment_status === "paid"}
+                disabled={loading || booking.payment_status === "paid" || !booking.payment_amount}
                 className="w-full bg-white text-black hover:bg-zinc-200"
                 size="lg"
               >
@@ -176,7 +176,7 @@ function CheckoutForm() {
                     Payment Complete
                   </>
                 ) : (
-                  `Pay $${booking.payment_amount?.toFixed(2)}`
+                  `Pay ₦${((booking.payment_amount ?? 0) * 1600).toFixed(2)}`
                 )}
               </Button>
 

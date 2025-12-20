@@ -109,7 +109,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
 
               {car.show_price && car.price ? (
                 <div className="mb-6">
-                  <p className="text-4xl font-bold text-foreground">${car.price.toLocaleString()}</p>
+                  <p className="text-4xl font-bold text-foreground">₦{(car.price * 1600).toLocaleString('en-NG')}</p>
                 </div>
               ) : (
                 <div className="mb-6">
@@ -214,11 +214,33 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
         {/* Full Details Section */}
         <div className="mt-12 grid gap-8 lg:grid-cols-3">
           {/* Description */}
-          {car.description && (
+          {car.description ? (
             <Card className="lg:col-span-2 border-border bg-card/50 backdrop-blur">
               <CardContent className="p-6">
                 <h2 className="mb-4 text-2xl font-bold text-foreground">Description</h2>
                 <p className="leading-relaxed text-muted-foreground">{car.description}</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="lg:col-span-2 border-border bg-card/50 backdrop-blur">
+              <CardContent className="p-6">
+                <h2 className="mb-4 text-2xl font-bold text-foreground">About This Vehicle</h2>
+                <div className="space-y-4">
+                  <p className="leading-relaxed text-muted-foreground">
+                    The {car.name} is a masterpiece of automotive engineering, combining breathtaking performance with
+                    unparalleled luxury. This {car.year} model represents the pinnacle of {car.brand}'s craftsmanship,
+                    featuring cutting-edge technology and premium materials throughout.
+                  </p>
+                  <p className="leading-relaxed text-muted-foreground">
+                    With its distinctive design and powerful {car.engine || 'engine'}, this vehicle delivers an
+                    exhilarating driving experience that turns every journey into an adventure. The sophisticated
+                    interior provides comfort and refinement, making it perfect for both daily commutes and special occasions.
+                  </p>
+                  <p className="leading-relaxed text-muted-foreground">
+                    Every detail has been meticulously crafted to ensure exceptional quality and reliability.
+                    This vehicle comes with comprehensive documentation and is ready for immediate delivery.
+                  </p>
+                </div>
               </CardContent>
             </Card>
           )}
