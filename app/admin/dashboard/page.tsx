@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Car, Calendar, DollarSign, Users, UserCheck, Tag, BarChart3, FileText, Settings } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import AnalyticsPage from "../analytics/page"
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient()
@@ -29,7 +28,7 @@ export default async function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background pt-24 pb-8">
+    <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
         <div className="mb-8 flex items-center justify-between">
           <div>
@@ -191,27 +190,9 @@ export default async function AdminDashboardPage() {
                 </CardContent>
               </Card>
             </Link>
-
-            <Link href="/admin/settings">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
-                <CardContent className="flex items-center gap-4 p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
-                    <Settings className="h-6 w-6 text-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">Site Settings</h3>
-                    <p className="text-sm text-muted-foreground">Configure site settings</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
           </div>
         </div>
 
-        {/* Embedded Analytics (previous single-page dashboard used to include charts here) */}
-        <div className="mb-8">
-          <AnalyticsPage />
-        </div>
       </div>
     </div>
   )

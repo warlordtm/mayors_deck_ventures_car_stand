@@ -6,9 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -90,6 +90,16 @@ export default function ResetPasswordPage() {
       </div>
     )
   }
+  
+  function ResetPasswordPage() {
+    return (
+      <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+        <ResetPasswordForm />
+      </Suspense>
+    )
+  }
+  
+  export default ResetPasswordPage
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-6">

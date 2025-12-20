@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { AdminDataTable } from "@/components/admin/admin-data-table"
 import { AdminForm } from "@/components/admin/admin-form"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Plus } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
@@ -179,15 +179,28 @@ export default function AdminCars() {
             <Plus className="mr-2 h-4 w-4" />
             Add Car
           </Button>
-          <DialogContent className="max-w-3xl">
-            <AdminForm
-              title={editingCar ? "Edit Car" : "Add New Car"}
-              fields={formFields}
-              initialData={editingCar || { show_price: true, status: "available" }}
-              onSubmit={editingCar ? handleUpdate : handleCreate}
-              onCancel={() => { setShowForm(false); setEditingCar(null) }}
-              autoSlug={{ sourceField: "name", targetField: "slug" }}
-            />
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogTitle className="sr-only">
+              {editingCar ? "Edit Car" : "Add New Car"}
+            </DialogTitle>
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">
+                  {editingCar ? "Edit Car" : "Add New Car"}
+                </h2>
+                <p className="text-muted-foreground mt-1">
+                  {editingCar ? "Update the car details below" : "Fill in the details to add a new car to your inventory"}
+                </p>
+              </div>
+              <AdminForm
+                title=""
+                fields={formFields}
+                initialData={editingCar || { show_price: true, status: "available" }}
+                onSubmit={editingCar ? handleUpdate : handleCreate}
+                onCancel={() => { setShowForm(false); setEditingCar(null) }}
+                autoSlug={{ sourceField: "name", targetField: "slug" }}
+              />
+            </div>
           </DialogContent>
         </Dialog>
       </div>

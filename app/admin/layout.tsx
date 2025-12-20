@@ -20,7 +20,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <div className="w-64 border-r border-border bg-card/50 backdrop-blur">
         <div className="flex h-16 items-center border-b border-border px-6">
-          <h1 className="text-xl font-bold text-foreground">Gaskiya Admin</h1>
+          <h1 className="text-xl font-bold text-foreground">Gaskiya Auto</h1>
         </div>
         <nav className="flex flex-col gap-2 p-4">
           {navigation.map((item) => (
