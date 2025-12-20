@@ -90,16 +90,6 @@ function ResetPasswordForm() {
       </div>
     )
   }
-  
-  function ResetPasswordPage() {
-    return (
-      <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
-        <ResetPasswordForm />
-      </Suspense>
-    )
-  }
-  
-  export default ResetPasswordPage
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-6">
@@ -152,5 +142,13 @@ function ResetPasswordForm() {
         </Card>
       </div>
     </div>
+  )
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
   )
 }
