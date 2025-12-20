@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client"
 
 export function Footer() {
   const [user, setUser] = useState<any>(null)
+  const [settings, setSettings] = useState<Record<string, string | null>>({})
   const pathname = usePathname()
 
   useEffect(() => {
@@ -25,6 +26,20 @@ export function Footer() {
     return () => subscription.unsubscribe()
   }, [])
 
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await fetch('/api/site-settings')
+        const data = await response.json()
+        setSettings(data.settings || {})
+      } catch (error) {
+        console.error('Error fetching site settings:', error)
+      }
+    }
+
+    fetchSettings()
+  }, [])
+
   // Hide footer on admin pages
   if (pathname?.startsWith('/admin')) return null
   return (
@@ -32,8 +47,8 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
-            <h3 className="mb-4 text-lg font-bold text-foreground">Gaskiya Auto</h3>
-            <p className="text-sm text-muted-foreground">Luxury. Confidence. Trust.</p>
+            <h3 className="mb-4 text-lg font-bold text-foreground">{settings.brand_name || 'Gaskiya Auto'}</h3>
+            <p className="text-sm text-muted-foreground">{settings.brand_tagline || 'Luxury. Confidence. Trust.'}</p>
           </div>
 
           <div>
@@ -77,11 +92,11 @@ export function Footer() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                <span>+234 800 000 0000</span>
+                <span>{settings.contact_phone || '+234 800 000 0000'}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4" />
-                <span>hello@gaskiya.autos</span>
+                <span>{settings.contact_email || 'hello@gaskiya.autos'}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />
@@ -92,7 +107,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Gaskiya Auto. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {settings.brand_name || 'Gaskiya Auto'}. All rights reserved.</p>
         </div>
       </div>
     </footer>

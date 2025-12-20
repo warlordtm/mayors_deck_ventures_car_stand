@@ -15,9 +15,14 @@ export default async function AdminSettingsPage() {
     redirect("/admin/login")
   }
 
-  const { data: adminUser } = await supabase.from("admin_users").select("*").eq("id", user.id).single()
+  // Verify the signed-in user has admin role in profiles
+  const { data: profile, error: profileErr } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single()
 
-  if (!adminUser) {
+  if (profileErr || !profile || profile.role !== "admin") {
     redirect("/admin/login")
   }
 

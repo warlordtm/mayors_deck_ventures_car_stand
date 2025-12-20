@@ -14,13 +14,13 @@ export async function PUT(request: Request, context: any) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { data: adminUser } = await supabase
-      .from("admin_users")
-      .select("*")
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
       .eq("id", user.id)
       .single()
 
-    if (!adminUser) {
+    if (!profile || profile.role !== "admin") {
       return NextResponse.json({ error: "Access denied" }, { status: 403 })
     }
 
@@ -82,13 +82,13 @@ export async function DELETE(request: Request, context: any) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { data: adminUser } = await supabase
-      .from("admin_users")
-      .select("*")
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
       .eq("id", user.id)
       .single()
 
-    if (!adminUser) {
+    if (!profile || profile.role !== "admin") {
       return NextResponse.json({ error: "Access denied" }, { status: 403 })
     }
 

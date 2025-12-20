@@ -71,6 +71,19 @@ export interface SiteSetting {
   updated_at: string
 }
 
+export interface Profile {
+  id: string
+  full_name: string | null
+  phone: string | null
+  nin: string | null
+  nin_status: string
+  role: "admin" | "user"
+  driver_license: string | null
+  preferred_car_type: string | null
+  created_at: string
+  updated_at: string
+}
+
 export interface AdminUser {
   id: string
   email: string

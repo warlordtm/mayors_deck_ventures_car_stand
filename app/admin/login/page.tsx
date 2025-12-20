@@ -5,17 +5,15 @@ import type React from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function AdminLoginPage() {
+  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,8 +27,8 @@ export default function AdminLoginPage() {
         password,
       })
       if (error) throw error
+      // On success, navigate to /admin which will validate admin role server-side
       router.push("/admin")
-      router.refresh()
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred")
     } finally {
@@ -44,38 +42,36 @@ export default function AdminLoginPage() {
         <Card className="border-border bg-card/50 backdrop-blur">
           <CardHeader>
             <CardTitle className="text-2xl text-foreground">Admin Login</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              Enter your credentials to access the admin panel
-            </CardDescription>
+            <CardDescription className="text-muted-foreground">Enter your credentials to access the admin panel</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin}>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
-                  <Label htmlFor="email" className="text-muted-foreground">
+                  <label htmlFor="email" className="text-sm text-muted-foreground">
                     Email
-                  </Label>
-                  <Input
+                  </label>
+                  <input
                     id="email"
                     type="email"
                     placeholder="admin@example.com"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="border-border bg-card text-foreground"
+                    className="rounded-md border border-border bg-card px-3 py-2 text-foreground"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="password" className="text-muted-foreground">
+                  <label htmlFor="password" className="text-sm text-muted-foreground">
                     Password
-                  </Label>
-                  <Input
+                  </label>
+                  <input
                     id="password"
                     type="password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="border-border bg-card text-foreground"
+                    className="rounded-md border border-border bg-card px-3 py-2 text-foreground"
                   />
                 </div>
                 {error && <p className="text-sm text-red-500">{error}</p>}

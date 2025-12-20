@@ -16,7 +16,32 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [showForgotPassword, setShowForgotPassword] = useState(false)
+  const [resetEmail, setResetEmail] = useState("")
+  const [resetMessage, setResetMessage] = useState("")
   const router = useRouter()
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const supabase = createClient()
+    setIsLoading(true)
+    setError(null)
+    setResetMessage("")
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      })
+
+      if (error) throw error
+
+      setResetMessage("Password reset link sent to your email!")
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : "An error occurred")
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -25,12 +50,41 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: authData, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
       if (error) throw error
-      router.push("/admin")
+
+      // Fetch or create user profile
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", authData.user.id)
+        .single()
+
+      if (profileError && profileError.code !== 'PGRST116') { // PGRST116 is "not found"
+        throw profileError
+      }
+
+      let userRole = 'user' // default
+
+      if (profile) {
+        userRole = profile.role
+      } else {
+        // Create profile if not exists
+        const { error: insertError } = await supabase
+          .from("profiles")
+          .insert({ id: authData.user.id, role: 'user' })
+        if (insertError) throw insertError
+      }
+
+      // Redirect based on role
+      if (userRole === 'admin') {
+        router.push("/admin/dashboard")
+      } else {
+        router.push("/user/details")
+      }
       router.refresh()
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred")
@@ -50,41 +104,97 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleLogin}>
-              <div className="flex flex-col gap-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="email" className="text-muted-foreground">
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="user@example.com"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="border-border bg-card text-foreground"
-                  />
+            {showForgotPassword ? (
+              // Forgot Password Form
+              <div className="space-y-4">
+                <div className="text-center">
+                  <h3 className="text-lg font-semibold text-foreground">Reset Password</h3>
+                  <p className="text-sm text-muted-foreground">Enter your email to receive a reset link</p>
                 </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password" className="text-muted-foreground">
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="border-border bg-card text-foreground"
-                  />
+
+                <form onSubmit={handleForgotPassword}>
+                  <div className="flex flex-col gap-6">
+                    <div className="grid gap-2">
+                      <Label htmlFor="resetEmail" className="text-muted-foreground">
+                        Email
+                      </Label>
+                      <Input
+                        id="resetEmail"
+                        type="email"
+                        placeholder="user@example.com"
+                        required
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                        className="border-border bg-card text-foreground"
+                      />
+                    </div>
+                    {error && <p className="text-sm text-red-500">{error}</p>}
+                    {resetMessage && <p className="text-sm text-green-600">{resetMessage}</p>}
+                    <Button type="submit" className="w-full bg-white text-black hover:bg-zinc-200" disabled={isLoading}>
+                      {isLoading ? "Sending..." : "Send Reset Link"}
+                    </Button>
+                  </div>
+                </form>
+
+                <div className="text-center">
+                  <button
+                    onClick={() => setShowForgotPassword(false)}
+                    className="text-sm text-primary hover:underline"
+                  >
+                    Back to Login
+                  </button>
                 </div>
-                {error && <p className="text-sm text-red-500">{error}</p>}
-                <Button type="submit" className="w-full bg-white text-black hover:bg-zinc-200" disabled={isLoading}>
-                  {isLoading ? "Logging in..." : "Login"}
-                </Button>
               </div>
-            </form>
+            ) : (
+              // Login Form
+              <div className="space-y-4">
+                <form onSubmit={handleLogin}>
+                  <div className="flex flex-col gap-6">
+                    <div className="grid gap-2">
+                      <Label htmlFor="email" className="text-muted-foreground">
+                        Email
+                      </Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="user@example.com"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="border-border bg-card text-foreground"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="password" className="text-muted-foreground">
+                        Password
+                      </Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="border-border bg-card text-foreground"
+                      />
+                    </div>
+                    {error && <p className="text-sm text-red-500">{error}</p>}
+                    <Button type="submit" className="w-full bg-white text-black hover:bg-zinc-200" disabled={isLoading}>
+                      {isLoading ? "Logging in..." : "Login"}
+                    </Button>
+                  </div>
+                </form>
+
+                <div className="text-center">
+                  <button
+                    onClick={() => setShowForgotPassword(true)}
+                    className="text-sm text-primary hover:underline"
+                  >
+                    Forgot your password?
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="mt-4 text-center text-sm">
               <span className="text-muted-foreground">Don't have an account? </span>
               <Link href="/signup" className="text-primary hover:underline">

@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation"
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [user, setUser] = useState<any>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -18,11 +19,26 @@ export function Header() {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       setUser(user)
+      if (user) {
+        try {
+          const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single()
+          setIsAdmin(profile?.role === 'admin')
+        } catch (e) {
+          setIsAdmin(false)
+        }
+      }
     }
     getUser()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null)
+      if (session?.user) {
+        supabase.from("profiles").select("role").eq("id", session.user.id).single().then(({ data }) => {
+          setIsAdmin(data?.role === 'admin')
+        })
+      } else {
+        setIsAdmin(false)
+      }
     })
 
     return () => subscription.unsubscribe()
@@ -74,12 +90,21 @@ export function Header() {
           <div className="flex items-center gap-2 ml-2">
             {user ? (
               <div className="flex items-center gap-2">
-                <Link href="/admin">
-                  <Button variant="outline" size="sm" className="border-border text-muted-foreground">
-                    <User className="mr-2 h-4 w-4" />
-                    Admin
-                  </Button>
-                </Link>
+                {!isAdmin && (
+                  <Link href="/account">
+                    <Button variant="outline" size="sm" className="border-border text-muted-foreground">
+                      <User className="mr-2 h-4 w-4" />
+                      My Account
+                    </Button>
+                  </Link>
+                )}
+                {isAdmin && (
+                  <Link href="/admin">
+                    <Button variant="outline" size="sm" className="border-border text-muted-foreground">
+                      Admin
+                    </Button>
+                  </Link>
+                )}
                 <Button
                   variant="outline"
                   size="sm"
@@ -161,12 +186,22 @@ export function Header() {
             <div className="border-t border-border pt-4 mt-2">
               {user ? (
                 <div className="flex flex-col gap-2">
-                  <Link href="/admin" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="outline" className="w-full justify-start border-border text-muted-foreground hover:bg-card/10">
-                      <User className="mr-2 h-4 w-4" />
-                      Admin Panel
-                    </Button>
-                  </Link>
+                  {!isAdmin && (
+                    <Link href="/account" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="outline" className="w-full justify-start border-border text-muted-foreground hover:bg-card/10">
+                        <User className="mr-2 h-4 w-4" />
+                        My Account
+                      </Button>
+                    </Link>
+                  )}
+                  {isAdmin && (
+                    <Link href="/admin" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="outline" className="w-full justify-start border-border text-muted-foreground hover:bg-card/10">
+                        <User className="mr-2 h-4 w-4" />
+                        Admin Panel
+                      </Button>
+                    </Link>
+                  )}
                   <Button
                     variant="outline"
                     onClick={() => {
