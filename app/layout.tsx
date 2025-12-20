@@ -19,7 +19,7 @@ const _playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Gaskiya Auto - Luxury Car Dealership",
   description: "Gaskiya Auto — where luxury meets performance. Discover our curated collection of premium vehicles.",
-  generator: "v0.app",
+  generator: "Godwin Bamisaye",
   icons: {
     icon: [
       {

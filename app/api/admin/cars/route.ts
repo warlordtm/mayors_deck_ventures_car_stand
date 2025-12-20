@@ -46,25 +46,34 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    console.log("POST /api/admin/cars - Starting car creation")
     const supabase = await createClient()
 
     const {
       data: { user },
     } = await supabase.auth.getUser()
 
+    console.log("User authenticated:", user?.id)
+
     if (!user) {
+      console.log("No user found - returning 401")
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("role")
       .eq("id", user.id)
       .single()
 
+    console.log("Profile query result:", { profile, profileError })
+
     if (!profile || profile.role !== "admin") {
+      console.log("Profile check failed - profile:", profile, "role:", profile?.role)
       return NextResponse.json({ error: "Access denied" }, { status: 403 })
     }
+
+    console.log("Admin access granted")
 
     const payload = await request.json()
 
