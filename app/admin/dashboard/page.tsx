@@ -20,6 +20,7 @@ export default function AdminDashboardPage() {
   const [showCategoryModal, setShowCategoryModal] = useState(false)
   const [currentUser, setCurrentUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [mounted, setMounted] = useState(false)
   const [carForm, setCarForm] = useState({
     name: "",
     model: "",
@@ -46,6 +47,8 @@ export default function AdminDashboardPage() {
   const { toast } = useToast()
 
   useEffect(() => {
+    setMounted(true)
+
     const checkAdmin = async () => {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -153,7 +156,7 @@ export default function AdminDashboardPage() {
     }
   }
 
-  if (loading) {
+  if (!mounted || loading) {
     return (
       <div className="min-h-screen bg-background py-8">
         <div className="container mx-auto px-4">
