@@ -48,6 +48,9 @@ export function Header() {
           <Link href="/cars" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
             Collection
           </Link>
+          <Link href="/about" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
+            About
+          </Link>
           <Link
             href="/categories"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"

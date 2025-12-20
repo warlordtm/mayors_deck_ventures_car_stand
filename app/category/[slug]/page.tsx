@@ -71,8 +71,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
         <div className="mb-12">
-          <h1 className="mb-4 font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl">{category.name}</h1>
-          {category.description && <p className="text-lg text-zinc-400">{category.description}</p>}
+          <h1 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">{category.name}</h1>
+          {category.description && <p className="text-lg text-muted-foreground">{category.description}</p>}
         </div>
 
         {((cars && cars.length > 0) || process.env.NODE_ENV === "development") ? (
@@ -82,8 +82,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             ))}
           </div>
         ) : (
-          <div className="rounded-lg border border-white/10 bg-zinc-950/50 p-12 text-center backdrop-blur">
-            <p className="text-xl text-zinc-400">No cars available in this category at the moment.</p>
+          <div className="rounded-lg border border-border bg-card/50 p-12 text-center backdrop-blur">
+            <p className="text-xl text-muted-foreground">No cars available in this category at the moment.</p>
           </div>
         )}
       </div>

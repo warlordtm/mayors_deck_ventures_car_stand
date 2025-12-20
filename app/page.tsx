@@ -18,13 +18,12 @@ export default function HomePage() {
         <TrustPillars />
       </SectionWrapper>
 
-      <SectionWrapper className="py-24">
+      {/* About section moved to /about */}
+      <SectionWrapper className="py-12">
         <div className="mx-auto max-w-3xl text-center">
-            <h2 className="mb-4 text-4xl font-bold text-foreground">About Gaskiya Auto</h2>
-            <p className="mb-6 text-lg text-muted-foreground">
-            Gaskiya Auto is a premier dealership focused on hand-selected, certified luxury vehicles. We pair
-            meticulous curation with transparent pricing and a white-glove customer experience, because your next
-            vehicle should be as exceptional as you are.
+          <p className="text-lg text-muted-foreground">
+            Want to learn more about us? Visit our <a href="/about" className="text-accent font-medium">About page</a> to read about
+            our curation and customer-first approach.
           </p>
         </div>
       </SectionWrapper>

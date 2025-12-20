@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -26,6 +26,8 @@ interface AdminFormProps {
   submitLabel?: string
   title?: string
   loading?: boolean
+  // Optional: automatically generate a slug from a source field into a target field
+  autoSlug?: { sourceField: string; targetField: string }
 }
 
 export function AdminForm({
@@ -36,8 +38,40 @@ export function AdminForm({
   submitLabel = "Save",
   title,
   loading = false,
+  autoSlug,
 }: AdminFormProps) {
   const [formData, setFormData] = useState(initialData)
+
+  // remember last auto-generated slug to avoid clobbering a manual edit
+  const [lastAutoSlug, setLastAutoSlug] = useState<string | null>(null)
+
+  const slugify = (str: string) =>
+    str
+      .toLowerCase()
+      .trim()
+      .replace(/[\s_]+/g, "-")
+      .replace(/[^a-z0-9-]/g, "")
+      .replace(/-+/g, "-")
+
+  // Effect: generate slug when sourceField changes
+  useEffect(() => {
+    if (!autoSlug) return
+
+    const source = autoSlug.sourceField
+    const target = autoSlug.targetField
+
+    const value = formData[source]
+    if (typeof value !== "string" || value.length === 0) return
+
+    const generated = slugify(value)
+
+    // Only set target if it's empty OR previously auto-generated (so we don't clobber manual edits)
+    const currentTarget = formData[target]
+    if (!currentTarget || currentTarget === lastAutoSlug) {
+      setFormData((prev) => ({ ...prev, [target]: generated }))
+      setLastAutoSlug(generated)
+    }
+  }, [formData, autoSlug, lastAutoSlug])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -46,6 +80,10 @@ export function AdminForm({
 
   const updateField = (name: string, value: any) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
+    // if user edits the target slug manually, stop treating it as auto-generated
+    if (autoSlug && name === autoSlug.targetField) {
+      setLastAutoSlug(null)
+    }
   }
 
   return (

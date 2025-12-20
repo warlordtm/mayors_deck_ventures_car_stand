@@ -10,7 +10,7 @@ export function Hero() {
     <header className="relative flex min-h-screen items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1800&q=60"
+          src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=1800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2Ftcnl8ZW58MHx8MHx8fDA%3D"
           alt="Luxury car showroom"
           fill
           className="object-cover"
@@ -31,10 +31,6 @@ export function Hero() {
         <h1 className="mb-6 font-display text-5xl font-extrabold leading-tight tracking-tight text-white sm:text-6xl md:text-7xl">
           Driving Excellence. Defining Prestige.
         </h1>
-        <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-400 md:text-xl">
-          Gaskiya Auto curates the world's finest vehicles, verified, meticulously maintained, and presented with
-          uncompromising luxury. Your next chapter of extraordinary begins here.
-        </p>
 
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Link

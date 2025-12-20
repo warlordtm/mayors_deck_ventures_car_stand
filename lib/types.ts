@@ -8,6 +8,7 @@ export interface Category {
 
 export interface Car {
   id: string
+  slug?: string | null
   name: string
   model: string
   year: number

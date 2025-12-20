@@ -12,7 +12,8 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
   const { id } = await params
   const supabase = await createClient()
 
-  const { data: car } = await supabase
+  // First, try to find by primary id.
+  let { data: car } = await supabase
     .from("cars")
     .select(`
       *,
@@ -22,8 +23,23 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
     .eq("id", id)
     .single()
 
+  // If not found by id, attempt to find by slug (human-friendly URLs).
   if (!car) {
-    notFound()
+    const { data: carBySlug } = await supabase
+      .from("cars")
+      .select(`
+        *,
+        category:categories(*),
+        images:car_images(*)
+      `)
+      .eq("slug", id)
+      .single()
+
+    if (!carBySlug) {
+      notFound()
+    }
+
+    car = carBySlug
   }
 
   const sortedImages = car.images?.sort((a: CarImage, b: CarImage) => {
@@ -97,7 +113,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
                 </div>
               ) : (
                 <div className="mb-6">
-                  <p className="text-2xl text-zinc-400">Contact seller for best price</p>
+                  <p className="text-2xl text-muted-foreground">Contact seller for best price</p>
                 </div>
               )}
             </div>

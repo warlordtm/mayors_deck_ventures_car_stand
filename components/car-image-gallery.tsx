@@ -30,7 +30,7 @@ export function CarImageGallery({ images, carName }: CarImageGalleryProps) {
   return (
     <div className="space-y-4">
       {/* Main Image */}
-      <div className="group relative aspect-[4/3] overflow-hidden rounded-lg border border-white/10 bg-zinc-950">
+      <div className="group relative aspect-[4/3] overflow-hidden rounded-lg border border-border bg-card">
         <Image
           src={currentImage || "/placeholder.svg"}
           alt={`${carName} - Image ${selectedIndex + 1}`}
@@ -43,7 +43,7 @@ export function CarImageGallery({ images, carName }: CarImageGalleryProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white opacity-0 backdrop-blur transition-opacity hover:bg-black/70 group-hover:opacity-100"
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-card/50 text-foreground opacity-0 backdrop-blur transition-opacity hover:bg-card/70 group-hover:opacity-100"
               onClick={handlePrevious}
               aria-label="Previous image"
             >
@@ -52,7 +52,7 @@ export function CarImageGallery({ images, carName }: CarImageGalleryProps) {
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white opacity-0 backdrop-blur transition-opacity hover:bg-black/70 group-hover:opacity-100"
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-card/50 text-foreground opacity-0 backdrop-blur transition-opacity hover:bg-card/70 group-hover:opacity-100"
               onClick={handleNext}
               aria-label="Next image"
             >
@@ -60,7 +60,7 @@ export function CarImageGallery({ images, carName }: CarImageGalleryProps) {
             </Button>
 
             {/* Image Counter */}
-            <div className="absolute bottom-4 right-4 rounded-full bg-black/50 px-3 py-1 text-sm text-white backdrop-blur">
+            <div className="absolute bottom-4 right-4 rounded-full bg-card/50 px-3 py-1 text-sm text-foreground backdrop-blur">
               {selectedIndex + 1} / {images.length}
             </div>
           </>
@@ -75,7 +75,7 @@ export function CarImageGallery({ images, carName }: CarImageGalleryProps) {
               key={image.id}
               onClick={() => setSelectedIndex(index)}
               className={`relative aspect-square overflow-hidden rounded-lg border transition-all ${
-                index === selectedIndex ? "border-white ring-2 ring-white" : "border-white/10 hover:border-white/30"
+                index === selectedIndex ? "border-border ring-2 ring-border" : "border-border/10 hover:border-border/30"
               }`}
             >
               <Image

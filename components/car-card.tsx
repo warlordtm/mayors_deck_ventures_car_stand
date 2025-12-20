@@ -15,7 +15,7 @@ export function CarCard({ car }: CarCardProps) {
     primaryImage?.image_url || `/placeholder.svg?height=300&width=400&query=${encodeURIComponent(car.name)}`
 
   return (
-    <Card className="group overflow-hidden border-white/10 bg-zinc-950/50 backdrop-blur transition-all hover:border-white/20">
+    <Card className="group overflow-hidden border-border bg-card/50 backdrop-blur transition-all hover:border-border">
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={imageUrl || "/placeholder.svg"}
@@ -31,19 +31,19 @@ export function CarCard({ car }: CarCardProps) {
       <div className="p-6">
         <div className="mb-2 flex items-start justify-between">
           <div>
-            <h3 className="text-xl font-bold text-white">{car.name}</h3>
-            <p className="text-sm text-zinc-400">
+            <h3 className="text-xl font-bold text-foreground">{car.name}</h3>
+            <p className="text-sm text-muted-foreground">
               {car.model} • {car.year}
             </p>
           </div>
         </div>
 
         <div className="mb-4 flex items-center gap-2">
-          <Badge variant="outline" className="border-zinc-700 text-zinc-300">
+          <Badge variant="outline" className="border-border text-muted-foreground">
             {car.brand}
           </Badge>
           {car.fuel_type && (
-            <Badge variant="outline" className="border-zinc-700 text-zinc-300">
+            <Badge variant="outline" className="border-border text-muted-foreground">
               {car.fuel_type}
             </Badge>
           )}
@@ -51,9 +51,9 @@ export function CarCard({ car }: CarCardProps) {
 
         <div className="mb-4">
           {car.show_price && car.price ? (
-            <p className="text-2xl font-bold text-white">${car.price.toLocaleString()}</p>
+            <p className="text-2xl font-bold text-foreground">${car.price.toLocaleString()}</p>
           ) : (
-            <p className="text-lg text-zinc-400">Contact for best price</p>
+            <p className="text-lg text-muted-foreground">Contact for best price</p>
           )}
         </div>
 

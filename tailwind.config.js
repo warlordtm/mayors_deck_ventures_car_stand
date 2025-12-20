@@ -7,7 +7,11 @@ module.exports = {
     './lib/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        display: ['var(--font-display)', 'serif'],
+      },
+    },
   },
   plugins: [],
 }

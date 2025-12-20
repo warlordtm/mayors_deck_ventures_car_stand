@@ -19,8 +19,8 @@ export default async function CarsPage() {
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
         <div className="mb-12">
-          <h1 className="mb-4 font-display text-4xl font-bold text-white md:text-5xl lg:text-6xl">Our Collection</h1>
-          <p className="text-lg text-zinc-400">Explore our complete inventory of luxury vehicles</p>
+          <h1 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">Our Collection</h1>
+          <p className="text-lg text-muted-foreground">Explore our complete inventory of luxury vehicles</p>
         </div>
 
         {cars && cars.length > 0 ? (
@@ -30,8 +30,8 @@ export default async function CarsPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-lg border border-white/10 bg-zinc-950/50 p-12 text-center backdrop-blur">
-            <p className="text-xl text-zinc-400">No cars available at the moment. Please check back soon.</p>
+          <div className="rounded-lg border border-border bg-card/50 p-12 text-center backdrop-blur">
+            <p className="text-xl text-muted-foreground">No cars available at the moment. Please check back soon.</p>
           </div>
         )}
       </div>
