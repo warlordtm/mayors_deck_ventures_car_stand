@@ -8,14 +8,12 @@ import { Button } from "@/components/ui/button"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: Home },
-  { name: "Cars", href: "/admin/cars", icon: Car },
   { name: "Bookings", href: "/admin/bookings", icon: Calendar },
   { name: "Inquiries", href: "/admin/inquiries", icon: Tag },
   { name: "Sales", href: "/admin/sales", icon: BarChart3 },
   { name: "Customers", href: "/admin/customers", icon: Users },
   { name: "Categories", href: "/admin/categories", icon: Tag },
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-  { name: "Content", href: "/admin/content", icon: FileText },
   { name: "Settings", href: "/admin/settings", icon: Settings },
 ]
 

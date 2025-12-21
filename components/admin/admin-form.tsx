@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 interface FormField {
   name: string
   label: string
-  type: "text" | "email" | "textarea" | "select" | "switch" | "number" | "file"
+  type: "text" | "email" | "textarea" | "select" | "switch" | "number" | "file" | "date"
   required?: boolean
   options?: { value: string; label: string }[]
   placeholder?: string
@@ -141,6 +141,15 @@ export function AdminForm({
                   onChange={(e) => updateField(field.name, e.target.files)}
                   required={field.required}
                   className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                />
+              ) : field.type === "date" ? (
+                <Input
+                  id={field.name}
+                  type="date"
+                  value={formData[field.name] || ""}
+                  onChange={(e) => updateField(field.name, e.target.value)}
+                  placeholder={field.placeholder}
+                  required={field.required}
                 />
               ) : (
                 <Input

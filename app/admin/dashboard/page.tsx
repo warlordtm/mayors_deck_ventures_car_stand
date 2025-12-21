@@ -39,7 +39,8 @@ export default function AdminDashboardPage() {
     show_price: true,
     status: "available",
     is_featured: false,
-    description: ""
+    description: "",
+    images: null as FileList | null
   })
   const [categoryForm, setCategoryForm] = useState({
     name: "",
@@ -139,15 +140,40 @@ export default function AdminDashboardPage() {
   const handleAddCar = async () => {
     setIsSubmitting(true)
     try {
-      const response = await fetch("/api/admin/cars", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      let body: string | FormData
+      let headers: Record<string, string> = {}
+
+      if (carForm.images && carForm.images.length > 0) {
+        const formData = new FormData()
+        Object.keys(carForm).forEach(key => {
+          if (key === 'images') {
+            for (let i = 0; i < carForm.images!.length; i++) {
+              formData.append('images', carForm.images![i])
+            }
+          } else if (key === 'year') {
+            formData.append(key, parseInt((carForm as any)[key]).toString())
+          } else if (key === 'price' && (carForm as any)[key]) {
+            formData.append(key, parseFloat((carForm as any)[key]).toString())
+          } else {
+            formData.append(key, (carForm as any)[key])
+          }
+        })
+        formData.set('category_id', carForm.category_id || '')
+        body = formData
+      } else {
+        body = JSON.stringify({
           ...carForm,
           year: parseInt(carForm.year),
           price: carForm.price ? parseFloat(carForm.price) : null,
           category_id: carForm.category_id || null,
-        }),
+        })
+        headers = { "Content-Type": "application/json" }
+      }
+
+      const response = await fetch("/api/admin/cars", {
+        method: "POST",
+        headers,
+        body,
       })
 
       if (response.ok) {
@@ -164,9 +190,9 @@ export default function AdminDashboardPage() {
           status: "available",
           is_featured: false,
           description: "",
+          images: null
         })
       } else {
-        // Try to parse JSON error body, otherwise show status/text for debugging
         let bodyText = null
         try {
           const json = await response.json()
@@ -646,6 +672,17 @@ export default function AdminDashboardPage() {
                   onChange={(e) => setCarForm({...carForm, description: e.target.value})}
                   placeholder="Detailed description of the car..."
                   rows={3}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="car-images">Car Images</Label>
+                <input
+                  id="car-images"
+                  type="file"
+                  multiple
+                  onChange={(e) => setCarForm({...carForm, images: e.target.files})}
+                  className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                 />
               </div>
 
