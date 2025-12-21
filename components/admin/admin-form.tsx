@@ -12,10 +12,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 interface FormField {
   name: string
   label: string
-  type: "text" | "email" | "textarea" | "select" | "switch" | "number"
+  type: "text" | "email" | "textarea" | "select" | "switch" | "number" | "file"
   required?: boolean
   options?: { value: string; label: string }[]
   placeholder?: string
+  multiple?: boolean
 }
 
 interface AdminFormProps {
@@ -71,7 +72,7 @@ export function AdminForm({
       setFormData((prev) => ({ ...prev, [target]: generated }))
       setLastAutoSlug(generated)
     }
-  }, [formData, autoSlug, lastAutoSlug])
+  }, [formData[autoSlug?.sourceField || ''], autoSlug, lastAutoSlug])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -131,6 +132,15 @@ export function AdminForm({
                   id={field.name}
                   checked={formData[field.name] || false}
                   onCheckedChange={(checked) => updateField(field.name, checked)}
+                />
+              ) : field.type === "file" ? (
+                <input
+                  id={field.name}
+                  type="file"
+                  multiple={field.multiple}
+                  onChange={(e) => updateField(field.name, e.target.files)}
+                  required={field.required}
+                  className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                 />
               ) : (
                 <Input

@@ -21,6 +21,7 @@ interface Car {
   status?: string
   is_featured?: boolean
   created_at?: string
+  images?: { image_url: string }[]
 }
 
 export default function AdminCars() {
@@ -67,10 +68,30 @@ export default function AdminCars() {
 
   const handleCreate = async (data: any) => {
     try {
+      let body: string | FormData
+      let headers: Record<string, string> = {}
+
+      if (data.images && data.images.length > 0) {
+        const formData = new FormData()
+        Object.keys(data).forEach(key => {
+          if (key === 'images') {
+            for (let i = 0; i < data.images.length; i++) {
+              formData.append('images', data.images[i])
+            }
+          } else {
+            formData.append(key, data[key])
+          }
+        })
+        body = formData
+      } else {
+        body = JSON.stringify(data)
+        headers = { "Content-Type": "application/json" }
+      }
+
       const res = await fetch("/api/admin/cars", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        headers,
+        body,
       })
 
       if (res.ok) {
@@ -90,10 +111,30 @@ export default function AdminCars() {
     if (!editingCar) return
 
     try {
+      let body: string | FormData
+      let headers: Record<string, string> = {}
+
+      if (data.images && data.images.length > 0) {
+        const formData = new FormData()
+        Object.keys(data).forEach(key => {
+          if (key === 'images') {
+            for (let i = 0; i < data.images.length; i++) {
+              formData.append('images', data.images[i])
+            }
+          } else {
+            formData.append(key, data[key])
+          }
+        })
+        body = formData
+      } else {
+        body = JSON.stringify(data)
+        headers = { "Content-Type": "application/json" }
+      }
+
       const res = await fetch(`/api/admin/cars/${editingCar.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        headers,
+        body,
       })
 
       if (res.ok) {
@@ -139,7 +180,6 @@ export default function AdminCars() {
 
   const formFields = [
     { name: "name", label: "Name", type: "text" as const, required: true },
-    { name: "slug", label: "Slug", type: "text" as const, required: false },
     { name: "model", label: "Model", type: "text" as const },
     { name: "year", label: "Year", type: "number" as const },
     {
@@ -158,6 +198,7 @@ export default function AdminCars() {
     ] },
     { name: "is_featured", label: "Featured", type: "switch" as const },
     { name: "description", label: "Description", type: "textarea" as const },
+    { name: "images", label: "Images", type: "file" as const, multiple: true },
   ]
 
   if (loading) return <div className="flex justify-center p-8">Loading...</div>
@@ -198,7 +239,6 @@ export default function AdminCars() {
                 initialData={editingCar || { show_price: true, status: "available" }}
                 onSubmit={editingCar ? handleUpdate : handleCreate}
                 onCancel={() => { setShowForm(false); setEditingCar(null) }}
-                autoSlug={{ sourceField: "name", targetField: "slug" }}
               />
             </div>
           </DialogContent>

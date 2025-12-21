@@ -38,10 +38,15 @@ export default function SignupPage() {
       })
       if (error) throw error
 
-      // Redirect to login page with success message
-      router.push("/login?message=Check your email to confirm your account")
+      // Redirect to email confirmation page
+      router.push("/email-confirmation")
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
+      const errorMessage = error instanceof Error ? error.message : "An error occurred"
+      if (errorMessage.toLowerCase().includes("already") || errorMessage.toLowerCase().includes("registered") || errorMessage.toLowerCase().includes("use") || errorMessage.toLowerCase().includes("exists")) {
+        setError("This email is already registered. Please use a different email address.")
+      } else {
+        setError(errorMessage)
+      }
     } finally {
       setIsLoading(false)
     }

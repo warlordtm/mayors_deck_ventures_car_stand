@@ -75,7 +75,21 @@ export async function POST(request: Request) {
 
     console.log("Admin access granted")
 
-    const payload = await request.json()
+    let payload: any
+    if (request.headers.get('content-type')?.includes('multipart/form-data')) {
+      const formData = await request.formData()
+      payload = {}
+      for (const [key, value] of formData.entries()) {
+        if (key === 'images') {
+          if (!payload.images) payload.images = []
+          payload.images.push(value)
+        } else {
+          payload[key] = value
+        }
+      }
+    } else {
+      payload = await request.json()
+    }
 
     // Basic validation
     if (!payload.name) {
@@ -115,6 +129,41 @@ export async function POST(request: Request) {
       console.error("Error creating car:", error)
       return NextResponse.json({ error: "Failed to create car" }, { status: 500 })
     }
+
+    // Handle images
+    if (payload.images && payload.images.length > 0) {
+      const imageInserts = []
+      for (let i = 0; i < payload.images.length; i++) {
+        const file = payload.images[i] as File
+        const fileExt = file.name.split('.').pop()
+        const fileName = `${crypto.randomUUID()}.${fileExt}`
+        const { error: uploadError } = await supabase.storage.from('car-images').upload(fileName, file)
+        if (uploadError) {
+          console.error("Error uploading image:", uploadError)
+          continue
+        }
+        const { data: { publicUrl } } = supabase.storage.from('car-images').getPublicUrl(fileName)
+        imageInserts.push({
+          car_id: data.id,
+          image_url: publicUrl,
+          is_primary: i === 0,
+          display_order: i
+        })
+      }
+      if (imageInserts.length > 0) {
+        const { error: imageError } = await supabase.from("car_images").insert(imageInserts)
+        if (imageError) {
+          console.error("Error creating car images:", imageError)
+        }
+      }
+    }
+
+    // Log activity
+    await supabase.from("activity_logs").insert({
+      admin_id: user.id,
+      action: `Created car: ${data.name}`,
+      details: { car_id: data.id }
+    })
 
     return NextResponse.json({ car: data })
   } catch (error) {

@@ -21,6 +21,14 @@ export default function AdminDashboardPage() {
   const [currentUser, setCurrentUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [stats, setStats] = useState({
+    totalCars: 0,
+    availableCars: 0,
+    soldCars: 0,
+    pendingInquiries: 0,
+    monthlyRevenue: 0,
+  })
+  const [recentActivity, setRecentActivity] = useState<any[]>([])
   const [carForm, setCarForm] = useState({
     name: "",
     model: "",
@@ -46,6 +54,50 @@ export default function AdminDashboardPage() {
   const router = useRouter()
   const { toast } = useToast()
 
+  const fetchStats = async () => {
+    try {
+      const supabase = createClient()
+
+      // Fetch car stats
+      const { data: cars } = await supabase.from("cars").select("status")
+      const totalCars = cars?.length || 0
+      const availableCars = cars?.filter(c => c.status === 'available').length || 0
+      const soldCars = cars?.filter(c => c.status === 'sold').length || 0
+
+      // Fetch pending inquiries
+      const { data: inquiries } = await supabase.from("inquiries").select("status").eq("status", "pending")
+      const pendingInquiries = inquiries?.length || 0
+
+      // Fetch monthly revenue (current month sales)
+      const startOfMonth = new Date()
+      startOfMonth.setDate(1)
+      startOfMonth.setHours(0, 0, 0, 0)
+      const { data: sales } = await supabase
+        .from("sales")
+        .select("sale_price")
+        .gte("created_at", startOfMonth.toISOString())
+      const monthlyRevenue = sales?.reduce((sum, s) => sum + (s.sale_price || 0), 0) || 0
+
+      setStats({
+        totalCars,
+        availableCars,
+        soldCars,
+        pendingInquiries,
+        monthlyRevenue,
+      })
+
+      // Fetch recent activity
+      const { data: activity } = await supabase
+        .from("activity_logs")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(5)
+      setRecentActivity(activity || [])
+    } catch (error) {
+      console.error("Error fetching stats:", error)
+    }
+  }
+
   useEffect(() => {
     setMounted(true)
 
@@ -70,11 +122,15 @@ export default function AdminDashboardPage() {
       }
 
       setCurrentUser(user)
-      setLoading(false)
 
       // Fetch categories for the car form
       const { data: cats } = await supabase.from("categories").select("id, name")
       setCategories(cats || [])
+
+      // Fetch stats
+      await fetchStats()
+
+      setLoading(false)
     }
 
     checkAdmin()
@@ -193,48 +249,76 @@ export default function AdminDashboardPage() {
 
         {/* Stats Grid */}
         <div className="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <Card className="border-border bg-card/50 backdrop-blur">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Cars</CardTitle>
-              <Car className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">8</div>
-            </CardContent>
-          </Card>
+           <Card className="border-border bg-card/50 backdrop-blur">
+             <CardHeader className="flex flex-row items-center justify-between pb-2">
+               <CardTitle className="text-sm font-medium text-muted-foreground">Total Cars</CardTitle>
+               <Car className="h-4 w-4 text-muted-foreground" />
+             </CardHeader>
+             <CardContent>
+               <div className="text-3xl font-bold text-foreground">{stats.totalCars}</div>
+             </CardContent>
+           </Card>
 
-          <Card className="border-border bg-card/50 backdrop-blur">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Available Cars</CardTitle>
-              <Car className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">8</div>
-            </CardContent>
-          </Card>
+           <Card className="border-border bg-card/50 backdrop-blur">
+             <CardHeader className="flex flex-row items-center justify-between pb-2">
+               <CardTitle className="text-sm font-medium text-muted-foreground">Available Cars</CardTitle>
+               <Car className="h-4 w-4 text-muted-foreground" />
+             </CardHeader>
+             <CardContent>
+               <div className="text-3xl font-bold text-foreground">{stats.availableCars}</div>
+             </CardContent>
+           </Card>
 
-          <Card className="border-border bg-card/50 backdrop-blur">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Pending Bookings</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">0</div>
-            </CardContent>
-          </Card>
+           <Card className="border-border bg-card/50 backdrop-blur">
+             <CardHeader className="flex flex-row items-center justify-between pb-2">
+               <CardTitle className="text-sm font-medium text-muted-foreground">Pending Inquiries</CardTitle>
+               <Calendar className="h-4 w-4 text-muted-foreground" />
+             </CardHeader>
+             <CardContent>
+               <div className="text-3xl font-bold text-foreground">{stats.pendingInquiries}</div>
+             </CardContent>
+           </Card>
 
-          <Card className="border-border bg-card/50 backdrop-blur">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Bookings</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">0</div>
-            </CardContent>
-          </Card>
-        </div>
+           <Card className="border-border bg-card/50 backdrop-blur">
+             <CardHeader className="flex flex-row items-center justify-between pb-2">
+               <CardTitle className="text-sm font-medium text-muted-foreground">Monthly Revenue</CardTitle>
+               <DollarSign className="h-4 w-4 text-muted-foreground" />
+             </CardHeader>
+             <CardContent>
+               <div className="text-3xl font-bold text-foreground">₦{stats.monthlyRevenue.toLocaleString()}</div>
+             </CardContent>
+           </Card>
+         </div>
 
-        {/* Quick Add Actions */}
+         {/* Recent Activity */}
+         <div className="mb-8">
+           <h2 className="mb-4 text-xl font-bold text-foreground">Recent Activity</h2>
+           <Card className="border-border bg-card/50 backdrop-blur">
+             <CardContent className="p-6">
+               {recentActivity.length > 0 ? (
+                 <div className="space-y-4">
+                   {recentActivity.map((activity) => (
+                     <div key={activity.id} className="flex items-center gap-4 pb-4 border-b border-border/50 last:border-b-0 last:pb-0">
+                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                         <FileText className="h-4 w-4 text-primary" />
+                       </div>
+                       <div className="flex-1">
+                         <p className="text-sm font-medium text-foreground">{activity.action}</p>
+                         <p className="text-xs text-muted-foreground">
+                           {new Date(activity.created_at).toLocaleString()}
+                         </p>
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+               ) : (
+                 <p className="text-muted-foreground text-center py-8">No recent activity</p>
+               )}
+             </CardContent>
+           </Card>
+         </div>
+
+         {/* Quick Add Actions */}
         <div className="mb-8">
           <h2 className="mb-4 text-xl font-bold text-foreground">Quick Add</h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -325,6 +409,48 @@ export default function AdminDashboardPage() {
                   <div>
                     <h3 className="font-semibold text-foreground">Test Drive Bookings</h3>
                     <p className="text-sm text-muted-foreground">View and manage bookings</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/admin/inquiries">
+              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+                <CardContent className="flex items-center gap-4 p-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
+                    <Tag className="h-6 w-6 text-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-foreground">Inquiries</h3>
+                    <p className="text-sm text-muted-foreground">Manage customer inquiries</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/admin/sales">
+              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+                <CardContent className="flex items-center gap-4 p-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
+                    <DollarSign className="h-6 w-6 text-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-foreground">Sales</h3>
+                    <p className="text-sm text-muted-foreground">Record and track sales</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/admin/customers">
+              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+                <CardContent className="flex items-center gap-4 p-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
+                    <Users className="h-6 w-6 text-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-foreground">Customers</h3>
+                    <p className="text-sm text-muted-foreground">Manage customer database</p>
                   </div>
                 </CardContent>
               </Card>

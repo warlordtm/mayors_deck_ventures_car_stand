@@ -21,6 +21,7 @@ export interface Car {
   mileage: string | null
   transmission: string | null
   fuel_type: string | null
+  color: string | null
   interior_features: string | null
   exterior_features: string | null
   condition: string | null
@@ -82,6 +83,47 @@ export interface Profile {
   preferred_car_type: string | null
   created_at: string
   updated_at: string
+}
+
+export interface Customer {
+  id: string
+  name: string
+  email: string
+  phone: string | null
+  created_at: string
+}
+
+export interface Inquiry {
+  id: string
+  car_id: string
+  customer_id: string
+  type: "test-drive" | "purchase" | "inquiry"
+  status: "pending" | "contacted" | "closed"
+  message: string | null
+  created_at: string
+  car?: Car
+  customer?: Customer
+}
+
+export interface Sale {
+  id: string
+  car_id: string | null
+  customer_id: string | null
+  sale_price: number
+  payment_method: string | null
+  sale_date: string
+  created_at: string
+  car?: Car
+  customer?: Customer
+}
+
+export interface ActivityLog {
+  id: string
+  admin_id: string | null
+  action: string
+  details: any
+  created_at: string
+  admin?: AdminUser
 }
 
 export interface AdminUser {

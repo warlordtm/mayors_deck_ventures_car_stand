@@ -24,7 +24,21 @@ export async function PUT(request: Request, context: any) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 })
     }
 
-    const payload = await request.json()
+    let payload: any
+    if (request.headers.get('content-type')?.includes('multipart/form-data')) {
+      const formData = await request.formData()
+      payload = {}
+      for (const [key, value] of formData.entries()) {
+        if (key === 'images') {
+          if (!payload.images) payload.images = []
+          payload.images.push(value)
+        } else {
+          payload[key] = value
+        }
+      }
+    } else {
+      payload = await request.json()
+    }
 
     const updateObj: any = {
       name: payload.name,
@@ -62,6 +76,46 @@ export async function PUT(request: Request, context: any) {
       return NextResponse.json({ error: "Failed to update car" }, { status: 500 })
     }
 
+    // Handle images: delete existing and insert new
+    const { error: deleteError } = await supabase.from("car_images").delete().eq("car_id", params.id)
+    if (deleteError) {
+      console.error("Error deleting car images:", deleteError)
+    }
+
+    if (payload.images && payload.images.length > 0) {
+      const imageInserts = []
+      for (let i = 0; i < payload.images.length; i++) {
+        const file = payload.images[i] as File
+        const fileExt = file.name.split('.').pop()
+        const fileName = `${crypto.randomUUID()}.${fileExt}`
+        const { error: uploadError } = await supabase.storage.from('car-images').upload(fileName, file)
+        if (uploadError) {
+          console.error("Error uploading image:", uploadError)
+          continue
+        }
+        const { data: { publicUrl } } = supabase.storage.from('car-images').getPublicUrl(fileName)
+        imageInserts.push({
+          car_id: params.id,
+          image_url: publicUrl,
+          is_primary: i === 0,
+          display_order: i
+        })
+      }
+      if (imageInserts.length > 0) {
+        const { error: imageError } = await supabase.from("car_images").insert(imageInserts)
+        if (imageError) {
+          console.error("Error updating car images:", imageError)
+        }
+      }
+    }
+
+    // Log activity
+    await supabase.from("activity_logs").insert({
+      admin_id: user.id,
+      action: `Updated car: ${data.name}`,
+      details: { car_id: data.id }
+    })
+
     return NextResponse.json({ car: data })
   } catch (error) {
     console.error("API error:", error)
@@ -92,12 +146,22 @@ export async function DELETE(request: Request, context: any) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 })
     }
 
+    // Get car name before deleting
+    const { data: car } = await supabase.from("cars").select("name").eq("id", params.id).single()
+
     const { error } = await supabase.from("cars").delete().eq("id", params.id)
 
     if (error) {
       console.error("Error deleting car:", error)
       return NextResponse.json({ error: "Failed to delete car" }, { status: 500 })
     }
+
+    // Log activity
+    await supabase.from("activity_logs").insert({
+      admin_id: user.id,
+      action: `Deleted car: ${car?.name || 'Unknown'}`,
+      details: { car_id: params.id }
+    })
 
     return NextResponse.json({ success: true })
   } catch (error) {
