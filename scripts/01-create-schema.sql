@@ -143,14 +143,16 @@ CREATE TABLE content_blocks (
 );
 
 -- Insert default categories
+DELETE FROM categories;
 INSERT INTO categories (name, slug, image_url, seo_title, seo_description, description) VALUES
-   ('Supercars', 'supercars', '/category-images/supercars.jpg', 'Supercars - Gaskiya Auto', 'Ultra-high-performance road cars from the world''s top marques.', 'High-performance luxury sports cars'),
-   ('Performance Cars', 'performance-cars', '/category-images/performance-cars.jpg', 'Performance Cars - Gaskiya Auto', 'Track-capable and driver-focused models with sport-tuned dynamics.', 'Track-ready performance vehicles'),
-   ('Luxury Sedans', 'luxury-sedans', '/category-images/luxury-sedans.jpg', 'Luxury Sedans - Gaskiya Auto', 'Refined executive saloons with best-in-class comfort and craftsmanship.', 'Premium luxury sedans'),
-   ('SUVs & Crossovers', 'suvs', '/category-images/suvs.jpg', 'SUVs & Crossovers - Gaskiya Auto', 'Premium SUVs blending space, presence, and performance.', 'Luxury sport utility vehicles'),
-   ('Electric Cars', 'electric-cars', '/category-images/electric-cars.jpg', 'Electric Cars - Gaskiya Auto', 'Cutting-edge electric vehicles offering range, tech, and instant torque.', 'Luxury electric vehicles'),
-   ('Convertibles & Coupes', 'coupes-convertibles', '/category-images/coupes-convertibles.jpg', 'Convertibles & Coupes - Gaskiya Auto', 'Designer two-doors for dramatic styling and spirited driving.', 'Designer two-doors for dramatic styling and spirited driving'),
-   ('Classic & Collector', 'classic-cars', '/category-images/classic-cars.jpg', 'Classic & Collector - Gaskiya Auto', 'Iconic and collectible cars maintained to exacting standards.', 'Iconic and collectible cars maintained to exacting standards');
+   ('Sedan', 'sedan', '/category-images/luxury-sedans.jpg', 'Sedan - Gaskiya Auto', 'Comfortable and efficient sedans for everyday driving.', 'Reliable and spacious sedan vehicles'),
+   ('SUV', 'suv', '/category-images/suvs.jpg', 'SUV - Gaskiya Auto', 'Powerful SUVs for family adventures and off-road capability.', 'Sport utility vehicles with ample space'),
+   ('Crossover', 'crossover', '/category-images/performance-cars.jpg', 'Crossover - Gaskiya Auto', 'Versatile crossovers combining sedan comfort with SUV utility.', 'Compact SUVs with car-like handling'),
+   ('Hatchback', 'hatchback', '/category-images/coupes-convertibles.jpg', 'Hatchback - Gaskiya Auto', 'Practical hatchbacks with flexible cargo space.', 'Compact cars with rear hatch access'),
+   ('Coupe', 'coupe', '/category-images/supercars.jpg', 'Coupe - Gaskiya Auto', 'Sporty two-door coupes for style and performance.', 'Stylish two-door performance cars'),
+   ('Convertible', 'convertible', '/category-images/electric-cars.jpg', 'Convertible - Gaskiya Auto', 'Elegant convertibles for open-top driving pleasure.', 'Cars with retractable roofs'),
+   ('Pickup / Truck', 'pickup-truck', '/category-images/classic-cars.jpg', 'Pickup Truck - Gaskiya Auto', 'Durable pickup trucks for work and recreation.', 'Utility vehicles with open cargo beds'),
+   ('Van / Minivan', 'van-minivan', '/category-images/performance-cars.jpg', 'Van Minivan - Gaskiya Auto', 'Spacious vans and minivans for family transport.', 'Large vehicles for passenger and cargo transport');
 
 -- Insert default site settings
 INSERT INTO site_settings (key, value) VALUES
