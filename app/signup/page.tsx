@@ -52,7 +52,7 @@ export default function SignupPage() {
       <div className="w-full max-w-sm">
         <Card className="border-border bg-card/50 backdrop-blur">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground">Sign Up</CardTitle>
+            <CardTitle className="text-2xl text-foreground text-center">SIGN UP</CardTitle>
             <CardDescription className="text-muted-foreground">
               Create a new account to get started
             </CardDescription>

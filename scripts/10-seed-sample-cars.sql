@@ -10,11 +10,11 @@ ON CONFLICT DO NOTHING;
 
 -- Add sample images for the cars
 INSERT INTO car_images (car_id, image_url, is_primary, display_order) VALUES
-  ((SELECT id FROM cars WHERE name = 'Ferrari Roma' LIMIT 1), 'https://images.unsplash.com/photo-1645028875875-d3611dc96fe0?w=1400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', true, 1),
-  ((SELECT id FROM cars WHERE name = 'Aston Martin DB11' LIMIT 1), 'https://plus.unsplash.com/premium_photo-1737559694560-1227c63d0885?w=1400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YXN0b24lMjBtYXJ0aW4lMjBkYjExfGVufDB8fDB8fHww', true, 1),
-  ((SELECT id FROM cars WHERE name = 'Mercedes AMG GT' LIMIT 1), 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWVyY2VkZXMlMjBhbWclMjBndHxlbnwwfHwwfHx8MA%3D%3D', true, 1),
-  ((SELECT id FROM cars WHERE name = 'Lamborghini Huracan' LIMIT 1), 'https://images.unsplash.com/photo-1657217674164-9cbf85acfc6d?w=1400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGxhbWJvcmdoaW5pJTIwaHVyYWNhbnxlbnwwfHwwfHx8MA%3D%3D', true, 1),
-  ((SELECT id FROM cars WHERE name = 'Porsche 911 Carrera' LIMIT 1), 'https://images.unsplash.com/photo-1601679147136-22d1032399e4?w=1400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHBvcmNoZSUyMDkxMXxlbnwwfHwwfHx8MA%3D%3D', true, 1),
-  ((SELECT id FROM cars WHERE name = 'Rolls-Royce Phantom' LIMIT 1), 'https://images.unsplash.com/photo-1728458664292-ac6d6034e78d?w=1400&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cm9sbHMtcm95Y2UlMjBwaGFudG9tfGVufDB8fDB8fHww', true, 1);
+  ((SELECT id FROM cars WHERE name = 'Ferrari Roma' LIMIT 1), '/car-images/ferrari-roma.jpg', true, 1),
+  ((SELECT id FROM cars WHERE name = 'Aston Martin DB11' LIMIT 1), '/car-images/aston-martin-db11.jpg', true, 1),
+  ((SELECT id FROM cars WHERE name = 'Mercedes AMG GT' LIMIT 1), '/car-images/mercedes-amg-gt.jpg', true, 1),
+  ((SELECT id FROM cars WHERE name = 'Lamborghini Huracan' LIMIT 1), '/car-images/lamborghini-huracan.jpg', true, 1),
+  ((SELECT id FROM cars WHERE name = 'Porsche 911 Carrera' LIMIT 1), '/car-images/porsche-911-carrera.jpg', true, 1),
+  ((SELECT id FROM cars WHERE name = 'Rolls-Royce Phantom' LIMIT 1), '/car-images/rolls-royce-phantom.jpg', true, 1);
 
   

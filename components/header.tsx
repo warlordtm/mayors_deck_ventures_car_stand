@@ -118,7 +118,7 @@ export function Header() {
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/login">
-                  <Button variant="outline" size="sm" className="border-border text-muted-foreground hover:bg-card/10">
+                  <Button variant="outline" size="sm" className="border-border text-muted-foreground hover:bg-accent dark:hover:bg-muted dark:hover:text-white">
                     Login
                   </Button>
                 </Link>
@@ -217,7 +217,7 @@ export function Header() {
               ) : (
                 <div className="flex flex-col gap-2">
                   <Link href="/login" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="outline" className="w-full border-border text-muted-foreground hover:bg-card/10">
+                    <Button variant="outline" className="w-full border-border text-muted-foreground hover:bg-accent dark:hover:bg-muted dark:hover:text-white">
                       Login
                     </Button>
                   </Link>

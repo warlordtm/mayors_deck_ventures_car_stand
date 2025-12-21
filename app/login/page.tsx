@@ -98,7 +98,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <Card className="border-border bg-card/50 backdrop-blur">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground">Login</CardTitle>
+            <CardTitle className="text-2xl text-foreground text-center">LOGIN</CardTitle>
             <CardDescription className="text-muted-foreground">
               Enter your credentials to access your account
             </CardDescription>
