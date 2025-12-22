@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react"
 import { ShieldCheck, Users, Eye, Smile } from "lucide-react"
+import FeatureCard from "./feature-card"
 
 interface ContentBlock {
   id: string
@@ -23,11 +24,22 @@ export function TrustPillars() {
         const response = await fetch('/api/content')
         const data = await response.json()
         const pillarBlocks = data.contentBlocks?.filter((block: ContentBlock) =>
-          block.key.startsWith('trust_pillar_')
+          block.key.startsWith('trust_')
         ).sort((a: ContentBlock, b: ContentBlock) => a.display_order - b.display_order) || []
-        setPillars(pillarBlocks)
+        setPillars(pillarBlocks.length > 0 ? pillarBlocks : [
+          { id: '1', key: 'trust_verified_vehicles', title: 'Verified Vehicles', content: 'Comprehensive inspection and certification for every car in our collection.', image_url: null, display_order: 1, is_active: true },
+          { id: '2', key: 'trust_trusted_dealers', title: 'Trusted Dealers', content: 'Long-standing relationships with factory-trained dealers and partners.', image_url: null, display_order: 2, is_active: true },
+          { id: '3', key: 'trust_transparent_pricing', title: 'Transparent Pricing', content: 'Clear, upfront pricing — no hidden fees, straightforward offers.', image_url: null, display_order: 3, is_active: true },
+          { id: '4', key: 'trust_premium_experience', title: 'Premium Experience', content: 'White-glove service from inquiry to delivery.', image_url: null, display_order: 4, is_active: true },
+        ])
       } catch (error) {
         console.error('Error fetching trust pillars:', error)
+        setPillars([
+          { id: '1', key: 'trust_verified_vehicles', title: 'Verified Vehicles', content: 'Comprehensive inspection and certification for every car in our collection.', image_url: null, display_order: 1, is_active: true },
+          { id: '2', key: 'trust_trusted_dealers', title: 'Trusted Dealers', content: 'Long-standing relationships with factory-trained dealers and partners.', image_url: null, display_order: 2, is_active: true },
+          { id: '3', key: 'trust_transparent_pricing', title: 'Transparent Pricing', content: 'Clear, upfront pricing — no hidden fees, straightforward offers.', image_url: null, display_order: 3, is_active: true },
+          { id: '4', key: 'trust_premium_experience', title: 'Premium Experience', content: 'White-glove service from inquiry to delivery.', image_url: null, display_order: 4, is_active: true },
+        ])
       } finally {
         setLoading(false)
       }
@@ -36,9 +48,14 @@ export function TrustPillars() {
     fetchPillars()
   }, [])
 
-  const getIcon = (index: number) => {
-    const icons = [<ShieldCheck className="h-8 w-8 text-accent" />, <Users className="h-8 w-8 text-accent" />, <Eye className="h-8 w-8 text-accent" />, <Smile className="h-8 w-8 text-accent" />]
-    return icons[index] || icons[0]
+  const getIcon = (title: string) => {
+    const iconMap: Record<string, typeof ShieldCheck> = {
+      "Verified Vehicles": ShieldCheck,
+      "Trusted Dealers": Users,
+      "Transparent Pricing": Eye,
+      "Premium Experience": Smile,
+    }
+    return iconMap[title] || ShieldCheck
   }
 
   if (loading) {
@@ -60,14 +77,13 @@ export function TrustPillars() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {pillars.map((p, index) => (
-            <div key={p.id} className="rounded-2xl border border-border bg-card p-8 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-accent/10">
-                {getIcon(index)}
-              </div>
-              <h3 className="mb-2 text-xl font-semibold text-foreground">{p.title}</h3>
-              <p className="text-sm text-muted-foreground">{p.content}</p>
-            </div>
+          {pillars.map((p) => (
+            <FeatureCard
+              key={p.id}
+              title={p.title || ""}
+              content={p.content || ""}
+              icon={getIcon(p.title || "")}
+            />
           ))}
         </div>
       </div>

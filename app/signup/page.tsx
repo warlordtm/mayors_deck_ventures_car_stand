@@ -36,7 +36,7 @@ export default function SignupPage() {
         email,
         password,
         options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/login`
+          emailRedirectTo: `${window.location.origin}/login`
         }
       })
       if (error) throw error
