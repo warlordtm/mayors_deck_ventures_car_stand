@@ -40,8 +40,12 @@ export default function AdminDashboardPage() {
     status: "available",
     is_featured: false,
     description: "",
-    images: null as FileList | null
+    images: null as FileList | null,
+    video: null as File | null
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [uploadStatus, setUploadStatus] = useState("")
   const [categoryForm, setCategoryForm] = useState({
     name: "",
     slug: "",
@@ -51,7 +55,6 @@ export default function AdminDashboardPage() {
     description: ""
   })
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([])
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
 
@@ -103,11 +106,31 @@ export default function AdminDashboardPage() {
     setMounted(true)
 
     const loadData = async () => {
-      // TEMPORARY: Skip auth check to test car uploads
-      setCurrentUser({ email: 'admin@gaskiya.auto' }) // Mock user for testing
+      const supabase = createClient()
+
+      // Check authentication
+      const { data: { user }, error } = await supabase.auth.getUser()
+
+      if (error || !user) {
+        router.push('/admin/login')
+        return
+      }
+
+      // Check if user is admin
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single()
+
+      if (!profile || profile.role !== 'admin') {
+        router.push('/admin/login')
+        return
+      }
+
+      setCurrentUser(user)
 
       // Fetch categories for the car form
-      const supabase = createClient()
       const { data: cats } = await supabase.from("categories").select("id, name")
       setCategories(cats || [])
 
@@ -118,10 +141,12 @@ export default function AdminDashboardPage() {
     }
 
     loadData()
-  }, [])
+  }, [router])
 
   const handleAddCar = async () => {
     setIsSubmitting(true)
+    setUploadProgress(0)
+    setUploadStatus("Preparing upload...")
     try {
       let body: string | FormData
       let headers: Record<string, string> = {}
@@ -133,6 +158,8 @@ export default function AdminDashboardPage() {
             for (let i = 0; i < carForm.images!.length; i++) {
               formData.append('images', carForm.images![i])
             }
+          } else if (key === 'video' && carForm.video) {
+            formData.append('video', carForm.video)
           } else if (key === 'year') {
             formData.append(key, parseInt((carForm as any)[key]).toString())
           } else if (key === 'price' && (carForm as any)[key]) {
@@ -160,21 +187,28 @@ export default function AdminDashboardPage() {
       })
 
       if (response.ok) {
+        setUploadProgress(100)
+        setUploadStatus("Car added successfully!")
         toast({ title: "Success", description: "Car added successfully" })
-        setShowCarModal(false)
-        setCarForm({
-          name: "",
-          model: "",
-          year: "",
-          category_id: "",
-          brand: "",
-          price: "",
-          show_price: true,
-          status: "available",
-          is_featured: false,
-          description: "",
-          images: null
-        })
+        setTimeout(() => {
+          setShowCarModal(false)
+          setCarForm({
+            name: "",
+            model: "",
+            year: "",
+            category_id: "",
+            brand: "",
+            price: "",
+            show_price: true,
+            status: "available",
+            is_featured: false,
+            description: "",
+            images: null,
+            video: null
+          })
+          setUploadProgress(0)
+          setUploadStatus("")
+        }, 2000)
       } else {
         let bodyText = null
         try {
@@ -668,6 +702,32 @@ export default function AdminDashboardPage() {
                   className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                 />
               </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="car-video">Car Video (Optional)</Label>
+                <input
+                  id="car-video"
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => setCarForm({...carForm, video: e.target.files?.[0] || null})}
+                  className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                />
+              </div>
+
+              {isSubmitting && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span>{uploadStatus}</span>
+                    <span>{uploadProgress}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-primary h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                </div>
+              )}
 
               <div className="flex justify-end space-x-2">
                 <Button variant="outline" onClick={() => setShowCarModal(false)}>

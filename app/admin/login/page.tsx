@@ -1,86 +1,104 @@
 "use client"
 
-import { Auth } from "@supabase/auth-ui-react"
-import { ThemeSupa } from "@supabase/auth-ui-shared"
+import { useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function AdminLoginPage() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
   const router = useRouter()
   const supabase = createClient()
 
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        // User is logged in, redirect to admin dashboard
-        router.push("/admin")
-      }
-    })
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError("")
 
-    return () => subscription.unsubscribe()
-  }, [router, supabase])
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (error) {
+        setError(error.message)
+        return
+      }
+
+      if (data.user) {
+        // Check if user has admin role
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", data.user.id)
+          .single()
+
+        if (profile?.role === 'admin') {
+          router.push("/admin/dashboard")
+        } else {
+          setError("Access denied. Admin privileges required.")
+          await supabase.auth.signOut()
+        }
+      }
+    } catch (err) {
+      setError("Login failed. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-6">
-      <div className="w-full max-w-sm">
-        <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-foreground">Admin Login</h1>
-          <p className="text-muted-foreground">Sign in to access the admin panel</p>
-        </div>
+      <Card className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle className="text-center">Admin Login</CardTitle>
+          <p className="text-center text-sm text-muted-foreground">
+            Sign in to access the admin panel
+          </p>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="admin@example.com"
+              />
+            </div>
 
-        <Auth
-          supabaseClient={supabase}
-          appearance={{
-            theme: ThemeSupa,
-            variables: {
-              default: {
-                colors: {
-                  brand: '#000000',
-                  brandAccent: '#333333',
-                },
-                space: {
-                  spaceSmall: '4px',
-                  spaceMedium: '8px',
-                  spaceLarge: '16px',
-                  labelBottomMargin: '8px',
-                  anchorBottomMargin: '4px',
-                  emailInputSpacing: '4px',
-                  socialAuthSpacing: '4px',
-                  buttonPadding: '10px 15px',
-                  inputPadding: '10px 15px',
-                },
-                fontSizes: {
-                  baseBodySize: '13px',
-                  baseInputSize: '14px',
-                  baseLabelSize: '14px',
-                  baseButtonSize: '14px',
-                },
-                radii: {
-                  borderRadiusButton: '4px',
-                  buttonBorderRadius: '4px',
-                  inputBorderRadius: '4px',
-                },
-              },
-            },
-          }}
-          providers={[]}
-          redirectTo={`${typeof window !== 'undefined' ? window.location.origin : ''}/admin`}
-          showLinks={false}
-          localization={{
-            variables: {
-              sign_in: {
-                email_label: 'Admin Email',
-                password_label: 'Password',
-                button_label: 'Sign In',
-                loading_button_label: 'Signing In...',
-                social_provider_text: 'Sign in with {{provider}}',
-                link_text: 'Already have an account? Sign in',
-              },
-            },
-          }}
-        />
-      </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Enter your password"
+              />
+            </div>
+
+            {error && (
+              <p className="text-sm text-red-500">{error}</p>
+            )}
+
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Signing In..." : "Sign In"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }
