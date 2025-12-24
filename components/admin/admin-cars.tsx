@@ -198,6 +198,7 @@ export default function AdminCars() {
     ] },
     { name: "is_featured", label: "Featured", type: "switch" as const },
     { name: "description", label: "Description", type: "textarea" as const },
+    { name: "video", label: "Video", type: "file" as const, accept: "video/*" },
     { name: "images", label: "Images", type: "file" as const, multiple: true },
   ]
 

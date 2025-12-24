@@ -16,8 +16,8 @@ ON CONFLICT (key) DO UPDATE SET
 INSERT INTO site_settings (key, value) VALUES
   ('brand_name', 'Gaskiya Auto'),
   ('brand_tagline', 'Luxury. Confidence. Trust.'),
-  ('contact_phone', '+234 800 000 0000'),
-  ('contact_email', 'hello@gaskiya.autos'),
-  ('whatsapp_number', '+1234567890')
+  ('contact_phone', '+234 814 449 3084'),
+  ('contact_email', 'contact.gaskiyaautos@gmail.com'),
+  ('whatsapp_number', '+234 814 449 3084')
 ON CONFLICT (key) DO UPDATE SET
   value = EXCLUDED.value;

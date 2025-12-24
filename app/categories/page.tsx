@@ -10,11 +10,11 @@ export default async function CategoriesPage() {
 
   // Development fallback: sample categories when DB is empty locally
   const sampleCategories: Category[] = [
-    { id: "sample-supercars", name: "Supercars", slug: "supercars", description: "Ultra-high-performance road cars from the world's top marques.", created_at: new Date().toISOString() },
-    { id: "sample-suvs", name: "SUVs", slug: "suvs", description: "Premium SUVs blending space, presence, and performance.", created_at: new Date().toISOString() },
-    { id: "sample-sedans", name: "Sedans", slug: "sedans", description: "Refined saloons offering comfort and craftsmanship.", created_at: new Date().toISOString() },
-    { id: "sample-performance", name: "Performance Cars", slug: "performance-cars", description: "Track-capable and driver-focused models with sport-tuned dynamics.", created_at: new Date().toISOString() },
-    { id: "sample-electric", name: "Electric Cars", slug: "electric-cars", description: "Cutting-edge electric vehicles offering range, tech, and instant torque.", created_at: new Date().toISOString() },
+    { id: "sample-toyota", name: "Toyota", slug: "toyota", description: "Reliable and efficient Toyota vehicles for everyday driving.", created_at: new Date().toISOString() },
+    { id: "sample-mercedes", name: "Mercedes-Benz", slug: "mercedes-benz", description: "Luxury Mercedes-Benz vehicles with premium features.", created_at: new Date().toISOString() },
+    { id: "sample-hyundai", name: "Hyundai", slug: "hyundai", description: "Modern Hyundai vehicles with advanced technology.", created_at: new Date().toISOString() },
+    { id: "sample-honda", name: "Honda", slug: "honda", description: "Dependable Honda vehicles known for reliability.", created_at: new Date().toISOString() },
+    { id: "sample-ford", name: "Ford", slug: "ford", description: "American-made Ford vehicles for every need.", created_at: new Date().toISOString() },
   ]
 
   const usingSample = !(categories && categories.length > 0) && process.env.NODE_ENV === "development"
@@ -25,9 +25,9 @@ export default async function CategoriesPage() {
       <div className="container mx-auto px-4">
         <div className="mb-12">
           <h1 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
-            Vehicle Categories
+            Premium Brands
           </h1>
-          <p className="text-lg text-muted-foreground">Browse our luxury collection by category</p>
+          <p className="text-lg text-muted-foreground">Browse our luxury collection by brand</p>
         </div>
 
         {usingSample && (

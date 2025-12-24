@@ -214,8 +214,8 @@ export default function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Category Management</h1>
-          <p className="text-muted-foreground">Manage car categories and their settings</p>
+          <h1 className="text-3xl font-bold text-foreground">Brand Management</h1>
+          <p className="text-muted-foreground">Manage car brands and their settings</p>
         </div>
         <Dialog open={showForm || !!editingCategory} onOpenChange={(open) => {
           if (!open) {
@@ -225,11 +225,11 @@ export default function CategoriesPage() {
         }}>
           <Button onClick={() => setShowForm(true)}>
             <Plus className="mr-2 h-4 w-4" />
-            Add Category
+            Add Brand
           </Button>
           <DialogContent className="max-w-2xl">
             <AdminForm
-              title={editingCategory ? "Edit Category" : "Add New Category"}
+              title={editingCategory ? "Edit Brand" : "Add New Brand"}
               fields={formFields}
               initialData={editingCategory || {}}
               onSubmit={editingCategory ? handleUpdate : handleCreate}
@@ -247,7 +247,7 @@ export default function CategoriesPage() {
         columns={columns}
         onEdit={setEditingCategory}
         onDelete={handleDelete}
-        searchPlaceholder="Search categories..."
+        searchPlaceholder="Search brands..."
       />
     </div>
   )

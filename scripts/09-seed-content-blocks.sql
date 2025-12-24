@@ -6,9 +6,9 @@ INSERT INTO content_blocks (key, title, content, image_url, display_order, is_ac
   ('trust_transparent_pricing', 'Transparent Pricing', 'Clear, upfront pricing — no hidden fees, straightforward offers.', NULL, 3, true),
   ('trust_premium_experience', 'Premium Experience', 'White-glove service from inquiry to delivery.', NULL, 4, true),
   ('about_title', 'About Gaskiya Auto', 'Nigeria''s premier luxury automobile marketplace, connecting discerning buyers with the world''s most prestigious vehicles.', NULL, 1, true),
-  ('about_content', 'With over a decade of experience in the luxury automotive market, Gaskiya Auto has established itself as the trusted source for premium vehicles in Nigeria. Our commitment to excellence, transparency, and customer satisfaction sets us apart in the industry.', NULL, 2, true),
+  ('about_content', 'About Our Story', 'With over a decade of experience in the luxury automotive market, Gaskiya Auto has established itself as the trusted source for premium vehicles in Nigeria. Our commitment to excellence, transparency, and customer satisfaction sets us apart in the industry.', NULL, 2, true),
   ('contact_title', 'Get In Touch', 'Ready to find your dream car? Contact our expert team today.', NULL, 1, true),
-  ('contact_subtitle', 'We''re here to help you every step of the way', NULL, 2, true)
+  ('contact_subtitle', 'Contact Support', 'We''re here to help you every step of the way', NULL, 2, true)
 ON CONFLICT (key) DO UPDATE SET
   title = EXCLUDED.title,
   content = EXCLUDED.content,

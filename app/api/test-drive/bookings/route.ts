@@ -41,11 +41,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Selected car is not available" }, { status: 400 })
     }
 
-    // Get site test drive fee (server-side canonical value)
-    const { data: settings } = await supabase.from("site_settings").select("value").eq("key", "test_drive_fee").single()
-    const testDriveFee = settings?.value ? Number.parseFloat(settings.value) : 99.99
-
-    // Insert booking server-side to ensure integrity
+    // Insert booking server-side to ensure integrity (no payment required)
     try {
       const { data: booking, error: insertError } = await supabase
         .from("test_drive_bookings")
@@ -58,9 +54,9 @@ export async function POST(request: Request) {
           booking_time,
           location,
           notes,
-          payment_amount: testDriveFee,
-          payment_status: "pending",
-          status: "pending",
+          payment_amount: 0,
+          payment_status: "completed",
+          status: "confirmed",
         })
         .select()
         .single()

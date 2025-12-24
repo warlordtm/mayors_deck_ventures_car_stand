@@ -29,31 +29,13 @@ export function CarCard({ car }: CarCardProps) {
         )}
       </div>
       <div className="p-6">
-        <div className="mb-2 flex items-start justify-between">
-          <div>
-            <h3 className="text-xl font-bold text-foreground">{car.name}</h3>
-            <p className="text-sm text-muted-foreground">
-              {car.model} • {car.year}
-            </p>
-          </div>
-        </div>
-
-        <div className="mb-4 flex items-center gap-2">
-          <Badge variant="outline" className="border-border text-muted-foreground">
-            {car.brand}
-          </Badge>
-          {car.fuel_type && (
-            <Badge variant="outline" className="border-border text-muted-foreground">
-              {car.fuel_type}
-            </Badge>
-          )}
-        </div>
+        <h3 className="mb-4 text-xl font-bold text-foreground text-center">{car.name}</h3>
 
         <div className="mb-4">
           {car.show_price && car.price ? (
-            <p className="text-2xl font-bold text-foreground">₦{car.price.toLocaleString('en-NG')}</p>
+            <p className="text-2xl font-bold text-foreground text-center">₦{car.price.toLocaleString('en-NG')}</p>
           ) : (
-            <p className="text-lg text-muted-foreground">Contact for best price</p>
+            <p className="text-lg text-muted-foreground text-center">Contact for best price</p>
           )}
         </div>
 

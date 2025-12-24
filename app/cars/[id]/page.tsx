@@ -165,9 +165,13 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
-          {/* Image Gallery */}
+          {/* Media Gallery */}
           <div>
-            <CarImageGallery images={sortedImages || []} carName={car.name} />
+            <CarImageGallery
+              images={sortedImages || []}
+              carName={car.name}
+              videoUrl={car.video_url}
+            />
           </div>
 
           {/* Car Details */}

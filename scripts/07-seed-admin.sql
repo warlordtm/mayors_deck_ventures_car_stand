@@ -1,14 +1,11 @@
 -- Seed an admin user by email. Replace the email value below with the admin's email.
--- Run this in Supabase SQL editor (recommended) or via psql connected to your DB.
+-- Run this in Supabase SQL editor
 
--- Replace this email with the admin account email you've created in Supabase Auth
-\set admin_email 'mail.incometree@gmail.com'
-
--- Insert admin_users row for the auth user with the matching email
+-- Admin email: mail.incometree@gmail.com
 INSERT INTO admin_users (id, email, full_name, role, is_active, created_at)
 SELECT id, email, 'Administrator', 'admin', true, NOW()
 FROM auth.users
-WHERE email = :'admin_email'
+WHERE email = 'mail.incometree@gmail.com'
 ON CONFLICT (id) DO UPDATE
   SET email = EXCLUDED.email,
       full_name = EXCLUDED.full_name,
@@ -18,8 +15,16 @@ ON CONFLICT (id) DO UPDATE
 
 -- Update profiles table to set role to 'admin' for admin users
 UPDATE profiles SET role = 'admin' WHERE id IN (
-  SELECT id FROM admin_users WHERE email = :'admin_email'
+  SELECT id FROM admin_users WHERE email = 'mail.incometree@gmail.com'
 );
 
+-- Also manually ensure profile exists and has admin role
+INSERT INTO profiles (id, role)
+SELECT id, 'admin'
+FROM auth.users
+WHERE email = 'mail.incometree@gmail.com'
+ON CONFLICT (id) DO UPDATE SET role = 'admin';
+
 -- Quick check: show the row we just inserted
-SELECT * FROM admin_users WHERE email = :'admin_email';
+SELECT * FROM admin_users WHERE email = 'mail.incometree@gmail.com';
+SELECT * FROM profiles WHERE id IN (SELECT id FROM auth.users WHERE email = 'mail.incometree@gmail.com');

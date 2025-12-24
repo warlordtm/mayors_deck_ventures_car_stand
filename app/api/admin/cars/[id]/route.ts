@@ -32,6 +32,8 @@ export async function PUT(request: Request, context: any) {
         if (key === 'images') {
           if (!payload.images) payload.images = []
           payload.images.push(value)
+        } else if (key === 'video') {
+          payload.video = value
         } else {
           payload[key] = value
         }
@@ -74,6 +76,20 @@ export async function PUT(request: Request, context: any) {
     if (error) {
       console.error("Error updating car:", error)
       return NextResponse.json({ error: "Failed to update car" }, { status: 500 })
+    }
+
+    // Handle video
+    if (payload.video) {
+      const videoFile = payload.video as File
+      const fileExt = videoFile.name.split('.').pop()
+      const fileName = `${crypto.randomUUID()}.${fileExt}`
+      const { error: uploadError } = await supabase.storage.from('car-videos').upload(fileName, videoFile)
+      if (!uploadError) {
+        const { data: { publicUrl } } = supabase.storage.from('car-videos').getPublicUrl(fileName)
+        updateObj.video_url = publicUrl
+      } else {
+        console.error("Error uploading video:", uploadError)
+      }
     }
 
     // Handle images: delete existing and insert new

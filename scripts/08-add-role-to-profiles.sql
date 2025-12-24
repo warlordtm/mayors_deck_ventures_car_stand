@@ -1,5 +1,5 @@
 -- Add role field to profiles table for RBAC
-ALTER TABLE profiles ADD COLUMN role TEXT DEFAULT 'user' CHECK (role IN ('admin', 'user'));
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'user' CHECK (role IN ('admin', 'user'));
 
 -- Add car-related fields
 ALTER TABLE profiles ADD COLUMN driver_license TEXT;

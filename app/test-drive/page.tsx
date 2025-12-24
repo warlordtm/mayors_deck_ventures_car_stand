@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Calendar, MapPin, DollarSign } from "lucide-react"
+import { Calendar, MapPin, MessageCircle } from "lucide-react"
 
 function TestDriveForm() {
   const searchParams = useSearchParams()
@@ -150,7 +150,35 @@ function TestDriveForm() {
       }
 
       const booking = data.booking
-      router.push(`/test-drive/checkout?bookingId=${booking.id}`)
+
+      // Get car details for customized WhatsApp message
+      const supabase = createClient()
+      const { data: carData } = await supabase
+        .from("cars")
+        .select("name, model, year, brand")
+        .eq("id", selectedCarId)
+        .single()
+
+      const car = carData || selected
+
+      // Create customized WhatsApp message
+      const whatsappMessage = encodeURIComponent(
+        `Hi! I've booked a test drive for the ${car.name} (${car.year}) ${car.model}.\n\n` +
+        `Name: ${formData.customer_name}\n` +
+        `Phone: ${formData.customer_phone}\n` +
+        `Email: ${formData.customer_email}\n` +
+        `Date: ${new Date(formData.booking_date).toLocaleDateString()}\n` +
+        `Time: ${formData.booking_time}\n` +
+        `Location: ${formData.location}\n` +
+        `${formData.notes ? `Notes: ${formData.notes}\n` : ''}\n` +
+        `Please confirm my test drive booking. Thank you!`
+      )
+
+      const whatsappNumber = "+2348144493084" // Updated number
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
+
+      // Redirect to WhatsApp
+      window.location.href = whatsappUrl
     } catch (err) {
       console.error("[v0] Error submitting booking:", err)
       setError("Failed to submit booking. Please try again.")
@@ -192,10 +220,10 @@ function TestDriveForm() {
           <Card className="border-border bg-card/50 backdrop-blur">
             <CardContent className="p-6">
               <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
-                <DollarSign className="h-6 w-6 text-foreground" />
+                <MessageCircle className="h-6 w-6 text-foreground" />
               </div>
-              <h3 className="mb-2 text-lg font-semibold text-foreground">Test Drive Fee</h3>
-              <p className="text-sm text-muted-foreground">₦159,984 booking fee (refundable on purchase)</p>
+              <h3 className="mb-2 text-lg font-semibold text-foreground">Instant Confirmation</h3>
+              <p className="text-sm text-muted-foreground">Free test drive booking with immediate WhatsApp confirmation</p>
             </CardContent>
           </Card>
         </div>
@@ -358,11 +386,11 @@ function TestDriveForm() {
                 size="lg"
                 disabled={submitting || !selectedCarId}
               >
-                {submitting ? "Processing..." : "Continue to Payment"}
+                {submitting ? "Processing..." : "Book Test Drive"}
               </Button>
 
               <p className="text-center text-xs text-muted-foreground">
-                You will be redirected to secure payment after submitting
+                You will be redirected to WhatsApp for confirmation after booking
               </p>
             </form>
           </CardContent>

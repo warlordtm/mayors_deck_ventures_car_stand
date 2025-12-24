@@ -20,7 +20,7 @@ CREATE TABLE cars (
    model TEXT NOT NULL,
    year INTEGER NOT NULL,
    category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
-   brand TEXT NOT NULL,
+   brand TEXT,
    price DECIMAL(12, 2),
    show_price BOOLEAN DEFAULT true,
    description TEXT,
@@ -34,6 +34,7 @@ CREATE TABLE cars (
    condition TEXT,
    warranty TEXT,
    location TEXT,
+   video_url TEXT,
    status TEXT DEFAULT 'available' CHECK (status IN ('available', 'sold', 'reserved')),
    is_featured BOOLEAN DEFAULT false,
    created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -142,17 +143,24 @@ CREATE TABLE content_blocks (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Insert default categories
+-- Insert default categories (brands)
 DELETE FROM categories;
 INSERT INTO categories (name, slug, image_url, seo_title, seo_description, description) VALUES
-   ('Sedan', 'sedan', '/category-images/luxury-sedans.jpg', 'Sedan - Gaskiya Auto', 'Comfortable and efficient sedans for everyday driving.', 'Reliable and spacious sedan vehicles'),
-   ('SUV', 'suv', '/category-images/suvs.jpg', 'SUV - Gaskiya Auto', 'Powerful SUVs for family adventures and off-road capability.', 'Sport utility vehicles with ample space'),
-   ('Crossover', 'crossover', '/category-images/performance-cars.jpg', 'Crossover - Gaskiya Auto', 'Versatile crossovers combining sedan comfort with SUV utility.', 'Compact SUVs with car-like handling'),
-   ('Hatchback', 'hatchback', '/category-images/coupes-convertibles.jpg', 'Hatchback - Gaskiya Auto', 'Practical hatchbacks with flexible cargo space.', 'Compact cars with rear hatch access'),
-   ('Coupe', 'coupe', '/category-images/supercars.jpg', 'Coupe - Gaskiya Auto', 'Sporty two-door coupes for style and performance.', 'Stylish two-door performance cars'),
-   ('Convertible', 'convertible', '/category-images/electric-cars.jpg', 'Convertible - Gaskiya Auto', 'Elegant convertibles for open-top driving pleasure.', 'Cars with retractable roofs'),
-   ('Pickup / Truck', 'pickup-truck', '/category-images/classic-cars.jpg', 'Pickup Truck - Gaskiya Auto', 'Durable pickup trucks for work and recreation.', 'Utility vehicles with open cargo beds'),
-   ('Van / Minivan', 'van-minivan', '/category-images/performance-cars.jpg', 'Van Minivan - Gaskiya Auto', 'Spacious vans and minivans for family transport.', 'Large vehicles for passenger and cargo transport');
+   ('Toyota', 'toyota', '/category-images/toyota.jpg', 'Toyota - Gaskiya Auto', 'Reliable and efficient Toyota vehicles for everyday driving.', 'Trusted Toyota brand vehicles'),
+   ('Mercedes-Benz', 'mercedes-benz', '/category-images/mercedes.jpg', 'Mercedes-Benz - Gaskiya Auto', 'Luxury Mercedes-Benz vehicles with premium features.', 'German engineering excellence'),
+   ('Hyundai', 'hyundai', '/category-images/hyundai.jpg', 'Hyundai - Gaskiya Auto', 'Modern Hyundai vehicles with advanced technology.', 'Innovative Korean automotive brand'),
+   ('Honda', 'honda', '/category-images/honda.jpg', 'Honda - Gaskiya Auto', 'Dependable Honda vehicles known for reliability.', 'Japanese quality and performance'),
+   ('Ford', 'ford', '/category-images/ford.jpg', 'Ford - Gaskiya Auto', 'American-made Ford vehicles for every need.', 'Iconic American automotive brand'),
+   ('BMW', 'bmw', '/category-images/bmw.jpg', 'BMW - Gaskiya Auto', 'Performance-oriented BMW vehicles with sporty design.', 'Bavarian Motor Works excellence'),
+   ('Audi', 'audi', '/category-images/audi.jpg', 'Audi - Gaskiya Auto', 'Premium Audi vehicles with quattro technology.', 'German luxury and innovation'),
+   ('Nissan', 'nissan', '/category-images/nissan.jpg', 'Nissan - Gaskiya Auto', 'Versatile Nissan vehicles for modern lifestyles.', 'Japanese innovation and reliability'),
+   ('Volkswagen', 'volkswagen', '/category-images/volkswagen.jpg', 'Volkswagen - Gaskiya Auto', 'Quality Volkswagen vehicles for families.', 'German engineering for everyone'),
+   ('Kia', 'kia', '/category-images/kia.jpg', 'Kia - Gaskiya Auto', 'Stylish Kia vehicles with modern features.', 'Korean design and value'),
+   ('Ferrari', 'ferrari', '/category-images/ferrari.jpg', 'Ferrari - Gaskiya Auto', 'Exotic Ferrari supercars and sports cars.', 'Italian performance excellence'),
+   ('Aston Martin', 'aston-martin', '/category-images/aston-martin.jpg', 'Aston Martin - Gaskiya Auto', 'British luxury and performance vehicles.', 'Iconic British automotive heritage'),
+   ('Lamborghini', 'lamborghini', '/category-images/lamborghini.jpg', 'Lamborghini - Gaskiya Auto', 'Extreme performance Lamborghini supercars.', 'Italian supercar mastery'),
+   ('Porsche', 'porsche', '/category-images/porsche.jpg', 'Porsche - Gaskiya Auto', 'Precision-engineered Porsche sports cars.', 'German sports car innovation'),
+   ('Rolls-Royce', 'rolls-royce', '/category-images/rolls-royce.jpg', 'Rolls-Royce - Gaskiya Auto', 'Ultimate luxury Rolls-Royce motor cars.', 'British luxury automotive excellence');
 
 -- Insert default site settings
 INSERT INTO site_settings (key, value) VALUES
