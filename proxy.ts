@@ -1,9 +1,8 @@
 import { updateSession } from "@/lib/supabase/proxy"
 import type { NextRequest } from "next/server"
-import { NextResponse } from "next/server"
 
 export async function proxy(request: NextRequest) {
-  // Update the session
+  // Update the session - this handles all route protection and session management
   return await updateSession(request)
 }
 

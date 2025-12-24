@@ -5,6 +5,7 @@ import { Car, Calendar, DollarSign, Users, UserCheck, Tag, BarChart3, FileText, 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -578,7 +579,9 @@ export default function AdminDashboardPage() {
         {/* Add Car Modal */}
         <Dialog open={showCarModal} onOpenChange={setShowCarModal}>
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogTitle className="sr-only">Add New Car</DialogTitle>
+            <VisuallyHidden.Root>
+              <DialogTitle>Add New Car</DialogTitle>
+            </VisuallyHidden.Root>
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-foreground">Add New Car</h2>
@@ -739,7 +742,9 @@ export default function AdminDashboardPage() {
         {/* Add Category Modal */}
         <Dialog open={showCategoryModal} onOpenChange={setShowCategoryModal}>
           <DialogContent className="max-w-2xl">
-            <DialogTitle className="sr-only">Add New Category</DialogTitle>
+            <VisuallyHidden.Root>
+              <DialogTitle>Add New Category</DialogTitle>
+            </VisuallyHidden.Root>
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-foreground">Add New Category</h2>

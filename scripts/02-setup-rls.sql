@@ -21,10 +21,12 @@ DROP POLICY IF EXISTS "Anyone can view car images" ON car_images;
 DROP POLICY IF EXISTS "Only admins can insert car images" ON car_images;
 DROP POLICY IF EXISTS "Only admins can update car images" ON car_images;
 DROP POLICY IF EXISTS "Only admins can delete car images" ON car_images;
+DROP POLICY IF EXISTS "Allow all operations on car images" ON car_images;
 
 DROP POLICY IF EXISTS "Admins can view admin users" ON admin_users;
 DROP POLICY IF EXISTS "Admins can insert admin users" ON admin_users;
 DROP POLICY IF EXISTS "Admins can update admin users" ON admin_users;
+DROP POLICY IF EXISTS "Allow all operations on admin_users" ON admin_users;
 
 DROP POLICY IF EXISTS "Anyone can create test drive bookings" ON test_drive_bookings;
 DROP POLICY IF EXISTS "Admins can view all bookings" ON test_drive_bookings;
@@ -110,24 +112,24 @@ CREATE POLICY "Anyone can create test drive bookings" ON test_drive_bookings
 CREATE POLICY "Admins can view all bookings" ON test_drive_bookings
   FOR SELECT USING (
     EXISTS (
-      SELECT 1 FROM admin_users 
-      WHERE id = auth.uid() AND is_active = true
+      SELECT 1 FROM profiles
+      WHERE id = auth.uid() AND role = 'admin'
     )
   );
 
 CREATE POLICY "Admins can update bookings" ON test_drive_bookings
   FOR UPDATE USING (
     EXISTS (
-      SELECT 1 FROM admin_users 
-      WHERE id = auth.uid() AND is_active = true
+      SELECT 1 FROM profiles
+      WHERE id = auth.uid() AND role = 'admin'
     )
   );
 
 CREATE POLICY "Admins can delete bookings" ON test_drive_bookings
   FOR DELETE USING (
     EXISTS (
-      SELECT 1 FROM admin_users 
-      WHERE id = auth.uid() AND is_active = true
+      SELECT 1 FROM profiles
+      WHERE id = auth.uid() AND role = 'admin'
     )
   );
 
@@ -138,23 +140,23 @@ CREATE POLICY "Anyone can view site settings" ON site_settings
 CREATE POLICY "Only admins can insert site settings" ON site_settings
   FOR INSERT WITH CHECK (
     EXISTS (
-      SELECT 1 FROM admin_users 
-      WHERE id = auth.uid() AND is_active = true
+      SELECT 1 FROM profiles
+      WHERE id = auth.uid() AND role = 'admin'
     )
   );
 
 CREATE POLICY "Only admins can update site settings" ON site_settings
   FOR UPDATE USING (
     EXISTS (
-      SELECT 1 FROM admin_users 
-      WHERE id = auth.uid() AND is_active = true
+      SELECT 1 FROM profiles
+      WHERE id = auth.uid() AND role = 'admin'
     )
   );
 
 CREATE POLICY "Only admins can delete site settings" ON site_settings
   FOR DELETE USING (
     EXISTS (
-      SELECT 1 FROM admin_users 
-      WHERE id = auth.uid() AND is_active = true
+      SELECT 1 FROM profiles
+      WHERE id = auth.uid() AND role = 'admin'
     )
   );

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { AdminDataTable } from "@/components/admin/admin-data-table"
 import { AdminForm } from "@/components/admin/admin-form"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden"
 import { Plus } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
@@ -253,9 +254,11 @@ export default function AdminCars() {
             Add Car
           </Button>
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogTitle className="sr-only">
-              {editingCar ? "Edit Car" : "Add New Car"}
-            </DialogTitle>
+            <VisuallyHidden.Root>
+              <DialogTitle>
+                {editingCar ? "Edit Car" : "Add New Car"}
+              </DialogTitle>
+            </VisuallyHidden.Root>
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-foreground">

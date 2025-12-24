@@ -23,9 +23,11 @@ export function TrustPillars() {
       try {
         const response = await fetch('/api/content')
         const data = await response.json()
-        const pillarBlocks = data.contentBlocks?.filter((block: ContentBlock) =>
-          block.key.startsWith('trust_')
-        ).sort((a: ContentBlock, b: ContentBlock) => a.display_order - b.display_order) || []
+        // Filter and deduplicate by key to prevent duplicates
+        const pillarBlocks = data.contentBlocks
+          ?.filter((block: ContentBlock) => block.key.startsWith('trust_'))
+          .filter((block: ContentBlock, index: number, self: ContentBlock[]) => self.findIndex((b: ContentBlock) => b.key === block.key) === index)
+          .sort((a: ContentBlock, b: ContentBlock) => a.display_order - b.display_order) || []
         setPillars(pillarBlocks.length > 0 ? pillarBlocks : [
           { id: '1', key: 'trust_verified_vehicles', title: 'Verified Vehicles', content: 'Comprehensive inspection and certification for every car in our collection.', image_url: null, display_order: 1, is_active: true },
           { id: '2', key: 'trust_trusted_dealers', title: 'Trusted Dealers', content: 'Long-standing relationships with factory-trained dealers and partners.', image_url: null, display_order: 2, is_active: true },

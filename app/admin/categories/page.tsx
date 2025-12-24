@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { AdminDataTable } from "@/components/admin/admin-data-table"
 import { AdminForm } from "@/components/admin/admin-form"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden"
 import { Plus } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 

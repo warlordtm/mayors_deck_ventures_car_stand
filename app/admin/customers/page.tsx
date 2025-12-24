@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { AdminDataTable } from "@/components/admin/admin-data-table"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden"
 import { AdminForm } from "@/components/admin/admin-form"
 import { useToast } from "@/hooks/use-toast"
 
@@ -94,7 +95,9 @@ export default function AdminCustomersPage() {
             Add Customer
           </Button>
           <DialogContent className="max-w-2xl">
-            <DialogTitle className="sr-only">Add New Customer</DialogTitle>
+            <VisuallyHidden.Root>
+              <DialogTitle>Add New Customer</DialogTitle>
+            </VisuallyHidden.Root>
             <AdminForm
               title="Add New Customer"
               fields={formFields}
