@@ -73,7 +73,7 @@ export function Hero() {
 
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Link
-            href="/inventory"
+            href="/cars"
             className="inline-flex h-14 items-center justify-center rounded-md bg-accent px-8 text-base font-semibold text-black shadow-lg shadow-accent/20 transition-transform hover:scale-[1.02]"
           >
             View Inventory

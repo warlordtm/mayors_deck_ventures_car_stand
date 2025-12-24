@@ -80,7 +80,7 @@ export function Header() {
             Test Drive
           </Link>
           <Link
-            href="/contact"
+            href="/#contact"
             className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
           >
             Contact
@@ -175,7 +175,7 @@ export function Header() {
               Test Drive
             </Link>
             <Link
-              href="/contact"
+              href="/#contact"
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
               onClick={() => setIsMenuOpen(false)}
             >

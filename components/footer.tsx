@@ -92,15 +92,15 @@ export function Footer() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                <span>{settings.contact_phone || '+234 800 000 0000'}</span>
+                <span>{settings.contact_phone || '+234 814 449 3084'}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4" />
-                <span>{settings.contact_email || 'hello@gaskiya.autos'}</span>
+                <span>{settings.contact_email || 'hello.gaskiyaautos@gmail.com'}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />
-                <span>Abuja, Nigeria</span>
+                <span>Opposite Small NNPC Filling Station, Oladipo Diya Street, Abuja</span>
               </div>
             </div>
           </div>
