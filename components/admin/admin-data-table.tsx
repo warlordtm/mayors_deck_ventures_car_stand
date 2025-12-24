@@ -104,14 +104,20 @@ export function AdminDataTable({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           {onEdit && (
-                            <DropdownMenuItem onClick={() => onEdit(item)}>
+                            <DropdownMenuItem onClick={() => {
+                              console.log("Edit menu item clicked for:", item)
+                              onEdit(item)
+                            }}>
                               <Edit className="mr-2 h-4 w-4" />
                               Edit
                             </DropdownMenuItem>
                           )}
                           {onDelete && (
                             <DropdownMenuItem
-                              onClick={() => onDelete(item)}
+                              onClick={() => {
+                                console.log("Delete menu item clicked for:", item)
+                                onDelete(item)
+                              }}
                               className="text-destructive"
                             >
                               <Trash2 className="mr-2 h-4 w-4" />

@@ -34,7 +34,6 @@ export default function AdminDashboardPage() {
     model: "",
     year: "",
     category_id: "",
-    brand: "",
     price: "",
     show_price: true,
     status: "available",
@@ -197,7 +196,6 @@ export default function AdminDashboardPage() {
             model: "",
             year: "",
             category_id: "",
-            brand: "",
             price: "",
             show_price: true,
             status: "available",
@@ -627,15 +625,6 @@ export default function AdminDashboardPage() {
                   </Select>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="car-brand">Brand *</Label>
-                  <Input
-                    id="car-brand"
-                    value={carForm.brand}
-                    onChange={(e) => setCarForm({...carForm, brand: e.target.value})}
-                    placeholder="e.g., Ferrari"
-                  />
-                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="car-price">Price (₦)</Label>
@@ -733,7 +722,7 @@ export default function AdminDashboardPage() {
                 <Button variant="outline" onClick={() => setShowCarModal(false)}>
                   Cancel
                 </Button>
-                <Button onClick={handleAddCar} disabled={isSubmitting || !carForm.name || !carForm.brand}>
+                <Button onClick={handleAddCar} disabled={isSubmitting || !carForm.name}>
                   {isSubmitting ? "Adding..." : "Add Car"}
                 </Button>
               </div>

@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
 
-export async function PUT(request: Request, context: any) {
-  const { params } = context as { params: { id: string } }
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
     const supabase = await createClient()
 
@@ -63,7 +63,7 @@ export async function PUT(request: Request, context: any) {
         .from("cars")
         .select("id")
         .ilike("slug", payload.slug)
-        .neq("id", params.id)
+        .neq("id", id)
         .limit(1)
 
       if (existing && existing.length > 0) {
@@ -71,12 +71,15 @@ export async function PUT(request: Request, context: any) {
       }
     }
 
-    const { data, error } = await supabase.from("cars").update(updateObj).eq("id", params.id).select().single()
+    console.log("Updating car with data:", updateObj)
+    const { data, error } = await supabase.from("cars").update(updateObj).eq("id", id).select().single()
 
     if (error) {
       console.error("Error updating car:", error)
-      return NextResponse.json({ error: "Failed to update car" }, { status: 500 })
+      return NextResponse.json({ error: `Failed to update car: ${error.message}` }, { status: 500 })
     }
+
+    console.log("Car updated successfully")
 
     // Handle video
     if (payload.video) {
@@ -93,7 +96,7 @@ export async function PUT(request: Request, context: any) {
     }
 
     // Handle images: delete existing and insert new
-    const { error: deleteError } = await supabase.from("car_images").delete().eq("car_id", params.id)
+    const { error: deleteError } = await supabase.from("car_images").delete().eq("car_id", id)
     if (deleteError) {
       console.error("Error deleting car images:", deleteError)
     }
@@ -111,7 +114,7 @@ export async function PUT(request: Request, context: any) {
         }
         const { data: { publicUrl } } = supabase.storage.from('car-images').getPublicUrl(fileName)
         imageInserts.push({
-          car_id: params.id,
+          car_id: id,
           image_url: publicUrl,
           is_primary: i === 0,
           display_order: i
@@ -139,44 +142,59 @@ export async function PUT(request: Request, context: any) {
   }
 }
 
-export async function DELETE(request: Request, context: any) {
-  const { params } = context as { params: { id: string } }
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
   try {
+    console.log("DELETE request for car ID:", id)
     const supabase = await createClient()
 
     const {
       data: { user },
     } = await supabase.auth.getUser()
 
+    console.log("Auth user:", user?.id)
     if (!user) {
+      console.log("No user found - returning 401")
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { data: profile } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("role")
       .eq("id", user.id)
       .single()
 
+    console.log("Profile lookup result:", { profile, profileError })
     if (!profile || profile.role !== "admin") {
+      console.log("Profile check failed - profile:", profile, "role:", profile?.role)
       return NextResponse.json({ error: "Access denied" }, { status: 403 })
     }
 
-    // Get car name before deleting
-    const { data: car } = await supabase.from("cars").select("name").eq("id", params.id).single()
+    console.log("Admin access granted")
 
-    const { error } = await supabase.from("cars").delete().eq("id", params.id)
+    // Get car name before deleting
+    const { data: car, error: carError } = await supabase.from("cars").select("name").eq("id", id).single()
+
+    if (carError) {
+      console.error("Error fetching car for deletion:", carError)
+      return NextResponse.json({ error: "Car not found" }, { status: 404 })
+    }
+
+    console.log("Attempting to delete car:", car?.name)
+    const { error } = await supabase.from("cars").delete().eq("id", id)
 
     if (error) {
       console.error("Error deleting car:", error)
-      return NextResponse.json({ error: "Failed to delete car" }, { status: 500 })
+      return NextResponse.json({ error: `Failed to delete car: ${error.message}` }, { status: 500 })
     }
+
+    console.log("Car deleted successfully:", car?.name)
 
     // Log activity
     await supabase.from("activity_logs").insert({
       admin_id: user.id,
       action: `Deleted car: ${car?.name || 'Unknown'}`,
-      details: { car_id: params.id }
+      details: { car_id: id }
     })
 
     return NextResponse.json({ success: true })

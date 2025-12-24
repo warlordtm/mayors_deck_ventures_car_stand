@@ -29,6 +29,8 @@ export default function AdminCars() {
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingCar, setEditingCar] = useState<Car | null>(null)
+
+  console.log("AdminCars render - showForm:", showForm, "editingCar:", editingCar)
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([])
   const { toast } = useToast()
 
@@ -108,7 +110,11 @@ export default function AdminCars() {
   }
 
   const handleUpdate = async (data: any) => {
-    if (!editingCar) return
+    console.log("handleUpdate called with data:", data)
+    if (!editingCar) {
+      console.log("No editingCar, returning")
+      return
+    }
 
     try {
       let body: string | FormData
@@ -138,12 +144,19 @@ export default function AdminCars() {
       })
 
       if (res.ok) {
+        console.log("Update successful")
         toast({ title: "Success", description: "Car updated successfully" })
         setEditingCar(null)
         fetchCars()
       } else {
-        const error = await res.json()
-        toast({ title: "Error", description: error.error || "Failed to update car", variant: "destructive" })
+        const errorText = await res.text()
+        console.error("Update failed:", res.status, errorText)
+        try {
+          const errorJson = JSON.parse(errorText)
+          toast({ title: "Error", description: errorJson.error || "Failed to update car", variant: "destructive" })
+        } catch (e) {
+          toast({ title: "Error", description: `Failed to update car (status ${res.status})`, variant: "destructive" })
+        }
       }
     } catch (e) {
       toast({ title: "Error", description: "Failed to update car", variant: "destructive" })
@@ -151,18 +164,32 @@ export default function AdminCars() {
   }
 
   const handleDelete = async (car: Car) => {
-    if (!confirm(`Are you sure you want to delete "${car.name}"?`)) return
+    console.log("handleDelete called for:", car.name)
+    if (!confirm(`Are you sure you want to delete "${car.name}"?`)) {
+      console.log("Delete cancelled by user")
+      return
+    }
 
     try {
+      console.log("Making DELETE request to:", `/api/admin/cars/${car.id}`)
       const res = await fetch(`/api/admin/cars/${car.id}`, { method: "DELETE" })
+      console.log("DELETE response status:", res.status)
       if (res.ok) {
+        console.log("Delete successful")
         toast({ title: "Success", description: "Car deleted" })
         fetchCars()
       } else {
-        const error = await res.json()
-        toast({ title: "Error", description: error.error || "Failed to delete car", variant: "destructive" })
+        const errorText = await res.text()
+        console.error("Delete failed:", res.status, errorText)
+        try {
+          const errorJson = JSON.parse(errorText)
+          toast({ title: "Error", description: errorJson.error || "Failed to delete car", variant: "destructive" })
+        } catch (e) {
+          toast({ title: "Error", description: `Failed to delete car (status ${res.status})`, variant: "destructive" })
+        }
       }
     } catch (e) {
+      console.error("Delete request error:", e)
       toast({ title: "Error", description: "Failed to delete car", variant: "destructive" })
     }
   }
@@ -249,8 +276,14 @@ export default function AdminCars() {
       <AdminDataTable
         data={cars}
         columns={columns}
-        onEdit={(item) => setEditingCar(item)}
-        onDelete={handleDelete}
+        onEdit={(item) => {
+          console.log("Edit clicked for item:", item)
+          setEditingCar(item)
+        }}
+        onDelete={(item) => {
+          console.log("Delete clicked for item:", item)
+          handleDelete(item)
+        }}
         searchPlaceholder="Search cars..."
       />
     </div>
