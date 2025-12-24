@@ -92,6 +92,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 })
     }
 
+    if (!payload.category_id) {
+      return NextResponse.json({ error: "Category is required" }, { status: 400 })
+    }
+
     // If a slug is provided, ensure it's unique (case-insensitive)
     if (payload.slug) {
       const { data: existing } = await supabase

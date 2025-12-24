@@ -231,15 +231,21 @@ export default function AdminDashboardPage() {
   }
 
   const handleAddCategory = async () => {
+    // Auto-generate slug if not provided
+    const finalForm = {
+      ...categoryForm,
+      slug: categoryForm.slug || categoryForm.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+    }
+
     try {
       const response = await fetch("/api/admin/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(categoryForm),
+        body: JSON.stringify(finalForm),
       })
 
       if (response.ok) {
-        toast({ title: "Success", description: "Category added successfully" })
+        toast({ title: "Success", description: "Category added successfully!" })
         setShowCategoryModal(false)
         setCategoryForm({
           name: "", slug: "", image_url: "", seo_title: "", seo_description: "", description: ""
@@ -722,7 +728,7 @@ export default function AdminDashboardPage() {
                 <Button variant="outline" onClick={() => setShowCarModal(false)}>
                   Cancel
                 </Button>
-                <Button onClick={handleAddCar} disabled={isSubmitting || !carForm.name}>
+                <Button onClick={handleAddCar} disabled={isSubmitting || !carForm.name} className="cursor-pointer">
                   {isSubmitting ? "Adding..." : "Add Car"}
                 </Button>
               </div>
@@ -808,7 +814,7 @@ export default function AdminDashboardPage() {
                 <Button variant="outline" onClick={() => setShowCategoryModal(false)}>
                   Cancel
                 </Button>
-                <Button onClick={handleAddCategory} disabled={!categoryForm.name}>
+                <Button onClick={handleAddCategory} disabled={!categoryForm.name} className="cursor-pointer">
                   Add Category
                 </Button>
               </div>

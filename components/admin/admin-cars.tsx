@@ -97,7 +97,7 @@ export default function AdminCars() {
       })
 
       if (res.ok) {
-        toast({ title: "Success", description: "Car created successfully" })
+        toast({ title: "Success", description: "Car added successfully!" })
         setShowForm(false)
         fetchCars()
       } else {
@@ -145,7 +145,7 @@ export default function AdminCars() {
 
       if (res.ok) {
         console.log("Update successful")
-        toast({ title: "Success", description: "Car updated successfully" })
+        toast({ title: "Success", description: "Car updated successfully!" })
         setEditingCar(null)
         fetchCars()
       } else {
@@ -176,7 +176,7 @@ export default function AdminCars() {
       console.log("DELETE response status:", res.status)
       if (res.ok) {
         console.log("Delete successful")
-        toast({ title: "Success", description: "Car deleted" })
+        toast({ title: "Success", description: "Car deleted successfully!" })
         fetchCars()
       } else {
         const errorText = await res.text()
@@ -197,7 +197,11 @@ export default function AdminCars() {
   const columns = [
     { key: "name", label: "Name" },
     { key: "slug", label: "Slug" },
-    { key: "brand", label: "Brand" },
+    {
+      key: "category",
+      label: "Category",
+      render: (value: any) => value?.name || "-",
+    },
     {
       key: "created_at",
       label: "Created",
@@ -213,9 +217,9 @@ export default function AdminCars() {
       name: "category_id",
       label: "Category",
       type: "select" as const,
+      required: true,
       options: categories.map((c) => ({ value: c.id, label: c.name })),
     },
-    { name: "brand", label: "Brand", type: "text" as const },
     { name: "price", label: "Price", type: "number" as const },
     { name: "show_price", label: "Show Price", type: "switch" as const },
     { name: "status", label: "Status", type: "select" as const, options: [
@@ -244,7 +248,7 @@ export default function AdminCars() {
             setEditingCar(null)
           }
         }}>
-          <Button onClick={() => setShowForm(true)}>
+          <Button onClick={() => setShowForm(true)} className="cursor-pointer">
             <Plus className="mr-2 h-4 w-4" />
             Add Car
           </Button>
