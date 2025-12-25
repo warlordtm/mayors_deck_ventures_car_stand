@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
 
 export async function POST(request: Request) {
-  // Handle Supabase auth callbacks that might come as POST requests
+  // Handle Supabase auth callbacks
   const supabase = await createClient()
 
   try {
@@ -39,6 +39,28 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  // Handle GET requests by redirecting to the login page
-  return NextResponse.redirect(new URL('/login', request.url))
+  // Handle GET requests by checking for auth session
+  const supabase = await createClient()
+
+  try {
+    const { data: { session } } = await supabase.auth.getSession()
+
+    if (session) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", session.user.id)
+        .single()
+
+      const redirectUrl = profile?.role === 'admin'
+        ? '/admin/dashboard'
+        : '/favorites'
+
+      return NextResponse.redirect(new URL(redirectUrl, request.url))
+    }
+
+    return NextResponse.redirect(new URL('/login', request.url))
+  } catch (error) {
+    return NextResponse.redirect(new URL('/login', request.url))
+  }
 }
