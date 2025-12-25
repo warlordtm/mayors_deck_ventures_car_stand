@@ -8,10 +8,11 @@ export default function AdminHeader() {
   const supabase = createClient()
 
   const handleSignOut = async () => {
+    // Sign out the user from Supabase
     await supabase.auth.signOut()
-    setTimeout(() => {
-      window.location.href = '/login'
-    }, 100)
+
+    // Client-side redirect using Next.js router
+    router.push("/login")
   }
 
   return (
@@ -22,7 +23,7 @@ export default function AdminHeader() {
         </div>
         <button
           onClick={handleSignOut}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          className="px-4 py-2 bg-red-500 text-white rounded cursor-pointer hover:bg-red-600"
         >
           Sign Out
         </button>
