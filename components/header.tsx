@@ -174,20 +174,12 @@ export function Header() {
               {user ? (
                 <div className="flex flex-col gap-2">
                   {!isAdmin && (
-                    <>
-                      <Link href="/favorites" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant="outline" className="w-full justify-start border-border text-muted-foreground hover:bg-card/10">
-                          <Heart className="mr-2 h-4 w-4" />
-                          My Watchlist
-                        </Button>
-                      </Link>
-                      <Link href="/account" onClick={() => setIsMenuOpen(false)}>
-                        <Button variant="outline" className="w-full justify-start border-border text-muted-foreground hover:bg-card/10">
-                          <User className="mr-2 h-4 w-4" />
-                          My Account
-                        </Button>
-                      </Link>
-                    </>
+                    <Link href="/favorites" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="outline" className="w-full justify-start border-border text-muted-foreground hover:bg-card/10">
+                        <Heart className="mr-2 h-4 w-4" />
+                        My Watchlist
+                      </Button>
+                    </Link>
                   )}
                   {isAdmin && (
                     <Link href="/admin" onClick={() => setIsMenuOpen(false)}>
