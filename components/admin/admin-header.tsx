@@ -9,7 +9,9 @@ export default function AdminHeader() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
-    window.location.href = '/login'
+    setTimeout(() => {
+      window.location.href = '/login'
+    }, 100)
   }
 
   return (
