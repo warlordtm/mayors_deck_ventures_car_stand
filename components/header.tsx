@@ -46,26 +46,16 @@ export function Header() {
 
   const handleLogout = async () => {
     try {
-      // Use the signout API route which handles proper redirects
-      const response = await fetch('/api/auth/signout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      if (response.redirected) {
-        window.location.href = response.url
-      } else {
-        // Fallback to home page
-        router.push("/")
-      }
-    } catch (error) {
-      console.error('Logout error:', error)
-      // Fallback logout
       const supabase = createClient()
       await supabase.auth.signOut()
-      router.push("/")
+
+      // Redirect to login page with current domain
+      const currentDomain = window.location.origin
+      window.location.href = `${currentDomain}/login`
+    } catch (error) {
+      console.error('Logout error:', error)
+      // Fallback redirect
+      router.push("/login")
     }
   }
 
