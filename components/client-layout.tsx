@@ -5,6 +5,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { WhatsAppFloat } from "@/components/whatsapp-float"
 import { SessionManager } from "@/components/session-manager"
+import { CookieConsent } from "@/components/cookie-consent"
 
 interface ClientLayoutProps {
   children: React.ReactNode
@@ -21,6 +22,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
       {children}
       {!isAdmin && <Footer />}
       {!isAdmin && <WhatsAppFloat />}
+      {!isAdmin && <CookieConsent />}
     </>
   )
 }

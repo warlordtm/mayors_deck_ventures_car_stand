@@ -164,8 +164,8 @@ INSERT INTO categories (name, slug, image_url, seo_title, seo_description, descr
 
 -- Insert default site settings
 INSERT INTO site_settings (key, value) VALUES
-  ('whatsapp_number', '+1234567890'),
-  ('contact_phone', '+1234567890'),
+   ('whatsapp_number', '+2348144493084'),
+   ('contact_phone', '+2348144493084'),
   ('contact_email', 'contact@luxurycars.com'),
   ('brand_name', 'Gaskiya Auto'),
   ('brand_tagline', 'Where Luxury Meets Performance');

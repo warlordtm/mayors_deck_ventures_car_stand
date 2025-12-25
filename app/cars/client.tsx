@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import type { Car, Category } from "@/lib/types"
 import { CarCard } from "@/components/car-card"
 import { Input } from "@/components/ui/input"
@@ -8,6 +8,11 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Search, Filter, X } from "lucide-react"
+import {
+  getUserSearchHistory,
+  findPersonalizedRecommendations,
+  shouldShowPersonalizedRecommendations
+} from "@/lib/car-recommendations"
 
 interface CarsClientProps {
   initialCars: Car[]
@@ -19,6 +24,19 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [priceRange, setPriceRange] = useState<string>("all")
   const [sortBy, setSortBy] = useState<string>("newest")
+  const [personalizedCars, setPersonalizedCars] = useState<Car[]>([])
+  const [showPersonalized, setShowPersonalized] = useState(false)
+
+  useEffect(() => {
+    if (shouldShowPersonalizedRecommendations()) {
+      const searchHistory = getUserSearchHistory()
+      const personalized = findPersonalizedRecommendations(initialCars, searchHistory)
+      if (personalized.length > 0) {
+        setPersonalizedCars(personalized)
+        setShowPersonalized(true)
+      }
+    }
+  }, [initialCars])
 
   const filteredAndSortedCars = useMemo(() => {
     let filtered = initialCars.filter((car) => {
@@ -208,6 +226,31 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
             </div>
           )}
         </div>
+
+        {/* Personalized Recommendations */}
+        {showPersonalized && personalizedCars.length > 0 && (
+          <div className="mb-12">
+            <div className="mb-6 text-center">
+              <h2 className="text-2xl font-bold text-foreground mb-2">Recommended for You</h2>
+              <p className="text-muted-foreground">Based on your recent car searches</p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
+              {personalizedCars.slice(0, 6).map((car: Car) => (
+                <div key={car.id} className="relative">
+                  <div className="absolute top-3 left-3 z-10">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-accent px-2 py-1 text-xs font-semibold text-accent-foreground">
+                      ⭐ Recommended
+                    </span>
+                  </div>
+                  <CarCard car={car} />
+                </div>
+              ))}
+            </div>
+            <div className="border-t border-border pt-8">
+              <h3 className="text-xl font-bold text-foreground mb-6 text-center">All Vehicles</h3>
+            </div>
+          </div>
+        )}
 
         {/* Results Count */}
         <div className="mb-6">

@@ -147,7 +147,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
     return a.display_order - b.display_order
   })
 
-  const whatsappNumber = "+1234567890"
+  const whatsappNumber = "+2348144493084"
   const whatsappMessage = encodeURIComponent(`Hi, I'm interested in the ${car.name} (${car.year})`)
 
   return (
