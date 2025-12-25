@@ -15,7 +15,7 @@ interface CarsClientProps {
 }
 
 export default function CarsClient({ initialCars, initialCategories }: CarsClientProps) {
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState<string>("")
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [priceRange, setPriceRange] = useState<string>("all")
   const [sortBy, setSortBy] = useState<string>("newest")
@@ -23,10 +23,10 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
   const filteredAndSortedCars = useMemo(() => {
     let filtered = initialCars.filter((car) => {
       const matchesSearch =
-        car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        car.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        car.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        car.description.toLowerCase().includes(searchTerm.toLowerCase())
+        car.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        car.brand?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        car.model?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        car.description?.toLowerCase().includes(searchTerm.toLowerCase())
 
       const matchesCategory = selectedCategory === "all" || car.category?.slug === selectedCategory
 
@@ -64,7 +64,7 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
         case "price-high":
           return (b.price || 0) - (a.price || 0)
         case "name":
-          return a.name.localeCompare(b.name)
+          return (a.name || "").localeCompare(b.name || "")
         default:
           return 0
       }
@@ -98,8 +98,8 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search cars by name, brand, or model..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm || ""}
+                onChange={(e) => setSearchTerm(e.target.value || "")}
                 className="pl-9"
               />
             </div>

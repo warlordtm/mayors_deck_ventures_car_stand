@@ -45,7 +45,9 @@ export async function GET(request: Request, context: any) {
 }
 
 export async function PUT(request: Request, context: any) {
-  const { params } = context as { params: { id: string } }
+  const { params } = context as { params: Promise<{ id: string }> }
+  const { id } = await params
+
   try {
     const supabase = await createClient()
 
@@ -79,7 +81,7 @@ export async function PUT(request: Request, context: any) {
         seo_description,
         description,
       })
-      .eq("id", params.id)
+      .eq("id", id)
       .select()
       .single()
 
@@ -96,7 +98,9 @@ export async function PUT(request: Request, context: any) {
 }
 
 export async function DELETE(request: Request, context: any) {
-  const { params } = context as { params: { id: string } }
+  const { params } = context as { params: Promise<{ id: string }> }
+  const { id } = await params
+
   try {
     const supabase = await createClient()
 
@@ -122,7 +126,7 @@ export async function DELETE(request: Request, context: any) {
     const { count: carCount } = await supabase
       .from("cars")
       .select("*", { count: "exact", head: true })
-      .eq("category_id", params.id)
+      .eq("category_id", id)
 
     if (carCount && carCount > 0) {
       return NextResponse.json({ error: "Cannot delete category with associated cars" }, { status: 400 })
@@ -131,7 +135,7 @@ export async function DELETE(request: Request, context: any) {
     const { error } = await supabase
       .from("categories")
       .delete()
-      .eq("id", params.id)
+      .eq("id", id)
 
     if (error) {
       console.error("Error deleting category:", error)
