@@ -1,17 +1,15 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
 
 export default function AdminHeader() {
   const router = useRouter()
+  const supabase = createClient()
 
   const handleSignOut = async () => {
-    try {
-      await fetch('/api/auth/signout', { method: 'POST' })
-      router.push('/admin/login')
-    } catch (error) {
-      console.error('Sign out error:', error)
-    }
+    await supabase.auth.signOut()
+    window.location.href = '/login'
   }
 
   return (

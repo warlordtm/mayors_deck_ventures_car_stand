@@ -1,7 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { Phone, Mail, MapPin, Instagram, Music } from "lucide-react"
+import { Phone, Mail, MapPin, Video } from "lucide-react"
+import { SiInstagram, SiTiktok } from "react-icons/si"
+
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
@@ -46,11 +48,39 @@ export function Footer() {
   return (
   <footer className="border-t border-border bg-card">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid gap-8 md:grid-cols-5">
-          <div>
-            <h3 className="mb-4 text-lg font-bold text-foreground">{settings.brand_name || 'Gaskiya Auto'}</h3>
-            <p className="text-sm text-muted-foreground">{settings.brand_tagline || 'Luxury. Confidence. Trust.'}</p>
+        <div className="grid gap-8 md:grid-cols-4">
+                <div>
+          <h3 className="mb-4 text-lg font-bold text-foreground">
+            {settings.brand_name || 'Gaskiya Auto'}
+          </h3>
+
+          <p className="mb-4 text-sm text-muted-foreground">
+            {settings.brand_tagline || 'Luxury. Confidence. Trust.'}
+          </p>
+
+          <div className="flex justify-center gap-4 md:justify-start">
+            <Link
+              href="https://tiktok.com/@gaskiyaautos1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground transition-colors hover:text-accent"
+              aria-label="Gaskiya Auto on TikTok"
+            >
+              <SiTiktok className="h-5 w-5" />
+            </Link>
+
+            <Link
+              href="https://instagram.com/@gaskiya_autos_"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground transition-colors hover:text-accent"
+              aria-label="Gaskiya Auto on Instagram"
+            >
+              <SiInstagram className="h-5 w-5" />
+            </Link>
           </div>
+
+        </div>
 
           <div className="text-center md:text-left">
             <h4 className="mb-4 text-sm font-semibold text-foreground">Quick Links</h4>
