@@ -52,7 +52,7 @@ export function Hero() {
           src={heroContent?.image_url || "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=1800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2Ftcnl8ZW58MHx8MHx8fDA%3D"}
           alt="Luxury car showroom"
           fill
-          className="object-contain"
+          className="object-cover object-center"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-transparent to-black/60" />
