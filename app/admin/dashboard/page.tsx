@@ -26,7 +26,7 @@ export default function AdminDashboardPage() {
     totalCars: 0,
     availableCars: 0,
     soldCars: 0,
-    pendingInquiries: 0,
+    totalImpressions: 0,
     monthlyRevenue: 0,
   })
   const [recentActivity, setRecentActivity] = useState<any[]>([])
@@ -68,9 +68,14 @@ export default function AdminDashboardPage() {
       const availableCars = cars?.filter(c => c.status === 'available').length || 0
       const soldCars = cars?.filter(c => c.status === 'sold').length || 0
 
-      // Fetch pending inquiries
-      const { data: inquiries } = await supabase.from("inquiries").select("status").eq("status", "pending")
-      const pendingInquiries = inquiries?.length || 0
+      // Fetch car impressions (last 30 days)
+      const thirtyDaysAgo = new Date()
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+      const { data: impressions } = await supabase
+        .from("car_impressions")
+        .select("id")
+        .gte("created_at", thirtyDaysAgo.toISOString())
+      const totalImpressions = impressions?.length || 0
 
       // Fetch monthly revenue (current month sales)
       const startOfMonth = new Date()
@@ -86,7 +91,7 @@ export default function AdminDashboardPage() {
         totalCars,
         availableCars,
         soldCars,
-        pendingInquiries,
+        totalImpressions,
         monthlyRevenue,
       })
 
@@ -319,11 +324,11 @@ export default function AdminDashboardPage() {
 
            <Card className="border-border bg-card/50 backdrop-blur">
              <CardHeader className="flex flex-row items-center justify-between pb-2">
-               <CardTitle className="text-sm font-medium text-muted-foreground">Pending Inquiries</CardTitle>
+               <CardTitle className="text-sm font-medium text-muted-foreground">Car Impressions (30d)</CardTitle>
                <Calendar className="h-4 w-4 text-muted-foreground" />
              </CardHeader>
              <CardContent>
-               <div className="text-3xl font-bold text-foreground">{stats.pendingInquiries}</div>
+               <div className="text-3xl font-bold text-foreground">{stats.totalImpressions}</div>
              </CardContent>
            </Card>
 
@@ -449,19 +454,6 @@ export default function AdminDashboardPage() {
             </Link>
 
 
-            <Link href="/admin/inquiries">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
-                <CardContent className="flex items-center gap-4 p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
-                    <Tag className="h-6 w-6 text-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">Inquiries</h3>
-                    <p className="text-sm text-muted-foreground">Manage customer inquiries</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
 
             <Link href="/admin/sales">
               <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">

@@ -60,9 +60,6 @@ export function Footer() {
               <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
                 Categories
               </Link>
-              <Link href="/test-drive" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                Test Drive
-              </Link>
             </div>
           </div>
 

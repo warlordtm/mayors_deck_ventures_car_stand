@@ -2,7 +2,9 @@ import { createClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
 
 export async function GET(request: Request, context: any) {
-  const { params } = context as { params: { id: string } }
+  const { params } = context as { params: Promise<{ id: string }> }
+  const { id } = await params
+
   try {
     const supabase = await createClient()
 
@@ -27,7 +29,7 @@ export async function GET(request: Request, context: any) {
     const { data, error } = await supabase
       .from("categories")
       .select("*")
-      .eq("id", params.id)
+      .eq("id", id)
       .single()
 
     if (error) {

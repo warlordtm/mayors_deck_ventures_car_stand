@@ -83,7 +83,7 @@ export default function LoginPage() {
       if (userRole === 'admin') {
         router.push("/admin/dashboard")
       } else {
-        router.push("/user/details")
+        router.push("/favorites")
       }
       router.refresh()
     } catch (error: unknown) {

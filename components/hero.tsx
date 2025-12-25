@@ -78,6 +78,12 @@ export function Hero() {
           >
             View Inventory
           </Link>
+          <Link
+            href="/cars"
+            className="inline-flex h-14 items-center justify-center text-white rounded-md border border-white bg-transparent px-8 text-base font-semibold transition-colors hover:bg-white hover:text-black"
+          >
+            🔍 Search Cars
+          </Link>
           <a
             href="#contact"
             className="inline-flex h-14 items-center justify-center text-white rounded-md border border-white bg-transparent px-8 text-base font-semibold transition-colors hover:bg-white hover:text-black"

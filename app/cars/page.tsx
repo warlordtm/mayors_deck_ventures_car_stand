@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
-import type { Car } from "@/lib/types"
-import { CarCard } from "@/components/car-card"
+import type { Car, Category } from "@/lib/types"
+import CarsClient from "./client"
 
 const SAMPLE_CARS: Car[] = Array.from({ length: 8 }).map((_, i) => ({
   id: `car-${i + 1}`,
@@ -16,12 +16,13 @@ const SAMPLE_CARS: Car[] = Array.from({ length: 8 }).map((_, i) => ({
   mileage: (10000 + i * 5000).toString(),
   transmission: "Automatic",
   fuel_type: "Petrol",
+  color: ["Black", "Red", "White", "Blue"][i % 4],
   interior_features: "Leather upholstery, Premium audio system, Climate control, Navigation",
   exterior_features: "LED headlights, Alloy wheels, Carbon fiber accents, Sport exhaust",
   condition: "Excellent",
   warranty: "2 years remaining",
   location: "Lagos, Nigeria",
-  status: "available",
+  status: "available" as const,
   is_featured: i < 2,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
@@ -51,23 +52,16 @@ export default async function CarsPage() {
     .eq("status", "available")
     .order("created_at", { ascending: false })
 
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("*")
+    .order("name")
+
   // Use sample cars if no real data or in development
   const displayCars = (cars && cars.length > 0) ? cars : SAMPLE_CARS
+  const displayCategories = categories || []
 
   return (
-    <div className="min-h-screen py-20">
-      <div className="container mx-auto px-4">
-        <div className="mb-12">
-          <h1 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">Our Collection</h1>
-          <p className="text-lg text-muted-foreground">Explore our complete inventory of luxury vehicles</p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {displayCars.map((car: Car) => (
-            <CarCard key={car.id} car={car} />
-          ))}
-        </div>
-      </div>
-    </div>
+    <CarsClient initialCars={displayCars} initialCategories={displayCategories} />
   )
 }
