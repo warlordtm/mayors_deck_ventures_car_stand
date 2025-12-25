@@ -4,9 +4,10 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
-import { Calendar, Gauge, Fuel, Settings, MapPin, Phone, MessageCircle, Shield, Award, ArrowRight } from "lucide-react"
+import { Calendar, Gauge, Fuel, Settings, MapPin, Phone, MessageCircle, Shield, Award, ArrowRight, Heart } from "lucide-react"
 import { CarImageGallery } from "@/components/car-image-gallery"
 import type { CarImage } from "@/lib/types"
+import { FavoriteButton } from "@/components/favorite-button"
 
 export default async function CarDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -264,16 +265,9 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
             {/* Action Buttons */}
             {car.status === "available" && (
               <div className="mb-6 flex flex-col gap-3 sm:flex-row">
-                <Button asChild className="flex-1 bg-white text-black hover:bg-zinc-200" size="lg">
-                  <Link href={`/test-drive?carId=${car.id}`}>
-                    <Calendar className="mr-2 h-5 w-5" />
-                    Book Test Drive
-                  </Link>
-                </Button>
                 <Button
                   asChild
-                  variant="outline"
-                  className="flex-1 border-border text-foreground hover:bg-accent hover:text-accent-foreground"
+                  className="flex-1 bg-white text-black hover:bg-zinc-200"
                   size="lg"
                 >
                   <a
@@ -408,15 +402,10 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
             <CardContent className="p-8 text-center">
               <h2 className="mb-4 font-display text-3xl font-bold text-foreground">Ready to Own This Vehicle?</h2>
               <p className="mb-6 text-lg text-muted-foreground">
-                Book a test drive or contact us to start the purchase process
+                Contact us to start the purchase process
               </p>
               <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
                 <Button asChild size="lg" className="bg-white text-black hover:bg-zinc-200">
-                  <Link href={`/test-drive?carId=${car.id}`}>
-                    Book Test Drive <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
                   <a
                     href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hi, I'm interested in purchasing the ${car.name} (${car.year})`)}`}
                     target="_blank"

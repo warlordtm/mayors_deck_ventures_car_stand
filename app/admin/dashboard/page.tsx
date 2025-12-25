@@ -448,19 +448,6 @@ export default function AdminDashboardPage() {
               </Card>
             </Link>
 
-            <Link href="/admin/bookings">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
-                <CardContent className="flex items-center gap-4 p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
-                    <Calendar className="h-6 w-6 text-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">Test Drive Bookings</h3>
-                    <p className="text-sm text-muted-foreground">View and manage bookings</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
 
             <Link href="/admin/inquiries">
               <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">

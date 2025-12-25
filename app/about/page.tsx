@@ -70,13 +70,6 @@ export default function AboutPage() {
                 </p>
               </div>
               <div className="text-center">
-                <h3 className="text-2xl font-bold font-display text-foreground mb-4">Test Drive Experience</h3>
-                <p className="text-muted-foreground">
-                  Schedule exclusive test drives in our premium facilities. Experience the thrill of luxury
-                  driving firsthand.
-                </p>
-              </div>
-              <div className="text-center">
                 <h3 className="text-2xl font-bold font-display text-foreground mb-4">Ongoing Support</h3>
                 <p className="text-muted-foreground">
                   Beyond the sale, we're here for you. Access to our network of certified mechanics and

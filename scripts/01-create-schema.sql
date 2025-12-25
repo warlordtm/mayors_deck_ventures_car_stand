@@ -72,14 +72,14 @@ CREATE TABLE customers (
 
 -- Inquiries table
 CREATE TABLE inquiries (
-   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-   car_id UUID REFERENCES cars(id) ON DELETE CASCADE,
-   customer_id UUID REFERENCES customers(id) ON DELETE CASCADE,
-   type TEXT DEFAULT 'inquiry' CHECK (type IN ('test-drive', 'purchase', 'inquiry')),
-   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'contacted', 'closed')),
-   message TEXT,
-   created_at TIMESTAMPTZ DEFAULT NOW()
- );
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    car_id UUID REFERENCES cars(id) ON DELETE CASCADE,
+    customer_id UUID REFERENCES customers(id) ON DELETE CASCADE,
+    type TEXT DEFAULT 'inquiry' CHECK (type IN ('purchase', 'inquiry')),
+    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'contacted', 'closed')),
+    message TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+  );
 
 -- Sales table
 CREATE TABLE sales (
@@ -94,32 +94,32 @@ CREATE TABLE sales (
 
 -- Activity logs table
 CREATE TABLE activity_logs (
-   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-   admin_id UUID REFERENCES admin_users(id) ON DELETE SET NULL,
-   action TEXT NOT NULL,
-   details JSONB,
-   created_at TIMESTAMPTZ DEFAULT NOW()
- );
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    admin_id UUID REFERENCES admin_users(id) ON DELETE SET NULL,
+    action TEXT NOT NULL,
+    details JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+  );
 
--- Test drive bookings table
-CREATE TABLE test_drive_bookings (
-   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-   car_id UUID REFERENCES cars(id) ON DELETE CASCADE,
-   customer_name TEXT NOT NULL,
-   customer_email TEXT NOT NULL,
-   customer_phone TEXT NOT NULL,
-   booking_date DATE NOT NULL,
-   booking_time TEXT NOT NULL,
-   location TEXT NOT NULL,
-   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'completed', 'cancelled')),
-   assigned_agent_id UUID REFERENCES admin_users(id) ON DELETE SET NULL,
-   payment_status TEXT DEFAULT 'pending' CHECK (payment_status IN ('pending', 'paid', 'refunded')),
-   payment_amount DECIMAL(10, 2),
-   stripe_payment_intent_id TEXT,
-   notes TEXT,
-   created_at TIMESTAMPTZ DEFAULT NOW(),
-   updated_at TIMESTAMPTZ DEFAULT NOW()
- );
+-- User favorites/watchlist table
+CREATE TABLE user_favorites (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    car_id UUID REFERENCES cars(id) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(user_id, car_id)
+  );
+
+-- Car impressions table (for analytics)
+CREATE TABLE car_impressions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    car_id UUID REFERENCES cars(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    session_id TEXT,
+    page_source TEXT, -- 'listing', 'detail', 'search', etc.
+    created_at TIMESTAMPTZ DEFAULT NOW()
+  );
+
 
 -- Site settings table (for WhatsApp, contact info, etc.)
 CREATE TABLE site_settings (
@@ -167,7 +167,6 @@ INSERT INTO site_settings (key, value) VALUES
   ('whatsapp_number', '+1234567890'),
   ('contact_phone', '+1234567890'),
   ('contact_email', 'contact@luxurycars.com'),
-  ('test_drive_fee', '99.99'),
   ('brand_name', 'Gaskiya Auto'),
   ('brand_tagline', 'Where Luxury Meets Performance');
 
@@ -183,5 +182,7 @@ CREATE INDEX idx_inquiries_status ON inquiries(status);
 CREATE INDEX idx_sales_car_id ON sales(car_id);
 CREATE INDEX idx_sales_customer_id ON sales(customer_id);
 CREATE INDEX idx_activity_logs_admin_id ON activity_logs(admin_id);
-CREATE INDEX idx_test_drive_bookings_car_id ON test_drive_bookings(car_id);
-CREATE INDEX idx_test_drive_bookings_status ON test_drive_bookings(status);
+CREATE INDEX idx_user_favorites_user_id ON user_favorites(user_id);
+CREATE INDEX idx_user_favorites_car_id ON user_favorites(car_id);
+CREATE INDEX idx_car_impressions_car_id ON car_impressions(car_id);
+CREATE INDEX idx_car_impressions_created_at ON car_impressions(created_at);

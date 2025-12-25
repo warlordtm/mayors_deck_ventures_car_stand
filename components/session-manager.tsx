@@ -1,21 +1,38 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 
-// Session timeout: 20 minutes
-const SESSION_TIMEOUT = 20 * 60 * 1000
+// Inactivity timeout: 30 minutes
+const INACTIVITY_TIMEOUT = 30 * 60 * 1000
 const CHECK_INTERVAL = 60 * 1000 // Check every minute
 
 export function SessionManager() {
   const router = useRouter()
   const pathname = usePathname()
+  const lastActivityRef = useRef(Date.now())
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     // Only run session checks on protected routes
     if (!pathname.startsWith("/admin") && !pathname.startsWith("/account") && !pathname.startsWith("/user")) {
       return
+    }
+
+    const resetActivity = () => {
+      lastActivityRef.current = Date.now()
+    }
+
+    const checkInactivity = async () => {
+      const now = Date.now()
+      const timeSinceLastActivity = now - lastActivityRef.current
+
+      if (timeSinceLastActivity >= INACTIVITY_TIMEOUT) {
+        console.log("User inactive for 30 minutes, logging out")
+        await handleLogout()
+        return
+      }
     }
 
     const checkSession = async () => {
@@ -46,26 +63,57 @@ export function SessionManager() {
           return
         }
 
+        // Check for inactivity
+        await checkInactivity()
+
       } catch (error) {
         console.error("Session check failed:", error)
       }
     }
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+
       if (pathname.startsWith("/admin")) {
-        router.push("/admin/login?message=Session expired")
+        router.push("/admin/login?message=Session expired due to inactivity")
       } else {
-        router.push("/login?message=Session expired")
+        router.push("/login?message=Session expired due to inactivity")
       }
     }
+
+    // Activity event listeners
+    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click']
+
+    const addActivityListeners = () => {
+      events.forEach(event => {
+        document.addEventListener(event, resetActivity, true)
+      })
+    }
+
+    const removeActivityListeners = () => {
+      events.forEach(event => {
+        document.removeEventListener(event, resetActivity, true)
+      })
+    }
+
+    // Initialize activity tracking
+    resetActivity()
+    addActivityListeners()
 
     // Check session immediately
     checkSession()
 
-    // Set up interval to check session periodically
+    // Set up interval to check session and inactivity periodically
     const interval = setInterval(checkSession, CHECK_INTERVAL)
 
-    return () => clearInterval(interval)
+    return () => {
+      clearInterval(interval)
+      removeActivityListeners()
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
   }, [pathname, router])
 
   return null // This component doesn't render anything

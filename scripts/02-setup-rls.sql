@@ -3,7 +3,6 @@ ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE cars ENABLE ROW LEVEL SECURITY;
 ALTER TABLE car_images ENABLE ROW LEVEL SECURITY;
 ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY;
-ALTER TABLE test_drive_bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies if they exist
@@ -28,10 +27,6 @@ DROP POLICY IF EXISTS "Admins can insert admin users" ON admin_users;
 DROP POLICY IF EXISTS "Admins can update admin users" ON admin_users;
 DROP POLICY IF EXISTS "Allow all operations on admin_users" ON admin_users;
 
-DROP POLICY IF EXISTS "Anyone can create test drive bookings" ON test_drive_bookings;
-DROP POLICY IF EXISTS "Admins can view all bookings" ON test_drive_bookings;
-DROP POLICY IF EXISTS "Admins can update bookings" ON test_drive_bookings;
-DROP POLICY IF EXISTS "Admins can delete bookings" ON test_drive_bookings;
 
 DROP POLICY IF EXISTS "Anyone can view site settings" ON site_settings;
 DROP POLICY IF EXISTS "Only admins can insert site settings" ON site_settings;
@@ -105,33 +100,6 @@ CREATE POLICY "Allow all operations on car images" ON car_images
 CREATE POLICY "Allow all operations on admin_users" ON admin_users
   FOR ALL USING (true) WITH CHECK (true);
 
--- Test drive bookings: Public insert, admin manage
-CREATE POLICY "Anyone can create test drive bookings" ON test_drive_bookings
-  FOR INSERT WITH CHECK (true);
-
-CREATE POLICY "Admins can view all bookings" ON test_drive_bookings
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM profiles
-      WHERE id = auth.uid() AND role = 'admin'
-    )
-  );
-
-CREATE POLICY "Admins can update bookings" ON test_drive_bookings
-  FOR UPDATE USING (
-    EXISTS (
-      SELECT 1 FROM profiles
-      WHERE id = auth.uid() AND role = 'admin'
-    )
-  );
-
-CREATE POLICY "Admins can delete bookings" ON test_drive_bookings
-  FOR DELETE USING (
-    EXISTS (
-      SELECT 1 FROM profiles
-      WHERE id = auth.uid() AND role = 'admin'
-    )
-  );
 
 -- Site settings: Public read, admin write
 CREATE POLICY "Anyone can view site settings" ON site_settings
@@ -155,6 +123,28 @@ CREATE POLICY "Only admins can update site settings" ON site_settings
 
 CREATE POLICY "Only admins can delete site settings" ON site_settings
   FOR DELETE USING (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE id = auth.uid() AND role = 'admin'
+    )
+  );
+
+-- User favorites: Users can manage their own favorites
+CREATE POLICY "Users can view their own favorites" ON user_favorites
+  FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own favorites" ON user_favorites
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own favorites" ON user_favorites
+  FOR DELETE USING (auth.uid() = user_id);
+
+-- Car impressions: Anyone can insert, admins can view
+CREATE POLICY "Anyone can create impressions" ON car_impressions
+  FOR INSERT WITH CHECK (true);
+
+CREATE POLICY "Admins can view all impressions" ON car_impressions
+  FOR SELECT USING (
     EXISTS (
       SELECT 1 FROM profiles
       WHERE id = auth.uid() AND role = 'admin'

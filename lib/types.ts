@@ -44,26 +44,6 @@ export interface CarImage {
   created_at: string
 }
 
-export interface TestDriveBooking {
-  id: string
-  car_id: string
-  customer_name: string
-  customer_email: string
-  customer_phone: string
-  booking_date: string
-  booking_time: string
-  location: string
-  status: "pending" | "confirmed" | "completed" | "cancelled"
-  assigned_agent_id: string | null
-  payment_status: "pending" | "paid" | "refunded"
-  payment_amount: number | null
-  stripe_payment_intent_id: string | null
-  notes: string | null
-  created_at: string
-  updated_at: string
-  car?: Car
-}
-
 export interface SiteSetting {
   id: string
   key: string
@@ -76,13 +56,27 @@ export interface Profile {
   id: string
   full_name: string | null
   phone: string | null
-  nin: string | null
-  nin_status: string
   role: "admin" | "user"
-  driver_license: string | null
-  preferred_car_type: string | null
   created_at: string
   updated_at: string
+}
+
+export interface UserFavorite {
+  id: string
+  user_id: string
+  car_id: string
+  created_at: string
+  car?: Car
+}
+
+export interface CarImpression {
+  id: string
+  car_id: string
+  user_id: string | null
+  session_id: string | null
+  page_source: string
+  created_at: string
+  car?: Car
 }
 
 export interface Customer {
@@ -97,7 +91,7 @@ export interface Inquiry {
   id: string
   car_id: string
   customer_id: string
-  type: "test-drive" | "purchase" | "inquiry"
+  type: "purchase" | "inquiry"
   status: "pending" | "contacted" | "closed"
   message: string | null
   created_at: string
