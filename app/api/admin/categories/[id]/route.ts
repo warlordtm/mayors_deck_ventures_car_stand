@@ -122,14 +122,16 @@ export async function DELETE(request: Request, context: any) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 })
     }
 
-    // Check if category has cars
+    // Check if category has cars and handle them
     const { count: carCount } = await supabase
       .from("cars")
       .select("*", { count: "exact", head: true })
       .eq("category_id", id)
 
+    // If category has cars, we'll allow deletion since the foreign key constraint
+    // will set category_id to NULL for associated cars (ON DELETE SET NULL)
     if (carCount && carCount > 0) {
-      return NextResponse.json({ error: "Cannot delete category with associated cars" }, { status: 400 })
+      console.log(`Deleting category ${id} which has ${carCount} associated cars. Cars will be uncategorized.`)
     }
 
     const { error } = await supabase
