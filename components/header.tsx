@@ -45,9 +45,28 @@ export function Header() {
   }, [])
 
   const handleLogout = async () => {
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    router.push("/")
+    try {
+      // Use the signout API route which handles proper redirects
+      const response = await fetch('/api/auth/signout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (response.redirected) {
+        window.location.href = response.url
+      } else {
+        // Fallback to home page
+        router.push("/")
+      }
+    } catch (error) {
+      console.error('Logout error:', error)
+      // Fallback logout
+      const supabase = createClient()
+      await supabase.auth.signOut()
+      router.push("/")
+    }
   }
 
   return (
