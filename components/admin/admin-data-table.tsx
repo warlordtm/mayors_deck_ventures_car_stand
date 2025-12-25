@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { MoreHorizontal, Edit, Trash2, Search } from "lucide-react"
+import { MoreHorizontal, Edit, Trash2, Search, Loader2 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,6 +33,7 @@ interface AdminDataTableProps {
   onDelete?: (item: any) => void
   searchable?: boolean
   searchPlaceholder?: string
+  loading?: boolean
 }
 
 export function AdminDataTable({
@@ -42,8 +43,10 @@ export function AdminDataTable({
   onDelete,
   searchable = true,
   searchPlaceholder = "Search...",
+  loading = false,
 }: AdminDataTableProps) {
   const [searchTerm, setSearchTerm] = useState("")
+  const [loadingOperations, setLoadingOperations] = useState<Set<string>>(new Set())
 
   const filteredData = data.filter((item) =>
     searchable
@@ -104,23 +107,53 @@ export function AdminDataTable({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           {onEdit && (
-                            <DropdownMenuItem onClick={() => {
-                              console.log("Edit menu item clicked for:", item)
-                              onEdit(item)
-                            }}>
-                              <Edit className="mr-2 h-4 w-4" />
+                            <DropdownMenuItem
+                              onClick={async () => {
+                                const operationId = `edit-${item.id}`
+                                setLoadingOperations(prev => new Set(prev).add(operationId))
+                                try {
+                                  await onEdit(item)
+                                } finally {
+                                  setLoadingOperations(prev => {
+                                    const newSet = new Set(prev)
+                                    newSet.delete(operationId)
+                                    return newSet
+                                  })
+                                }
+                              }}
+                              disabled={loadingOperations.has(`edit-${item.id}`)}
+                            >
+                              {loadingOperations.has(`edit-${item.id}`) ? (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              ) : (
+                                <Edit className="mr-2 h-4 w-4" />
+                              )}
                               Edit
                             </DropdownMenuItem>
                           )}
                           {onDelete && (
                             <DropdownMenuItem
-                              onClick={() => {
-                                console.log("Delete menu item clicked for:", item)
-                                onDelete(item)
+                              onClick={async () => {
+                                const operationId = `delete-${item.id}`
+                                setLoadingOperations(prev => new Set(prev).add(operationId))
+                                try {
+                                  await onDelete(item)
+                                } finally {
+                                  setLoadingOperations(prev => {
+                                    const newSet = new Set(prev)
+                                    newSet.delete(operationId)
+                                    return newSet
+                                  })
+                                }
                               }}
+                              disabled={loadingOperations.has(`delete-${item.id}`)}
                               className="text-destructive"
                             >
-                              <Trash2 className="mr-2 h-4 w-4" />
+                              {loadingOperations.has(`delete-${item.id}`) ? (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              ) : (
+                                <Trash2 className="mr-2 h-4 w-4" />
+                              )}
                               Delete
                             </DropdownMenuItem>
                           )}

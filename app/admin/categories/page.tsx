@@ -25,6 +25,7 @@ export default function CategoriesPage() {
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
+  const [operationLoading, setOperationLoading] = useState(false)
   const { toast } = useToast()
 
   const fetchCategories = async () => {
@@ -56,6 +57,7 @@ export default function CategoriesPage() {
   }, [])
 
   const handleCreate = async (data: any) => {
+    setOperationLoading(true)
     try {
       const response = await fetch("/api/admin/categories", {
         method: "POST",
@@ -84,12 +86,15 @@ export default function CategoriesPage() {
         description: "Failed to create category",
         variant: "destructive",
       })
+    } finally {
+      setOperationLoading(false)
     }
   }
 
   const handleUpdate = async (data: any) => {
     if (!editingCategory) return
 
+    setOperationLoading(true)
     try {
       const response = await fetch(`/api/admin/categories/${editingCategory.id}`, {
         method: "PUT",
@@ -118,12 +123,15 @@ export default function CategoriesPage() {
         description: "Failed to update category",
         variant: "destructive",
       })
+    } finally {
+      setOperationLoading(false)
     }
   }
 
   const handleDelete = async (category: Category) => {
     if (!confirm(`Are you sure you want to delete "${category.name}"?`)) return
 
+    setOperationLoading(true)
     try {
       const response = await fetch(`/api/admin/categories/${category.id}`, {
         method: "DELETE",
@@ -149,6 +157,8 @@ export default function CategoriesPage() {
         description: "Failed to delete category",
         variant: "destructive",
       })
+    } finally {
+      setOperationLoading(false)
     }
   }
 
@@ -249,6 +259,7 @@ export default function CategoriesPage() {
         onEdit={setEditingCategory}
         onDelete={handleDelete}
         searchPlaceholder="Search brands..."
+        loading={operationLoading}
       />
     </div>
   )

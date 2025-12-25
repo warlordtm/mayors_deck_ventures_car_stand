@@ -51,9 +51,9 @@ export function Footer() {
             <p className="text-sm text-muted-foreground">{settings.brand_tagline || 'Luxury. Confidence. Trust.'}</p>
           </div>
 
-          <div>
+          <div className="text-center md:text-left">
             <h4 className="mb-4 text-sm font-semibold text-foreground">Quick Links</h4>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 items-center md:items-start">
               <Link href="/inventory" className="text-sm text-muted-foreground transition-colors hover:text-accent">
                 Inventory
               </Link>
@@ -63,9 +63,9 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
+          <div className="text-center md:text-left">
             <h4 className="mb-4 text-sm font-semibold text-foreground">Categories</h4>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 items-center md:items-start">
               <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
                 Supercars
               </Link>
@@ -84,9 +84,9 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
+          <div className="text-center md:text-left">
             <h4 className="mb-4 text-sm font-semibold text-foreground">Contact</h4>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 items-center md:items-start">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4" />
                 <span>{settings.contact_phone || '+234 814 449 3084'}</span>

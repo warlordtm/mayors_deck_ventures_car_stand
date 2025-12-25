@@ -85,24 +85,16 @@ export function Header() {
             {user ? (
               <div className="flex items-center gap-2">
                 {!isAdmin && (
-                  <>
-                    <Link href="/favorites">
-                      <Button variant="outline" size="sm" className="border-border text-foreground hover:bg-accent">
-                        <Heart className="mr-2 h-4 w-4" />
-                        My Watchlist
-                      </Button>
-                    </Link>
-                    <Link href="/account">
-                      <Button variant="outline" size="sm" className="border-border text-foreground hover:bg-accent">
-                        <User className="mr-2 h-4 w-4" />
-                        My Account
-                      </Button>
-                    </Link>
-                  </>
+                  <Link href="/favorites">
+                    <Button variant="outline" size="sm" className="border-border text-foreground hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground">
+                      <Heart className="mr-2 h-4 w-4" />
+                      My Watchlist
+                    </Button>
+                  </Link>
                 )}
                 {isAdmin && (
                   <Link href="/admin">
-                    <Button variant="outline" size="sm" className="border-border text-foreground hover:bg-accent">
+                    <Button variant="outline" size="sm" className="border-border text-foreground hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground">
                       Admin
                     </Button>
                   </Link>
@@ -120,7 +112,7 @@ export function Header() {
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/login">
-                  <Button variant="outline" size="sm" className="border-border text-muted-foreground hover:bg-accent dark:hover:bg-muted dark:hover:text-white">
+                  <Button variant="outline" size="sm" className="border-border text-foreground hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent dark:hover:text-accent-foreground">
                     Login
                   </Button>
                 </Link>
