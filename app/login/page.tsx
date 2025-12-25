@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -20,6 +20,35 @@ export default function LoginPage() {
   const [resetEmail, setResetEmail] = useState("")
   const [resetMessage, setResetMessage] = useState("")
   const router = useRouter()
+
+  // Handle Supabase auth redirects
+  useEffect(() => {
+    const handleAuthCallback = async () => {
+      const supabase = createClient()
+      const { data, error } = await supabase.auth.getSession()
+
+      if (error) {
+        console.error('Auth callback error:', error)
+        setError('Authentication error. Please try logging in manually.')
+      } else if (data.session) {
+        // User is authenticated, redirect appropriately
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", data.session.user.id)
+          .single()
+
+        if (profile?.role === 'admin') {
+          router.push("/admin/dashboard")
+        } else {
+          router.push("/favorites")
+        }
+      }
+    }
+
+    // Check for auth callback on page load
+    handleAuthCallback()
+  }, [router])
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault()
