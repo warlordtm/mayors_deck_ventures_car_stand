@@ -29,6 +29,7 @@ interface AdminFormProps {
   loading?: boolean
   // Optional: automatically generate a slug from a source field into a target field
   autoSlug?: { sourceField: string; targetField: string }
+  onSelectChange?: (name: string, value: string) => boolean | void
 }
 
 export function AdminForm({
@@ -40,6 +41,7 @@ export function AdminForm({
   title,
   loading = false,
   autoSlug,
+  onSelectChange,
 }: AdminFormProps) {
   const [formData, setFormData] = useState(initialData)
 

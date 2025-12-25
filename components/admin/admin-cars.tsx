@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { AdminDataTable } from "@/components/admin/admin-data-table"
 import { AdminForm } from "@/components/admin/admin-form"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
@@ -30,6 +32,8 @@ export default function AdminCars() {
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingCar, setEditingCar] = useState<Car | null>(null)
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false)
+  const [newCategoryData, setNewCategoryData] = useState({ name: "", slug: "" })
 
   console.log("AdminCars render - showForm:", showForm, "editingCar:", editingCar)
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([])
