@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/client"
 export function Footer() {
   const [user, setUser] = useState<any>(null)
   const [settings, setSettings] = useState<Record<string, string | null>>({})
+  const [categories, setCategories] = useState([])
   const pathname = usePathname()
 
   useEffect(() => {

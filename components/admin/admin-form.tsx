@@ -116,7 +116,15 @@ export function AdminForm({
               ) : field.type === "select" ? (
                 <Select
                   value={formData[field.name] || ""}
-                  onValueChange={(value) => updateField(field.name, value)}
+                  onValueChange={(value) => {
+                    if (onSelectChange) {
+                      const result = onSelectChange(field.name, value)
+                      if (result === false) {
+                        return
+                      }
+                    }
+                    updateField(field.name, value)
+                  }}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder={field.placeholder} />
