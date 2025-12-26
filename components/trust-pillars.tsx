@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react"
 import { ShieldCheck, Users, Eye, Smile } from "lucide-react"
 import FeatureCard from "./feature-card"
+import { FeatureCardSkeleton } from "./loading-skeleton"
+import { ScrollReveal } from "./motion-wrappers"
 
 interface ContentBlock {
   id: string
@@ -64,7 +66,15 @@ export function TrustPillars() {
     return (
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="text-center">Loading...</div>
+          <div className="mb-12 text-center">
+            <h2 className="mb-3 text-4xl font-bold text-foreground">Why Gaskiya Auto?</h2>
+            <p className="text-lg text-muted-foreground">Trust pillars that define our promise to every customer.</p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 4 }).map((_, idx) => (
+              <FeatureCardSkeleton key={idx} />
+            ))}
+          </div>
         </div>
       </section>
     )
@@ -73,21 +83,22 @@ export function TrustPillars() {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
-        <div className="mb-12 text-center">
+        <ScrollReveal className="mb-12 text-center">
           <h2 className="mb-3 text-4xl font-bold text-foreground">Why Gaskiya Auto?</h2>
           <p className="text-lg text-muted-foreground">Trust pillars that define our promise to every customer.</p>
-        </div>
+        </ScrollReveal>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {pillars.map((p) => (
-            <FeatureCard
-              key={p.id}
-              title={p.title || ""}
-              content={p.content || ""}
-              icon={getIcon(p.title || "")}
-            />
-          ))}
-        </div>
+           {pillars.map((p, index) => (
+             <FeatureCard
+               key={p.id}
+               title={p.title || ""}
+               content={p.content || ""}
+               icon={getIcon(p.title || "")}
+               index={index}
+             />
+           ))}
+         </div>
       </div>
     </section>
   )

@@ -6,6 +6,7 @@ import SectionWrapper from "@/components/section-wrapper"
 import { Card, CardContent } from "@/components/ui/card"
 import { Phone, Mail, MapPin, MessageCircle, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ScrollReveal, MotionH2, MotionP } from "@/components/motion-wrappers"
 
 export default function HomePage() {
   const whatsappNumber = "+2348144493084"
@@ -35,13 +36,13 @@ export default function HomePage() {
 
       <SectionWrapper id="contact">
         <div className="container mx-auto px-4">
-          <div className="mb-12 text-center">
-            <h2 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">Contact Us</h2>
-            <p className="text-lg text-muted-foreground">Get in touch with our luxury car specialists</p>
-          </div>
+          <ScrollReveal className="mb-12 text-center">
+            <MotionH2 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">Contact Us</MotionH2>
+            <MotionP className="text-lg text-muted-foreground">Get in touch with our luxury car specialists</MotionP>
+          </ScrollReveal>
 
-          <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
-            <Card className="border-border bg-card/50 backdrop-blur">
+          <ScrollReveal className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2" delay={0.2}>
+            <Card className="border-border bg-card/50 backdrop-blur hover:scale-105 transition-transform">
               <CardContent className="p-8">
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                   <Phone className="h-6 w-6 text-foreground" />
@@ -54,7 +55,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="border-border bg-card/50 backdrop-blur">
+            <Card className="border-border bg-card/50 backdrop-blur hover:scale-105 transition-transform">
               <CardContent className="p-8">
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                   <Mail className="h-6 w-6 text-foreground" />
@@ -67,7 +68,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="border-border bg-card/50 backdrop-blur">
+            <Card className="border-border bg-card/50 backdrop-blur hover:scale-105 transition-transform">
               <CardContent className="p-8">
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                   <MapPin className="h-6 w-6 text-foreground" />
@@ -79,7 +80,7 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
-            <Card className="border-border bg-card/50 backdrop-blur">
+            <Card className="border-border bg-card/50 backdrop-blur hover:scale-105 transition-transform">
               <CardContent className="p-8">
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                   <Clock className="h-6 w-6 text-foreground" />
@@ -89,27 +90,29 @@ export default function HomePage() {
                 <p className="text-lg text-foreground">9:00 AM - 6:00 PM</p>
               </CardContent>
             </Card>
-          </div>
+          </ScrollReveal>
 
-          <Card className="mx-auto mt-8 max-w-4xl border-border bg-card/50 backdrop-blur">
-            <CardContent className="p-8 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20">
-                <MessageCircle className="h-8 w-8 text-green-500" />
-              </div>
-              <h3 className="mb-4 font-display text-2xl font-bold text-foreground">Prefer WhatsApp?</h3>
-              <p className="mb-6 text-muted-foreground">Chat with us directly for instant responses</p>
-              <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600">
-                <a
-                  href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <MessageCircle className="mr-2 h-5 w-5" />
-                  Start WhatsApp Chat
-                </a>
-              </Button>
-            </CardContent>
-          </Card>
+          <ScrollReveal className="mx-auto mt-8 max-w-4xl" delay={0.4}>
+            <Card className="border-border bg-card/50 backdrop-blur hover:scale-105 transition-transform">
+              <CardContent className="p-8 text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500/20">
+                  <MessageCircle className="h-8 w-8 text-green-500" />
+                </div>
+                <h3 className="mb-4 font-display text-2xl font-bold text-foreground">Prefer WhatsApp?</h3>
+                <p className="mb-6 text-muted-foreground">Chat with us directly for instant responses</p>
+                <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600 hover:scale-105 transition-all">
+                  <a
+                    href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    <MessageCircle className="mr-2 h-5 w-5" />
+                    Start WhatsApp Chat
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+          </ScrollReveal>
         </div>
       </SectionWrapper>
     </main>

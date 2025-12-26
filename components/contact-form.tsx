@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
+import { motion } from "framer-motion"
 import { createClient } from "@/lib/supabase/client"
 
 export function ContactForm() {
@@ -42,57 +43,106 @@ export function ContactForm() {
   }
 
   return (
-    <form id="contact" onSubmit={submit} className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8">
-      <div className="text-center">
+    <motion.form
+      id="contact"
+      onSubmit={submit}
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{
+        duration: 0.8,
+        ease: [0.25, 0.46, 0.45, 0.94],
+        type: "spring",
+        damping: 20,
+        stiffness: 100
+      }}
+      className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 shadow-2xl shadow-black/5"
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        className="text-center"
+      >
         <h3 className="mb-4 text-2xl font-bold text-foreground">Get in touch</h3>
         <p className="mb-6 text-sm text-muted-foreground">Send us a message and our team will respond within 24 hours.</p>
-      </div>
+      </motion.div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="flex w-full flex-col">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+        className="grid gap-4 sm:grid-cols-2"
+      >
+        <motion.label
+          whileFocus={{ scale: 1.02 }}
+          className="flex w-full flex-col"
+        >
           <span className="mb-2 text-sm text-muted-foreground">Name</span>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="rounded-md border border-border bg-transparent px-3 py-2 text-foreground"
+            className="rounded-md border border-border bg-transparent px-3 py-2 text-foreground transition-all duration-300 focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none"
             required
           />
-        </label>
-        <label className="flex w-full flex-col">
+        </motion.label>
+        <motion.label
+          whileFocus={{ scale: 1.02 }}
+          className="flex w-full flex-col"
+        >
           <span className="mb-2 text-sm text-muted-foreground">Email</span>
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="rounded-md border border-border bg-transparent px-3 py-2 text-foreground"
+            className="rounded-md border border-border bg-transparent px-3 py-2 text-foreground transition-all duration-300 focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none"
             type="email"
             required
           />
-        </label>
-      </div>
+        </motion.label>
+      </motion.div>
 
-      <label className="mt-4 flex flex-col">
+      <motion.label
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.6 }}
+        whileFocus={{ scale: 1.01 }}
+        className="mt-4 flex flex-col"
+      >
         <span className="mb-2 text-sm text-muted-foreground">Message</span>
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="min-h-[120px] rounded-md border border-border bg-transparent px-3 py-2 text-foreground"
+          className="min-h-[120px] rounded-md border border-border bg-transparent px-3 py-2 text-foreground transition-all duration-300 focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none resize-none"
           required
         />
-      </label>
+      </motion.label>
 
-      <div className="mt-6 flex flex-col items-center gap-4">
-        <button
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.6 }}
+        className="mt-6 flex flex-col items-center gap-4"
+      >
+        <motion.button
           type="submit"
           disabled={loading}
-          className="inline-flex h-12 items-center justify-center rounded-md bg-accent px-6 font-semibold text-black disabled:opacity-60"
+          whileHover={{ scale: 1.05, y: -2 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ type: "spring", damping: 20, stiffness: 300 }}
+          className="inline-flex h-12 items-center justify-center rounded-md bg-accent px-6 font-semibold text-black disabled:opacity-60 shadow-lg shadow-accent/20 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 cursor-pointer"
         >
           {loading ? "Sending..." : "Send Message"}
-        </button>
+        </motion.button>
         {status && (
-          <p className={`text-sm text-center ${status.ok ? "text-emerald-400" : "text-rose-400"}`}>{status.message}</p>
+          <motion.p
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className={`text-sm text-center ${status.ok ? "text-emerald-400" : "text-rose-400"}`}
+          >
+            {status.message}
+          </motion.p>
         )}
-      </div>
-    </form>
+      </motion.div>
+    </motion.form>
   )
 }
 
