@@ -238,9 +238,10 @@ export default function AdminDashboardPage() {
 
   const handleLogout = async () => {
     try {
-      const supabase = createClient()
-      await supabase.auth.signOut()
-      router.push('/admin/login')
+      // Use the API route for proper logout
+      await fetch('/api/auth/signout', { method: 'POST' })
+      // Force redirect to admin login
+      window.location.href = '/admin/login'
     } catch (error) {
       console.error('Logout error:', error)
       toast({ title: "Error", description: "Failed to logout", variant: "destructive" })
