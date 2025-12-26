@@ -1,4 +1,4 @@
-"use client"
+ "use client"
 
 import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
 
 interface FormField {
   name: string
@@ -30,6 +31,7 @@ interface AdminFormProps {
   // Optional: automatically generate a slug from a source field into a target field
   autoSlug?: { sourceField: string; targetField: string }
   onSelectChange?: (name: string, value: string) => boolean | void
+  uploadProgress?: Record<string, number>
 }
 
 export function AdminForm({
@@ -42,6 +44,7 @@ export function AdminForm({
   loading = false,
   autoSlug,
   onSelectChange,
+  uploadProgress = {},
 }: AdminFormProps) {
   const [formData, setFormData] = useState(initialData)
 
@@ -144,14 +147,24 @@ export function AdminForm({
                   onCheckedChange={(checked) => updateField(field.name, checked)}
                 />
               ) : field.type === "file" ? (
-                <input
-                  id={field.name}
-                  type="file"
-                  multiple={field.multiple}
-                  onChange={(e) => updateField(field.name, e.target.files)}
-                  required={field.required}
-                  className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
-                />
+                <>
+                  <input
+                    id={field.name}
+                    type="file"
+                    multiple={field.multiple}
+                    onChange={(e) => updateField(field.name, e.target.files)}
+                    required={field.required}
+                    className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                  />
+                  {uploadProgress[field.name] !== undefined && uploadProgress[field.name] > 0 && uploadProgress[field.name] < 100 && (
+                    <div className="mt-2">
+                      <Progress value={uploadProgress[field.name]} className="w-full" />
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Uploading... {Math.round(uploadProgress[field.name])}%
+                      </p>
+                    </div>
+                  )}
+                </>
               ) : field.type === "date" ? (
                 <Input
                   id={field.name}

@@ -376,7 +376,7 @@ export default function AdminDashboardPage() {
           <h2 className="mb-4 text-xl font-bold text-foreground">Quick Add</h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card
-              className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80 cursor-pointer"
+              className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer"
               onClick={() => setShowCarModal(true)}
             >
               <CardContent className="flex items-center gap-4 p-6">
@@ -391,7 +391,7 @@ export default function AdminDashboardPage() {
             </Card>
 
             <Card
-              className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80 cursor-pointer"
+              className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer"
               onClick={() => setShowCategoryModal(true)}
             >
               <CardContent className="flex items-center gap-4 p-6">
@@ -406,7 +406,7 @@ export default function AdminDashboardPage() {
             </Card>
 
             <Link href="/admin/content">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80 cursor-pointer">
+              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
                     <Plus className="h-6 w-6 text-purple-600" />
@@ -420,7 +420,7 @@ export default function AdminDashboardPage() {
             </Link>
 
             <Link href="/admin/users">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80 cursor-pointer">
+              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100">
                     <Plus className="h-6 w-6 text-orange-600" />
@@ -440,7 +440,7 @@ export default function AdminDashboardPage() {
           <h2 className="mb-4 text-xl font-bold text-foreground">Management</h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Link href="/admin/cars">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                     <Car className="h-6 w-6 text-foreground" />
@@ -456,7 +456,7 @@ export default function AdminDashboardPage() {
 
 
             <Link href="/admin/sales">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                     <DollarSign className="h-6 w-6 text-foreground" />
@@ -470,7 +470,7 @@ export default function AdminDashboardPage() {
             </Link>
 
             <Link href="/admin/customers">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                     <Users className="h-6 w-6 text-foreground" />
@@ -484,7 +484,7 @@ export default function AdminDashboardPage() {
             </Link>
 
             <Link href="/admin/settings">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                     <Users className="h-6 w-6 text-foreground" />
@@ -498,7 +498,7 @@ export default function AdminDashboardPage() {
             </Link>
 
             <Link href="/admin/users">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                     <UserCheck className="h-6 w-6 text-foreground" />
@@ -512,7 +512,7 @@ export default function AdminDashboardPage() {
             </Link>
 
             <Link href="/admin/categories">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                     <Tag className="h-6 w-6 text-foreground" />
@@ -526,7 +526,7 @@ export default function AdminDashboardPage() {
             </Link>
 
             <Link href="/admin/analytics">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                     <BarChart3 className="h-6 w-6 text-foreground" />
@@ -540,7 +540,7 @@ export default function AdminDashboardPage() {
             </Link>
 
             <Link href="/admin/content">
-              <Card className="border-border bg-card/50 backdrop-blur transition-colors hover:bg-card/80">
+              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
                     <FileText className="h-6 w-6 text-foreground" />

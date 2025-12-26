@@ -127,7 +127,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <Card className="border-border bg-card/50 backdrop-blur">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground text-center cursor-pointer">LOGIN</CardTitle>
+            <CardTitle className="text-2xl text-foreground text-center">LOGIN</CardTitle>
             <CardDescription className="text-muted-foreground">
               Enter your credentials to access your account
             </CardDescription>
@@ -168,7 +168,7 @@ export default function LoginPage() {
                 <div className="text-center">
                   <button
                     onClick={() => setShowForgotPassword(false)}
-                    className="text-sm text-primary hover:underline"
+                    className="text-sm text-primary hover:underline cursor-pointer"
                   >
                     Back to Login
                   </button>

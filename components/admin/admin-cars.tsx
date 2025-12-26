@@ -30,6 +30,8 @@ interface Car {
 export default function AdminCars() {
   const [cars, setCars] = useState<Car[]>([])
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({})
   const [showForm, setShowForm] = useState(false)
   const [editingCar, setEditingCar] = useState<Car | null>(null)
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false)
@@ -73,44 +75,76 @@ export default function AdminCars() {
     fetchCategories()
   }, [])
 
-  const handleCreate = async (data: any) => {
-    try {
-      let body: string | FormData
-      let headers: Record<string, string> = {}
+  const uploadWithProgress = (url: string, formData: FormData, method: string = 'POST') => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
 
-      if (data.images && data.images.length > 0) {
+      xhr.upload.addEventListener('progress', (event) => {
+        if (event.lengthComputable) {
+          const progress = (event.loaded / event.total) * 100
+          setUploadProgress(prev => ({
+            ...prev,
+            images: progress,
+            video: progress
+          }))
+        }
+      })
+
+      xhr.addEventListener('load', () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          resolve(xhr.response)
+        } else {
+          reject(new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`))
+        }
+      })
+
+      xhr.addEventListener('error', () => {
+        reject(new Error('Upload failed'))
+      })
+
+      xhr.open(method, url)
+      xhr.send(formData)
+    })
+  }
+
+  const handleCreate = async (data: any) => {
+    setSaving(true)
+    setUploadProgress({})
+    try {
+      let response
+
+      if ((data.images && data.images.length > 0) || data.video) {
         const formData = new FormData()
         Object.keys(data).forEach(key => {
           if (key === 'images') {
             for (let i = 0; i < data.images.length; i++) {
               formData.append('images', data.images[i])
             }
+          } else if (key === 'video' && data.video) {
+            formData.append('video', data.video)
           } else {
             formData.append(key, data[key])
           }
         })
-        body = formData
+        response = await uploadWithProgress("/api/admin/cars", formData, "POST")
       } else {
-        body = JSON.stringify(data)
-        headers = { "Content-Type": "application/json" }
+        const res = await fetch("/api/admin/cars", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        })
+        response = await res.json()
+        if (!res.ok) throw new Error(response.error || "Failed to create car")
       }
 
-      const res = await fetch("/api/admin/cars", {
-        method: "POST",
-        headers,
-        body,
-      })
-
-      if (res.ok) {
-        toast({ title: "Success", description: "Car added successfully!" })
-        setShowForm(false)
-        fetchCars()
-      } else {
-        const error = await res.json()
-        toast({ title: "Error", description: error.error || "Failed to create car", variant: "destructive" })
-      }
+      toast({ title: "Success", description: "Car added successfully!" })
+      setShowForm(false)
+      fetchCars()
     } catch (e) {
-      toast({ title: "Error", description: "Failed to create car", variant: "destructive" })
+      toast({ title: "Error", description: (e as Error).message || "Failed to create car", variant: "destructive" })
+    } finally {
+      setSaving(false)
+      setUploadProgress({})
     }
   }
 
@@ -121,50 +155,44 @@ export default function AdminCars() {
       return
     }
 
+    setSaving(true)
+    setUploadProgress({})
     try {
-      let body: string | FormData
-      let headers: Record<string, string> = {}
+      let response
 
-      if (data.images && data.images.length > 0) {
+      if ((data.images && data.images.length > 0) || data.video) {
         const formData = new FormData()
         Object.keys(data).forEach(key => {
           if (key === 'images') {
             for (let i = 0; i < data.images.length; i++) {
               formData.append('images', data.images[i])
             }
+          } else if (key === 'video' && data.video) {
+            formData.append('video', data.video)
           } else {
             formData.append(key, data[key])
           }
         })
-        body = formData
+        response = await uploadWithProgress(`/api/admin/cars/${editingCar.id}`, formData, "PUT")
       } else {
-        body = JSON.stringify(data)
-        headers = { "Content-Type": "application/json" }
+        const res = await fetch(`/api/admin/cars/${editingCar.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        })
+        response = await res.json()
+        if (!res.ok) throw new Error(response.error || "Failed to update car")
       }
 
-      const res = await fetch(`/api/admin/cars/${editingCar.id}`, {
-        method: "PUT",
-        headers,
-        body,
-      })
-
-      if (res.ok) {
-        console.log("Update successful")
-        toast({ title: "Success", description: "Car updated successfully!" })
-        setEditingCar(null)
-        fetchCars()
-      } else {
-        const errorText = await res.text()
-        console.error("Update failed:", res.status, errorText)
-        try {
-          const errorJson = JSON.parse(errorText)
-          toast({ title: "Error", description: errorJson.error || "Failed to update car", variant: "destructive" })
-        } catch (e) {
-          toast({ title: "Error", description: `Failed to update car (status ${res.status})`, variant: "destructive" })
-        }
-      }
+      console.log("Update successful")
+      toast({ title: "Success", description: "Car updated successfully!" })
+      setEditingCar(null)
+      fetchCars()
     } catch (e) {
-      toast({ title: "Error", description: "Failed to update car", variant: "destructive" })
+      toast({ title: "Error", description: (e as Error).message || "Failed to update car", variant: "destructive" })
+    } finally {
+      setSaving(false)
+      setUploadProgress({})
     }
   }
 
@@ -278,6 +306,8 @@ export default function AdminCars() {
                 initialData={editingCar || { show_price: true, status: "available" }}
                 onSubmit={editingCar ? handleUpdate : handleCreate}
                 onCancel={() => { setShowForm(false); setEditingCar(null) }}
+                loading={saving}
+                uploadProgress={uploadProgress}
               />
             </div>
           </DialogContent>
