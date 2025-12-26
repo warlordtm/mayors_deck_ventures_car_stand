@@ -236,18 +236,6 @@ export default function AdminDashboardPage() {
     }
   }
 
-  const handleLogout = async () => {
-    try {
-      // Use the API route for proper logout
-      await fetch('/api/auth/signout', { method: 'POST' })
-      // Force redirect to admin login
-      window.location.href = '/admin/login'
-    } catch (error) {
-      console.error('Logout error:', error)
-      toast({ title: "Error", description: "Failed to logout", variant: "destructive" })
-    }
-  }
-
   const handleAddCategory = async () => {
     // Auto-generate slug if not provided
     const finalForm = {
@@ -296,19 +284,10 @@ export default function AdminDashboardPage() {
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="mb-4 text-3xl font-bold text-foreground">Admin Dashboard</h1>
-            <p className="text-muted-foreground">Welcome {currentUser.email}</p>
-          </div>
-          <Button
-            onClick={handleLogout}
-            variant="outline"
-            className="border-red-500 text-red-600 hover:bg-red-50 hover:text-red-700 bg-transparent cursor-pointer"
-          >
-            Logout
-          </Button>
-        </div>
+        <div className="mb-8">
+           <h1 className="mb-4 text-3xl font-bold text-foreground">Admin Dashboard</h1>
+           <p className="text-muted-foreground">Welcome {currentUser.email}</p>
+         </div>
 
         {/* Stats Grid */}
         <div className="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
