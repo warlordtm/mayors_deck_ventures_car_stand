@@ -236,6 +236,17 @@ export default function AdminDashboardPage() {
     }
   }
 
+  const handleLogout = async () => {
+    try {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+      router.push('/admin/login')
+    } catch (error) {
+      console.error('Logout error:', error)
+      toast({ title: "Error", description: "Failed to logout", variant: "destructive" })
+    }
+  }
+
   const handleAddCategory = async () => {
     // Auto-generate slug if not provided
     const finalForm = {
@@ -289,15 +300,13 @@ export default function AdminDashboardPage() {
             <h1 className="mb-4 text-3xl font-bold text-foreground">Admin Dashboard</h1>
             <p className="text-muted-foreground">Welcome {currentUser.email}</p>
           </div>
-          <form action="/api/auth/signout" method="POST">
-            <Button
-              type="submit"
-              variant="outline"
-              className="border-red-500 text-red-600 hover:bg-red-50 hover:text-red-700 bg-transparent"
-            >
-              Sign Out
-            </Button>
-          </form>
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            className="border-red-500 text-red-600 hover:bg-red-50 hover:text-red-700 bg-transparent cursor-pointer"
+          >
+            Logout
+          </Button>
         </div>
 
         {/* Stats Grid */}
@@ -676,7 +685,7 @@ export default function AdminDashboardPage() {
                   type="file"
                   multiple
                   onChange={(e) => setCarForm({...carForm, images: e.target.files})}
-                  className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                  className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer"
                 />
               </div>
 
@@ -687,7 +696,7 @@ export default function AdminDashboardPage() {
                   type="file"
                   accept="video/*"
                   onChange={(e) => setCarForm({...carForm, video: e.target.files?.[0] || null})}
-                  className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                  className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer"
                 />
               </div>
 

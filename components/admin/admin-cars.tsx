@@ -36,6 +36,7 @@ export default function AdminCars() {
   const [editingCar, setEditingCar] = useState<Car | null>(null)
   const [showAddCategoryModal, setShowAddCategoryModal] = useState(false)
   const [newCategoryData, setNewCategoryData] = useState({ name: "", slug: "" })
+  const [operationLoading, setOperationLoading] = useState(false)
 
   console.log("AdminCars render - showForm:", showForm, "editingCar:", editingCar)
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([])
@@ -203,6 +204,7 @@ export default function AdminCars() {
       return
     }
 
+    setOperationLoading(true)
     try {
       console.log("Making DELETE request to:", `/api/admin/cars/${car.id}`)
       const res = await fetch(`/api/admin/cars/${car.id}`, { method: "DELETE" })
@@ -224,6 +226,8 @@ export default function AdminCars() {
     } catch (e) {
       console.error("Delete request error:", e)
       toast({ title: "Error", description: "Failed to delete car", variant: "destructive" })
+    } finally {
+      setOperationLoading(false)
     }
   }
 
@@ -326,6 +330,7 @@ export default function AdminCars() {
           handleDelete(item)
         }}
         searchPlaceholder="Search cars..."
+        loading={operationLoading}
       />
     </div>
   )

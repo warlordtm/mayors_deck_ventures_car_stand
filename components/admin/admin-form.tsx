@@ -154,7 +154,7 @@ export function AdminForm({
                     multiple={field.multiple}
                     onChange={(e) => updateField(field.name, e.target.files)}
                     required={field.required}
-                    className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                    className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer"
                   />
                   {uploadProgress[field.name] !== undefined && uploadProgress[field.name] > 0 && uploadProgress[field.name] < 100 && (
                     <div className="mt-2">
