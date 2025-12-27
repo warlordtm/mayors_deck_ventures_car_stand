@@ -270,7 +270,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
               <div className="mb-6 flex flex-col gap-3 sm:flex-row">
                 <Button
                   asChild
-                  className="flex-1 bg-white text-black hover:bg-zinc-200"
+                  className="bg-white text-black hover:bg-zinc-200"
                   size="lg"
                 >
                   <a

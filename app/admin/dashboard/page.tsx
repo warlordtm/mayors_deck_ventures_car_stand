@@ -22,6 +22,7 @@ export default function AdminDashboardPage() {
   const [currentUser, setCurrentUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [stats, setStats] = useState({
     totalCars: 0,
     availableCars: 0,
@@ -110,38 +111,64 @@ export default function AdminDashboardPage() {
     setMounted(true)
 
     const loadData = async () => {
-      const supabase = createClient()
-
-      // Check authentication
-      const { data: { user }, error } = await supabase.auth.getUser()
-
-      if (error || !user) {
-        router.push('/admin/login')
-        return
+      try {
+        const supabase = createClient()
+  
+        // Check authentication
+        const { data: { user }, error: authError } = await supabase.auth.getUser()
+  
+        if (authError) {
+          console.error('Auth error:', authError)
+          setError('Authentication failed')
+          router.push('/admin/login')
+          return
+        }
+  
+        if (!user) {
+          console.log('No user found, redirecting to login')
+          router.push('/admin/login')
+          return
+        }
+  
+        // Check if user is admin
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single()
+  
+        if (profileError) {
+          console.error('Profile fetch error:', profileError)
+          setError('Failed to load user profile')
+          router.push('/admin/login')
+          return
+        }
+  
+        if (!profile || profile.role !== 'admin') {
+          console.log('User is not admin, redirecting to login')
+          router.push('/admin/login')
+          return
+        }
+  
+        setCurrentUser(user)
+  
+        // Fetch categories for the car form
+        const { data: cats, error: catsError } = await supabase.from("categories").select("id, name")
+        if (catsError) {
+          console.error('Categories fetch error:', catsError)
+          // Don't fail completely for categories error
+        }
+        setCategories(cats || [])
+  
+        // Fetch stats
+        await fetchStats()
+  
+        setLoading(false)
+      } catch (err) {
+        console.error('Unexpected error in loadData:', err)
+        setError('An unexpected error occurred')
+        setLoading(false)
       }
-
-      // Check if user is admin
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single()
-
-      if (!profile || profile.role !== 'admin') {
-        router.push('/admin/login')
-        return
-      }
-
-      setCurrentUser(user)
-
-      // Fetch categories for the car form
-      const { data: cats } = await supabase.from("categories").select("id, name")
-      setCategories(cats || [])
-
-      // Fetch stats
-      await fetchStats()
-
-      setLoading(false)
     }
 
     loadData()
@@ -299,7 +326,41 @@ export default function AdminDashboardPage() {
       <div className="min-h-screen bg-background py-8">
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center h-64">
-            <div className="text-center">Loading...</div>
+            <div className="text-center">
+              {error ? (
+                <div>
+                  <p className="text-red-500 mb-4">{error}</p>
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="px-4 py-2 bg-primary text-primary-foreground rounded"
+                  >
+                    Retry
+                  </button>
+                </div>
+              ) : (
+                <div>Loading...</div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center items-center h-64">
+            <div className="text-center">
+              <p className="text-red-500 mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-primary text-primary-foreground rounded"
+              >
+                Retry
+              </button>
+            </div>
           </div>
         </div>
       </div>
