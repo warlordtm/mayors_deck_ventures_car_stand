@@ -371,7 +371,7 @@ export default function AdminDashboardPage() {
          {/* Quick Add Actions */}
          <MotionDiv {...fadeInUp} className="mb-8">
            <h2 className="mb-4 text-xl font-bold text-foreground">Quick Add</h2>
-           <MotionDiv {...staggerContainer} className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <MotionDiv {...staggerItem}>
               <Card
                 className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer"
@@ -437,12 +437,13 @@ export default function AdminDashboardPage() {
                 </Card>
               </Link>
             </MotionDiv>
-       </MotionDiv>
+          </div>
+        </MotionDiv>
 
-       {/* Management Actions */}
+        {/* Management Actions */}
        <MotionDiv {...fadeInUp} className="mb-8">
          <h2 className="mb-4 text-xl font-bold text-foreground">Management</h2>
-         <MotionDiv {...staggerContainer} className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Link href="/admin/cars">
               <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
@@ -556,7 +557,7 @@ export default function AdminDashboardPage() {
                 </CardContent>
               </Card>
             </Link>
-          </MotionDiv>
+          </div>
         </MotionDiv>
 
         {/* Add Car Modal */}
