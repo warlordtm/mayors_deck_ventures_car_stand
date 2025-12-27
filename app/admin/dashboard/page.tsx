@@ -327,6 +327,20 @@ export default function AdminDashboardPage() {
         <div className="container mx-auto px-4">
           <div className="flex justify-center items-center h-64">
             <div className="text-center">
+              <div>Loading...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen bg-background py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center items-center h-64">
+            <div className="text-center">
               {error ? (
                 <div>
                   <p className="text-red-500 mb-4">{error}</p>
@@ -338,37 +352,13 @@ export default function AdminDashboardPage() {
                   </button>
                 </div>
               ) : (
-                <div>Loading...</div>
+                <div>Please log in to access the admin dashboard</div>
               )}
             </div>
           </div>
         </div>
       </div>
     )
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-background py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center items-center h-64">
-            <div className="text-center">
-              <p className="text-red-500 mb-4">{error}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="px-4 py-2 bg-primary text-primary-foreground rounded"
-              >
-                Retry
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (!currentUser) {
-    return null
   }
 
   return (
