@@ -6,26 +6,46 @@ import Image from "next/image"
 export default async function CategoriesPage() {
   const supabase = await createClient()
 
-  const { data: categories } = await supabase.from("categories").select("*").order("name")
+  try {
+    const { data: categories, error: catError } = await supabase.from("categories").select("*").order("name")
 
-  // Fetch latest car images for each category
-  const { data: carsWithImages } = await supabase
-    .from("cars")
-    .select("category_id, created_at, car_images!inner(image_url, is_primary)")
-    .eq("status", "available")
-    .eq("car_images.is_primary", true)
-    .order("created_at", { ascending: false })
-
-  // Create map of category_id to latest car image
-  const categoryImages = new Map<string, string>()
-  carsWithImages?.forEach((car: any) => {
-    if (!categoryImages.has(car.category_id)) {
-      categoryImages.set(car.category_id, car.car_images[0]?.image_url)
+    if (catError) {
+      console.error("Error fetching categories:", catError)
+      return (
+        <div className="min-h-screen py-20">
+          <div className="container mx-auto px-4">
+            <div className="rounded-lg border border-border bg-card/50 p-12 text-center backdrop-blur">
+              <p className="text-xl text-muted-foreground">Unable to load categories at the moment.</p>
+            </div>
+          </div>
+        </div>
+      )
     }
-  })
 
-  // Only show categories that have cars
-  const displayCategories = categories?.filter(cat => categoryImages.has(cat.id)) || []
+    // Fetch latest car images for each category
+    const { data: carsWithImages, error: carsError } = await supabase
+      .from("cars")
+      .select("category_id, created_at, car_images(image_url, is_primary)")
+      .eq("status", "available")
+      .order("created_at", { ascending: false })
+
+    if (carsError) {
+      console.error("Error fetching cars:", carsError)
+    }
+
+    // Create map of category_id to latest car image
+    const categoryImages = new Map<string, string>()
+    carsWithImages?.forEach((car: any) => {
+      if (car.car_images && car.car_images.length > 0 && !categoryImages.has(car.category_id)) {
+        const primaryImage = car.car_images.find((img: any) => img.is_primary)
+        if (primaryImage) {
+          categoryImages.set(car.category_id, primaryImage.image_url)
+        }
+      }
+    })
+
+    // Only show categories that have cars
+    const displayCategories = categories?.filter(cat => categoryImages.has(cat.id)) || []
 
   return (
     <div className="min-h-screen py-20">
@@ -69,4 +89,16 @@ export default async function CategoriesPage() {
       </div>
     </div>
   )
+  } catch (error) {
+    console.error("Unexpected error in CategoriesPage:", error)
+    return (
+      <div className="min-h-screen py-20">
+        <div className="container mx-auto px-4">
+          <div className="rounded-lg border border-border bg-card/50 p-12 text-center backdrop-blur">
+            <p className="text-xl text-muted-foreground">Unable to load categories at the moment.</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
