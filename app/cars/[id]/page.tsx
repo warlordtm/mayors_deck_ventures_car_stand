@@ -184,7 +184,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
                 <div>
                   <h1 className="mb-2 font-display text-4xl font-bold text-foreground md:text-5xl">{car.name}</h1>
                   <p className="text-xl text-muted-foreground">
-                    {car.model} • {car.year}
+                    {car.model} • {car.year} • {car.engine}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">

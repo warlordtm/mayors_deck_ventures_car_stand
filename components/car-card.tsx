@@ -26,7 +26,7 @@ export function CarCard({ car }: CarCardProps) {
             src={imageUrl || "/placeholder.svg"}
             alt={car.name}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            className="object-contain transition-transform duration-700 group-hover:scale-110"
           />
           {car.is_featured && <Badge className="absolute left-3 top-3 bg-white text-black">Featured</Badge>}
           {car.status !== "available" && (

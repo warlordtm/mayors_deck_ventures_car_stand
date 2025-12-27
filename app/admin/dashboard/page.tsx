@@ -148,6 +148,15 @@ export default function AdminDashboardPage() {
     loadData()
   }, [router])
 
+  // Auto-fill description and engine based on category, model, and year
+  useEffect(() => {
+    if (carForm.category_id && carForm.name && carForm.year) {
+      const category = categories.find(c => c.id === carForm.category_id)?.name || ''
+      const description = `Experience the pinnacle of automotive excellence with this ${carForm.year} ${carForm.name}. This ${category} masterpiece combines breathtaking performance with unparalleled luxury, featuring cutting-edge technology and premium materials throughout.`
+      setCarForm(prev => ({ ...prev, description }))
+    }
+  }, [carForm.category_id, carForm.name, carForm.year, categories])
+
   const handleAddCar = async () => {
     setIsSubmitting(true)
     setUploadProgress(0)
@@ -572,7 +581,7 @@ export default function AdminDashboardPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="car-name">Name *</Label>
+                  <Label htmlFor="car-name">Model *</Label>
                   <Input
                     id="car-name"
                     value={carForm.name}
@@ -582,12 +591,12 @@ export default function AdminDashboardPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="car-model">Model</Label>
+                  <Label htmlFor="car-model">Engine</Label>
                   <Input
                     id="car-model"
                     value={carForm.model}
                     onChange={(e) => setCarForm({...carForm, model: e.target.value})}
-                    placeholder="e.g., V8"
+                    placeholder="e.g., V8 Twin-Turbo"
                   />
                 </div>
 

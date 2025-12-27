@@ -1,143 +1,152 @@
 "use client"
 
 import Link from "next/link"
-import { Phone, Mail, MapPin, Video } from "lucide-react"
+import { Phone, Mail, MapPin } from "lucide-react"
 import { SiInstagram, SiTiktok } from "react-icons/si"
-
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 
 export function Footer() {
-  const [user, setUser] = useState<any>(null)
-  const [settings, setSettings] = useState<Record<string, string | null>>({})
-  const [categories, setCategories] = useState([])
   const pathname = usePathname()
-
-  useEffect(() => {
-    const supabase = createClient()
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
-    }
-    getUser()
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
+  const [settings, setSettings] = useState<Record<string, string | null>>({})
 
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const response = await fetch('/api/site-settings')
-        const data = await response.json()
+        const res = await fetch("/api/site-settings")
+        const data = await res.json()
         setSettings(data.settings || {})
-      } catch (error) {
-        console.error('Error fetching site settings:', error)
+      } catch (err) {
+        console.error("Failed to load site settings", err)
       }
     }
 
     fetchSettings()
   }, [])
 
-  // Hide footer on admin pages
-  if (pathname?.startsWith('/admin')) return null
+  // Hide footer on admin routes
+  if (pathname?.startsWith("/admin")) return null
+
   return (
-  <footer className="border-t border-border bg-card">
+    <footer className="border-t border-border bg-card">
       <div className="container mx-auto px-4 py-12">
-        <div className="space-y-8 md:grid md:grid-cols-4 md:gap-8 md:space-y-0">
-                <div className="md:col-span-1">
-          <h3 className="mb-4 text-lg font-bold text-foreground">
-            {settings.brand_name || 'Gaskiya Auto'}
-          </h3>
+        {/* Main grid */}
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
+          {/* Brand */}
+          <div>
+            <h3 className="text-lg font-semibold text-foreground">
+              {settings.brand_name || "Gaskiya Auto"}
+            </h3>
 
-          <p className="mb-4 text-sm text-muted-foreground">
-            {settings.brand_tagline || 'Luxury. Confidence. Trust.'}
-          </p>
+            <p className="mt-2 max-w-xs text-sm text-muted-foreground">
+              {settings.brand_tagline || "Luxury. Confidence. Trust."}
+            </p>
 
-          <div className="flex justify-center gap-4 md:justify-start">
-            <Link
-              href="https://tiktok.com/@gaskiyaautos1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground transition-colors hover:text-accent"
-              aria-label="Gaskiya Auto on TikTok"
-            >
-              <SiTiktok className="h-5 w-5" />
-            </Link>
+            <div className="mt-4 flex items-center gap-4">
+              <Link
+                href="https://tiktok.com/@gaskiyaautos1"
+                target="_blank"
+                aria-label="TikTok"
+                className="text-muted-foreground transition hover:text-accent"
+              >
+                <SiTiktok className="h-5 w-5" />
+              </Link>
 
-            <Link
-              href="https://instagram.com/@gaskiya_autos_"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground transition-colors hover:text-accent"
-              aria-label="Gaskiya Auto on Instagram"
-            >
-              <SiInstagram className="h-5 w-5" />
-            </Link>
+              <Link
+                href="https://instagram.com/@gaskiya_autos_"
+                target="_blank"
+                aria-label="Instagram"
+                className="text-muted-foreground transition hover:text-accent"
+              >
+                <SiInstagram className="h-5 w-5" />
+              </Link>
+            </div>
           </div>
 
-        </div>
+          {/* Quick Links */}
+          <div>
+            <h4 className="mb-4 text-sm font-medium text-foreground">
+              Quick Links
+            </h4>
 
-          <div className="flex gap-8 flex-row md:col-span-2 md:flex-col md:gap-8">
-            <div className="flex-1 text-center md:text-left">
-              <h4 className="mb-4 text-sm font-semibold text-foreground">Quick Links</h4>
-              <div className="flex flex-col gap-2 items-center md:items-start">
-                <Link href="/inventory" className="text-sm text-muted-foreground transition-colors hover:text-accent">
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link
+                  href="/inventory"
+                  className="text-muted-foreground transition hover:text-accent"
+                >
                   Inventory
                 </Link>
-                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
+              </li>
+              <li>
+                <Link
+                  href="/categories"
+                  className="text-muted-foreground transition hover:text-accent"
+                >
                   Categories
                 </Link>
-              </div>
-            </div>
-
-            <div className="flex-1 text-center md:text-left">
-              <h4 className="mb-4 text-sm font-semibold text-foreground">Categories</h4>
-              <div className="flex flex-col gap-2 items-center md:items-start">
-                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                  Supercars
-                </Link>
-                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                  SUVs
-                </Link>
-                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                  Sedans
-                </Link>
-                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                  Performance Cars
-                </Link>
-                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                  Electric Cars
-                </Link>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
 
-          <div className="md:col-span-1 text-center md:text-left">
-            <h4 className="mb-4 text-sm font-semibold text-foreground">Contact</h4>
-            <div className="flex flex-col gap-3 items-center md:items-start">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Phone className="h-4 w-4" />
-                <span>{settings.contact_phone || '+234 814 449 3084'}</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Mail className="h-4 w-4" />
-                <span>{settings.contact_email || 'hello.gaskiyaautos@gmail.com'}</span>
-              </div>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
-                <span>Opposite Small NNPC Filling Station, Oladipo Diya Street, Abuja</span>
-              </div>
-            </div>
+          {/* Categories */}
+          <div>
+            <h4 className="mb-4 text-sm font-medium text-foreground">
+              Categories
+            </h4>
+
+            <ul className="space-y-2 text-sm">
+              {[
+                "Supercars",
+                "SUVs",
+                "Sedans",
+                "Performance Cars",
+                "Electric Cars",
+              ].map((cat) => (
+                <li key={cat}>
+                  <Link
+                    href="/categories"
+                    className="text-muted-foreground transition hover:text-accent"
+                  >
+                    {cat}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="mb-4 text-sm font-medium text-foreground">
+              Contact
+            </h4>
+
+            <ul className="space-y-3 text-sm text-muted-foreground">
+              <li className="flex items-start gap-2">
+                <Phone className="mt-0.5 h-4 w-4" />
+                <span>{settings.contact_phone || "+234 814 449 3084"}</span>
+              </li>
+
+              <li className="flex items-start gap-2">
+                <Mail className="mt-0.5 h-4 w-4" />
+                <span>{settings.contact_email || "hello@gaskiya.autos"}</span>
+              </li>
+
+              <li className="flex items-start gap-2">
+                <MapPin className="mt-0.5 h-4 w-4" />
+                <span>
+                  Opposite Small NNPC Filling Station, Oladipo Diya Street, Abuja
+                </span>
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} {settings.brand_name || 'Gaskiya Auto'}. All rights reserved.</p>
+        {/* Bottom bar */}
+        <div className="mt-12 border-t border-border pt-6 text-center text-xs text-muted-foreground">
+          © {new Date().getFullYear()}{" "}
+          {settings.brand_name || "Gaskiya Auto"}. All rights reserved.
         </div>
       </div>
     </footer>

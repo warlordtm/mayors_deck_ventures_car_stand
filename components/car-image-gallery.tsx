@@ -49,7 +49,7 @@ export function CarImageGallery({ images, carName, videoUrl }: CarImageGalleryPr
         {currentMedia?.type === 'video' ? (
           <video
             controls
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain"
             poster={images[0]?.image_url}
           >
             <source src={currentMedia.url} type="video/mp4" />
@@ -60,7 +60,7 @@ export function CarImageGallery({ images, carName, videoUrl }: CarImageGalleryPr
             src={currentMedia?.url || `/placeholder.svg?height=600&width=800&query=${encodeURIComponent(carName)}`}
             alt={`${carName} - ${currentMedia?.type === 'video' ? 'Video' : 'Image ' + (selectedIndex + 1)}`}
             fill
-            className="object-cover"
+            className="object-contain"
           />
         )}
 
@@ -134,7 +134,7 @@ export function CarImageGallery({ images, carName, videoUrl }: CarImageGalleryPr
                       src={images[0]?.image_url || "/placeholder.svg"}
                       alt={`${carName} video thumbnail`}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                       <Play className="h-6 w-6 text-white" />
@@ -145,7 +145,7 @@ export function CarImageGallery({ images, carName, videoUrl }: CarImageGalleryPr
                     src={media.url || "/placeholder.svg"}
                     alt={`${carName} thumbnail ${index + 1}`}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                   />
                 )}
               </button>
