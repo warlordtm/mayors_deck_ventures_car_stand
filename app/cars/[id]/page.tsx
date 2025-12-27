@@ -216,7 +216,7 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
 
               {car.show_price && car.price ? (
                 <div className="mb-6">
-                  <p className="text-4xl font-bold text-foreground">₦{(car.price * 1600).toLocaleString('en-NG')}</p>
+                  <p className="text-4xl font-bold text-foreground">₦{car.price.toLocaleString('en-NG')}</p>
                 </div>
               ) : (
                 <div className="mb-6">

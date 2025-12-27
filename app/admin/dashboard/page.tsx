@@ -157,13 +157,13 @@ export default function AdminDashboardPage() {
       // Auto-fill other fields with sensible defaults
       const updates: Partial<typeof carForm> = {
         description,
-        transmission: carForm.transmission || 'Automatic',
-        fuel_type: carForm.fuel_type || 'Petrol',
-        condition: carForm.condition || 'Excellent',
-        warranty: carForm.warranty || '1 year remaining',
-        location: carForm.location || 'Abuja',
-        interior_features: carForm.interior_features || 'Leather upholstery, Premium audio system, Climate control, Navigation',
-        exterior_features: carForm.exterior_features || 'LED headlights, Alloy wheels, Carbon fiber accents, Sport exhaust'
+        transmission: 'Automatic',
+        fuel_type: 'Petrol',
+        condition: 'Excellent',
+        warranty: '1 year remaining',
+        location: 'Abuja',
+        interior_features: 'Leather upholstery, Premium audio system, Climate control, Navigation',
+        exterior_features: 'LED headlights, Alloy wheels, Carbon fiber accents, Sport exhaust'
       }
 
       setCarForm(prev => ({ ...prev, ...updates }))
