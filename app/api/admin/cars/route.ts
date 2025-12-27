@@ -122,6 +122,14 @@ export async function POST(request: Request) {
       description: payload.description || null,
       status: payload.status || "available",
       is_featured: payload.is_featured ?? false,
+      transmission: payload.transmission || null,
+      fuel_type: payload.fuel_type || null,
+      mileage: payload.mileage || null,
+      condition: payload.condition || null,
+      warranty: payload.warranty || null,
+      location: payload.location || null,
+      interior_features: payload.interior_features || null,
+      exterior_features: payload.exterior_features || null,
     }
 
     const { data, error } = await supabase.from("cars").insert(insertObj).select().single()

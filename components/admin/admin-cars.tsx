@@ -89,19 +89,29 @@ export default function AdminCars() {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
 
+      // Determine which fields are being uploaded
+      const hasImages = formData.has('images')
+      const hasVideo = formData.has('video')
+
       xhr.upload.addEventListener('progress', (event) => {
         if (event.lengthComputable) {
           const progress = (event.loaded / event.total) * 100
           setUploadProgress(prev => ({
             ...prev,
-            images: progress,
-            video: progress
+            ...(hasImages && { images: progress }),
+            ...(hasVideo && { video: progress })
           }))
         }
       })
 
       xhr.addEventListener('load', () => {
         if (xhr.status >= 200 && xhr.status < 300) {
+          // Set progress to 100% on successful completion
+          setUploadProgress(prev => ({
+            ...prev,
+            ...(hasImages && { images: 100 }),
+            ...(hasVideo && { video: 100 })
+          }))
           resolve(xhr.response)
         } else {
           reject(new Error(`Upload failed: ${xhr.status} ${xhr.statusText}`))

@@ -156,11 +156,11 @@ export function AdminForm({
                     required={field.required}
                     className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer"
                   />
-                  {uploadProgress[field.name] !== undefined && uploadProgress[field.name] > 0 && uploadProgress[field.name] < 100 && (
+                  {uploadProgress[field.name] !== undefined && uploadProgress[field.name] >= 0 && uploadProgress[field.name] <= 100 && (
                     <div className="mt-2">
                       <Progress value={uploadProgress[field.name]} className="w-full" />
                       <p className="text-sm text-muted-foreground mt-1">
-                        Uploading... {Math.round(uploadProgress[field.name])}%
+                        {uploadProgress[field.name] === 100 ? 'Upload complete!' : `Uploading... ${Math.round(uploadProgress[field.name])}%`}
                       </p>
                     </div>
                   )}
