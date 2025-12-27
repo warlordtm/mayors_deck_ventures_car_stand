@@ -40,11 +40,7 @@ export function FavoriteButton({ carId, className }: FavoriteButtonProps) {
 
   const toggleFavorite = async () => {
     if (!user) {
-      toast({
-        title: "Login required",
-        description: "Please login to add favorites",
-        variant: "destructive"
-      })
+      window.location.href = '/login'
       return
     }
 
