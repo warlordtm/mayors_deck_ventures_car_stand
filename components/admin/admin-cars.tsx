@@ -93,9 +93,17 @@ export default function AdminCars() {
       const hasImages = formData.has('images')
       const hasVideo = formData.has('video')
 
+      // Initialize progress to 0
+      setUploadProgress(prev => ({
+        ...prev,
+        ...(hasImages && { images: 0 }),
+        ...(hasVideo && { video: 0 })
+      }))
+
       xhr.upload.addEventListener('progress', (event) => {
         if (event.lengthComputable) {
-          const progress = (event.loaded / event.total) * 100
+          const progress = Math.min((event.loaded / event.total) * 100, 95) // Cap at 95% until complete
+          console.log('Upload progress:', progress)
           setUploadProgress(prev => ({
             ...prev,
             ...(hasImages && { images: progress }),
@@ -104,8 +112,18 @@ export default function AdminCars() {
         }
       })
 
+      xhr.addEventListener('loadstart', () => {
+        console.log('Upload started')
+        setUploadProgress(prev => ({
+          ...prev,
+          ...(hasImages && { images: 5 }),
+          ...(hasVideo && { video: 5 })
+        }))
+      })
+
       xhr.addEventListener('load', () => {
         if (xhr.status >= 200 && xhr.status < 300) {
+          console.log('Upload completed successfully')
           // Set progress to 100% on successful completion
           setUploadProgress(prev => ({
             ...prev,
