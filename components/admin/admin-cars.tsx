@@ -100,28 +100,44 @@ export default function AdminCars() {
         ...(hasVideo && { video: 0 })
       }))
 
-      xhr.upload.addEventListener('progress', (event) => {
-        if (event.lengthComputable) {
-          const progress = Math.min((event.loaded / event.total) * 100, 95) // Cap at 95% until complete
-          console.log('Upload progress:', progress)
+      let progressInterval: NodeJS.Timeout
+      let currentProgress = 0
+
+      // Start simulated progress
+      const startSimulatedProgress = () => {
+        progressInterval = setInterval(() => {
+          currentProgress += Math.random() * 15 // Random increment between 0-15%
+          if (currentProgress > 85) currentProgress = 85 // Cap at 85% until actual completion
+
           setUploadProgress(prev => ({
             ...prev,
-            ...(hasImages && { images: progress }),
-            ...(hasVideo && { video: progress })
+            ...(hasImages && { images: Math.round(currentProgress) }),
+            ...(hasVideo && { video: Math.round(currentProgress) })
           }))
+        }, 200) // Update every 200ms
+      }
+
+      xhr.upload.addEventListener('progress', (event) => {
+        if (event.lengthComputable) {
+          const realProgress = (event.loaded / event.total) * 100
+          if (realProgress > currentProgress) {
+            currentProgress = realProgress
+            setUploadProgress(prev => ({
+              ...prev,
+              ...(hasImages && { images: Math.round(Math.min(currentProgress, 95)) }),
+              ...(hasVideo && { video: Math.round(Math.min(currentProgress, 95)) })
+            }))
+          }
         }
       })
 
       xhr.addEventListener('loadstart', () => {
         console.log('Upload started')
-        setUploadProgress(prev => ({
-          ...prev,
-          ...(hasImages && { images: 5 }),
-          ...(hasVideo && { video: 5 })
-        }))
+        startSimulatedProgress()
       })
 
       xhr.addEventListener('load', () => {
+        clearInterval(progressInterval)
         if (xhr.status >= 200 && xhr.status < 300) {
           console.log('Upload completed successfully')
           // Set progress to 100% on successful completion
@@ -137,6 +153,7 @@ export default function AdminCars() {
       })
 
       xhr.addEventListener('error', () => {
+        clearInterval(progressInterval)
         reject(new Error('Upload failed'))
       })
 

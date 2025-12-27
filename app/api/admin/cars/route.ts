@@ -97,22 +97,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Category is required" }, { status: 400 })
     }
 
-    // If a slug is provided, ensure it's unique (case-insensitive)
-    if (payload.slug) {
-      const { data: existing } = await supabase
-        .from("cars")
-        .select("id")
-        .ilike("slug", payload.slug)
-        .limit(1)
-
-      if (existing && existing.length > 0) {
-        return NextResponse.json({ error: "Slug already in use" }, { status: 409 })
-      }
-    }
+    // Slug validation removed - slug column doesn't exist in database
 
     const insertObj: any = {
       name: payload.name,
-      slug: payload.slug || null,
       model: payload.model || null,
       year: payload.year || null,
       category_id: payload.category_id || null,

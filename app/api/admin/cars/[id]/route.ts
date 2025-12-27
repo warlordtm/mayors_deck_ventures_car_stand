@@ -45,7 +45,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
     const updateObj: any = {
       name: payload.name,
-      slug: payload.slug || null,
       model: payload.model || null,
       year: payload.year || null,
       category_id: payload.category_id || null,
@@ -64,20 +63,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       interior_features: payload.interior_features || null,
       exterior_features: payload.exterior_features || null,
       updated_at: new Date().toISOString(),
-    }
-
-    // If a slug is provided, ensure it's unique (case-insensitive) excluding current car
-    if (payload.slug) {
-      const { data: existing } = await supabase
-        .from("cars")
-        .select("id")
-        .ilike("slug", payload.slug)
-        .neq("id", id)
-        .limit(1)
-
-      if (existing && existing.length > 0) {
-        return NextResponse.json({ error: "Slug already in use" }, { status: 409 })
-      }
     }
 
     console.log("Updating car with data:", updateObj)
