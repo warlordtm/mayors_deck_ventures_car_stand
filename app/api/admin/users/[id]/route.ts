@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server"
+import { createClient, createAdminClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
 
 export async function GET(request: Request, context: any) {
@@ -118,14 +118,24 @@ export async function DELETE(request: Request, context: any) {
       return NextResponse.json({ error: "Cannot delete your own account" }, { status: 400 })
     }
 
+    // Delete from admin_users table
     const { error } = await supabase
       .from("admin_users")
       .delete()
       .eq("id", params.id)
 
     if (error) {
-      console.error("Error deleting user:", error)
+      console.error("Error deleting user from admin_users:", error)
       return NextResponse.json({ error: "Failed to delete user" }, { status: 500 })
+    }
+
+    // Also delete from auth.users if service role is available
+    try {
+      const adminSupabase = createAdminClient()
+      await adminSupabase.auth.admin.deleteUser(params.id)
+    } catch (authError) {
+      console.error("Error deleting user from auth:", authError)
+      // Don't fail the request if auth deletion fails, as the user is already deleted from admin_users
     }
 
     return NextResponse.json({ success: true })

@@ -46,6 +46,7 @@ export default function SignupPage() {
       router.push("/email-confirmation")
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "An error occurred"
+      console.error("Signup error:", error)
       if (errorMessage.toLowerCase().includes("already") || errorMessage.toLowerCase().includes("registered") || errorMessage.toLowerCase().includes("use") || errorMessage.toLowerCase().includes("exists")) {
         setError("This email is already registered. Please use a different email address.")
       } else {

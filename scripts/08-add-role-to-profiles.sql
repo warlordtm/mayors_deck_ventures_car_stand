@@ -4,6 +4,7 @@ ALTER TABLE profiles ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'user' CHECK (ro
 -- Add car-related fields
 ALTER TABLE profiles ADD COLUMN driver_license TEXT;
 ALTER TABLE profiles ADD COLUMN preferred_car_type TEXT;
+ALTER TABLE profiles ADD COLUMN avatar_url TEXT;
 
 -- Update existing admin users to have 'admin' role
 UPDATE profiles SET role = 'admin' WHERE id IN (SELECT id FROM admin_users WHERE role = 'admin');
