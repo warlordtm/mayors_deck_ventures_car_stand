@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react"
 import type { Car, Category } from "@/lib/types"
+import { createClient } from "@/lib/supabase/client"
 import { CarCard } from "@/components/car-card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -20,6 +21,9 @@ interface CarsClientProps {
 }
 
 export default function CarsClient({ initialCars, initialCategories }: CarsClientProps) {
+  const [cars, setCars] = useState<Car[]>(initialCars)
+  const [categories, setCategories] = useState<Category[]>(initialCategories)
+  const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [priceRange, setPriceRange] = useState<string>("all")
@@ -27,19 +31,66 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
   const [personalizedCars, setPersonalizedCars] = useState<Car[]>([])
   const [showPersonalized, setShowPersonalized] = useState(false)
 
+  const fetchData = async () => {
+    try {
+      setLoading(true)
+      const [carsRes, categoriesRes] = await Promise.all([
+        fetch('/api/cars'),
+        fetch('/api/categories')
+      ])
+
+      if (carsRes.ok) {
+        const carsData = await carsRes.json()
+        setCars(carsData.cars || [])
+      }
+
+      if (categoriesRes.ok) {
+        const categoriesData = await categoriesRes.json()
+        setCategories(categoriesData.categories || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  // Refetch data every 5 minutes to keep it fresh
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchData()
+    }, 5 * 60 * 1000) // 5 minutes
+
+    return () => clearInterval(interval)
+  }, [])
+
+  // Refetch when window regains focus
+  useEffect(() => {
+    const handleFocus = () => {
+      fetchData()
+    }
+
+    window.addEventListener('focus', handleFocus)
+    return () => window.removeEventListener('focus', handleFocus)
+  }, [])
+
   useEffect(() => {
     if (shouldShowPersonalizedRecommendations()) {
       const searchHistory = getUserSearchHistory()
-      const personalized = findPersonalizedRecommendations(initialCars, searchHistory)
+      const personalized = findPersonalizedRecommendations(cars, searchHistory)
       if (personalized.length > 0) {
         setPersonalizedCars(personalized)
         setShowPersonalized(true)
       }
     }
-  }, [initialCars])
+  }, [cars])
 
   const filteredAndSortedCars = useMemo(() => {
-    let filtered = initialCars.filter((car) => {
+    let filtered = cars.filter((car) => {
       const matchesSearch =
         car.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         car.brand?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -89,7 +140,7 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
     })
 
     return filtered
-  }, [initialCars, searchTerm, selectedCategory, priceRange, sortBy])
+  }, [cars, searchTerm, selectedCategory, priceRange, sortBy])
 
   const clearFilters = () => {
     setSearchTerm("")
@@ -129,11 +180,11 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Brands</SelectItem>
-                {initialCategories.map((category) => (
-                  <SelectItem key={category.id} value={category.slug}>
-                    {category.name}
-                  </SelectItem>
-                ))}
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.slug}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
 
@@ -188,7 +239,7 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
               )}
               {selectedCategory !== "all" && (
                 <Badge variant="secondary" className="gap-1">
-                  Brand: {initialCategories.find(c => c.slug === selectedCategory)?.name}
+                  Brand: {categories.find(c => c.slug === selectedCategory)?.name}
                   <X
                     className="h-3 w-3 cursor-pointer"
                     onClick={() => setSelectedCategory("all")}

@@ -5,7 +5,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     const featured = searchParams.get('featured') === 'true'
-    const limit = parseInt(searchParams.get('limit') || '10')
+    const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : null
 
     const supabase = await createClient()
 
@@ -22,9 +22,13 @@ export async function GET(request: Request) {
       query = query.eq("is_featured", true)
     }
 
+    query = query.order("created_at", { ascending: false })
+
+    if (limit) {
+      query = query.limit(limit)
+    }
+
     const { data: cars, error } = await query
-      .order("created_at", { ascending: false })
-      .limit(limit)
 
     if (error) {
       console.error("Error fetching cars:", error)

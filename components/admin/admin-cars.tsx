@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden"
 import { Plus } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { MotionDiv, fadeInUp } from "@/components/motion-wrappers"
 
 interface Car {
   id: string
@@ -273,7 +274,7 @@ export default function AdminCars() {
   if (loading) return <div className="flex justify-center p-8">Loading...</div>
 
   return (
-    <div className="space-y-6">
+    <MotionDiv {...fadeInUp} className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Car Inventory</h1>
@@ -332,6 +333,6 @@ export default function AdminCars() {
         searchPlaceholder="Search cars..."
         loading={operationLoading}
       />
-    </div>
+    </MotionDiv>
   )
 }

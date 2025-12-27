@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { MotionDiv, scaleIn } from "@/components/motion-wrappers"
 
 export default function SignupPage() {
   const [email, setEmail] = useState("")
@@ -58,14 +59,15 @@ export default function SignupPage() {
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-6">
       <div className="w-full max-w-sm">
-        <Card className="border-border bg-card/50 backdrop-blur">
-          <CardHeader>
-            <CardTitle className="text-2xl text-foreground text-center">SIGN UP</CardTitle>
-            <CardDescription className="text-muted-foreground">
-              Create a new account to get started
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+        <MotionDiv {...scaleIn}>
+          <Card className="border-border bg-card/50 backdrop-blur">
+            <CardHeader>
+              <CardTitle className="text-2xl text-foreground text-center">SIGN UP</CardTitle>
+              <CardDescription className="text-muted-foreground">
+                Create a new account to get started
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
             <form onSubmit={handleSignup}>
               <div className="flex flex-col gap-6">
                 <div className="grid gap-2">
@@ -120,8 +122,9 @@ export default function SignupPage() {
                 Login
               </Link>
             </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </MotionDiv>
       </div>
     </div>
   )

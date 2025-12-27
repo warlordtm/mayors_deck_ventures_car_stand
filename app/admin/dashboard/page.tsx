@@ -15,6 +15,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
+import { MotionDiv, staggerContainer, staggerItem, fadeInUp } from "@/components/motion-wrappers"
 
 export default function AdminDashboardPage() {
   const [showCarModal, setShowCarModal] = useState(false)
@@ -290,47 +291,55 @@ export default function AdminDashboardPage() {
          </div>
 
         {/* Stats Grid */}
-        <div className="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-           <Card className="border-border bg-card/50 backdrop-blur">
-             <CardHeader className="flex flex-row items-center justify-between pb-2">
-               <CardTitle className="text-sm font-medium text-muted-foreground">Total Cars</CardTitle>
-               <Car className="h-4 w-4 text-muted-foreground" />
-             </CardHeader>
-             <CardContent>
-               <div className="text-3xl font-bold text-foreground">{stats.totalCars}</div>
-             </CardContent>
-           </Card>
+        <MotionDiv {...staggerContainer} className="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <MotionDiv {...staggerItem}>
+            <Card className="border-border bg-card/50 backdrop-blur">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Total Cars</CardTitle>
+                <Car className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-foreground">{stats.totalCars}</div>
+              </CardContent>
+            </Card>
+          </MotionDiv>
 
-           <Card className="border-border bg-card/50 backdrop-blur">
-             <CardHeader className="flex flex-row items-center justify-between pb-2">
-               <CardTitle className="text-sm font-medium text-muted-foreground">Available Cars</CardTitle>
-               <Car className="h-4 w-4 text-muted-foreground" />
-             </CardHeader>
-             <CardContent>
-               <div className="text-3xl font-bold text-foreground">{stats.availableCars}</div>
-             </CardContent>
-           </Card>
+          <MotionDiv {...staggerItem}>
+            <Card className="border-border bg-card/50 backdrop-blur">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Available Cars</CardTitle>
+                <Car className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-foreground">{stats.availableCars}</div>
+              </CardContent>
+            </Card>
+          </MotionDiv>
 
-           <Card className="border-border bg-card/50 backdrop-blur">
-             <CardHeader className="flex flex-row items-center justify-between pb-2">
-               <CardTitle className="text-sm font-medium text-muted-foreground">Car Impressions (30d)</CardTitle>
-               <Calendar className="h-4 w-4 text-muted-foreground" />
-             </CardHeader>
-             <CardContent>
-               <div className="text-3xl font-bold text-foreground">{stats.totalImpressions}</div>
-             </CardContent>
-           </Card>
+          <MotionDiv {...staggerItem}>
+            <Card className="border-border bg-card/50 backdrop-blur">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Car Impressions (30d)</CardTitle>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-foreground">{stats.totalImpressions}</div>
+              </CardContent>
+            </Card>
+          </MotionDiv>
 
-           <Card className="border-border bg-card/50 backdrop-blur">
-             <CardHeader className="flex flex-row items-center justify-between pb-2">
-               <CardTitle className="text-sm font-medium text-muted-foreground">Monthly Revenue</CardTitle>
-               <DollarSign className="h-4 w-4 text-muted-foreground" />
-             </CardHeader>
-             <CardContent>
-               <div className="text-3xl font-bold text-foreground">₦{stats.monthlyRevenue.toLocaleString()}</div>
-             </CardContent>
-           </Card>
-         </div>
+          <MotionDiv {...staggerItem}>
+            <Card className="border-border bg-card/50 backdrop-blur">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">Monthly Revenue</CardTitle>
+                <DollarSign className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-foreground">₦{stats.monthlyRevenue.toLocaleString()}</div>
+              </CardContent>
+            </Card>
+          </MotionDiv>
+        </MotionDiv>
 
          {/* Recent Activity */}
          <div className="mb-8">
@@ -361,73 +370,80 @@ export default function AdminDashboardPage() {
          </div>
 
          {/* Quick Add Actions */}
-        <div className="mb-8">
-          <h2 className="mb-4 text-xl font-bold text-foreground">Quick Add</h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card
-              className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer"
-              onClick={() => setShowCarModal(true)}
-            >
-              <CardContent className="flex items-center gap-4 p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                  <Plus className="h-6 w-6 text-green-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground">Add New Car</h3>
-                  <p className="text-sm text-muted-foreground">Add a vehicle to inventory</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card
-              className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer"
-              onClick={() => setShowCategoryModal(true)}
-            >
-              <CardContent className="flex items-center gap-4 p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-                  <Plus className="h-6 w-6 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-foreground">Add Category</h3>
-                  <p className="text-sm text-muted-foreground">Create new car category</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Link href="/admin/content">
-              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
+         <MotionDiv {...fadeInUp} className="mb-8">
+           <h2 className="mb-4 text-xl font-bold text-foreground">Quick Add</h2>
+           <MotionDiv {...staggerContainer} className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <MotionDiv {...staggerItem}>
+              <Card
+                className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer"
+                onClick={() => setShowCarModal(true)}
+              >
                 <CardContent className="flex items-center gap-4 p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
-                    <Plus className="h-6 w-6 text-purple-600" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                    <Plus className="h-6 w-6 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground">Add Content</h3>
-                    <p className="text-sm text-muted-foreground">Add website content</p>
+                    <h3 className="font-semibold text-foreground">Add New Car</h3>
+                    <p className="text-sm text-muted-foreground">Add a vehicle to inventory</p>
                   </div>
                 </CardContent>
               </Card>
-            </Link>
+            </MotionDiv>
 
-            <Link href="/admin/users">
-              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
+            <MotionDiv {...staggerItem}>
+              <Card
+                className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer"
+                onClick={() => setShowCategoryModal(true)}
+              >
                 <CardContent className="flex items-center gap-4 p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100">
-                    <Plus className="h-6 w-6 text-orange-600" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+                    <Plus className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground">Add Admin</h3>
-                    <p className="text-sm text-muted-foreground">Add new admin user</p>
+                    <h3 className="font-semibold text-foreground">Add Category</h3>
+                    <p className="text-sm text-muted-foreground">Create new car category</p>
                   </div>
                 </CardContent>
               </Card>
-            </Link>
-          </div>
-        </div>
+            </MotionDiv>
 
-        {/* Management Actions */}
-        <div className="mb-8">
-          <h2 className="mb-4 text-xl font-bold text-foreground">Management</h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <MotionDiv {...staggerItem}>
+              <Link href="/admin/content">
+                <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
+                  <CardContent className="flex items-center gap-4 p-6">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
+                      <Plus className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground">Add Content</h3>
+                      <p className="text-sm text-muted-foreground">Add website content</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </MotionDiv>
+
+            <MotionDiv {...staggerItem}>
+              <Link href="/admin/users">
+                <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
+                  <CardContent className="flex items-center gap-4 p-6">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100">
+                      <Plus className="h-6 w-6 text-orange-600" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground">Add Admin</h3>
+                      <p className="text-sm text-muted-foreground">Add new admin user</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </MotionDiv>
+       </MotionDiv>
+
+       {/* Management Actions */}
+       <MotionDiv {...fadeInUp} className="mb-8">
+         <h2 className="mb-4 text-xl font-bold text-foreground">Management</h2>
+         <MotionDiv {...staggerContainer} className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Link href="/admin/cars">
               <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
                 <CardContent className="flex items-center gap-4 p-6">
@@ -541,8 +557,8 @@ export default function AdminDashboardPage() {
                 </CardContent>
               </Card>
             </Link>
-          </div>
-        </div>
+          </MotionDiv>
+        </MotionDiv>
 
         {/* Add Car Modal */}
         <Dialog open={showCarModal} onOpenChange={setShowCarModal}>

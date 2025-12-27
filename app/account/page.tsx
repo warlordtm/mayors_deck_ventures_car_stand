@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { MotionDiv, scaleIn } from "@/components/motion-wrappers"
 
 export default function AccountPage() {
   const [loading, setLoading] = useState(true)
@@ -67,7 +68,8 @@ export default function AccountPage() {
   return (
     <div className="container mx-auto px-4 py-20">
       <div className="mx-auto max-w-2xl">
-        <Card className="border-border bg-card/50 backdrop-blur">
+        <MotionDiv {...scaleIn}>
+          <Card className="border-border bg-card/50 backdrop-blur">
           <CardHeader>
             <CardTitle className="text-2xl">Your Account</CardTitle>
             <CardDescription className="text-muted-foreground">Update your profile information</CardDescription>
@@ -97,7 +99,8 @@ export default function AccountPage() {
             )}
           </CardContent>
         </Card>
-      </div>
+      </MotionDiv>
+    </div>
     </div>
   )
 }

@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
+import { MotionDiv, scaleIn } from "@/components/motion-wrappers"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -125,7 +126,8 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-background p-6">
       <div className="w-full max-w-sm">
-        <Card className="border-border bg-card/50 backdrop-blur">
+        <MotionDiv {...scaleIn}>
+          <Card className="border-border bg-card/50 backdrop-blur">
           <CardHeader>
             <CardTitle className="text-2xl text-foreground text-center">LOGIN</CardTitle>
             <CardDescription className="text-muted-foreground">
@@ -231,7 +233,8 @@ export default function LoginPage() {
               </Link>
             </div>
           </CardContent>
-        </Card>
+       </Card>
+     </MotionDiv>
       </div>
     </div>
   )

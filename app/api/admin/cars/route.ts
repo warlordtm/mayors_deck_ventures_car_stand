@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 
 export async function GET() {
   try {
@@ -194,6 +195,10 @@ export async function POST(request: Request) {
     //   action: `Created car: ${data.name}`,
     //   details: { car_id: data.id }
     // })
+
+    // Revalidate the collection page to reflect new car
+    revalidatePath('/cars')
+    revalidatePath('/')
 
     return NextResponse.json({ car: data })
   } catch (error) {

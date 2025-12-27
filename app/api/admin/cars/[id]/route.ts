@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -135,6 +136,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       details: { car_id: data.id }
     })
 
+    // Revalidate the collection page to reflect changes
+    revalidatePath('/cars')
+    revalidatePath('/')
+
     return NextResponse.json({ car: data })
   } catch (error) {
     console.error("API error:", error)
@@ -196,6 +201,10 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
       action: `Deleted car: ${car?.name || 'Unknown'}`,
       details: { car_id: id }
     })
+
+    // Revalidate the collection page to reflect changes
+    revalidatePath('/cars')
+    revalidatePath('/')
 
     return NextResponse.json({ success: true })
   } catch (error) {
