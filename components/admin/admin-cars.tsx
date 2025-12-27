@@ -164,7 +164,12 @@ export default function AdminCars() {
 
   const handleCreate = async (data: any) => {
     setSaving(true)
-    setUploadProgress({})
+    // Initialize progress for any files being uploaded
+    const initialProgress: Record<string, number> = {}
+    if (data.images && data.images.length > 0) initialProgress.images = 0
+    if (data.video) initialProgress.video = 0
+    setUploadProgress(initialProgress)
+
     try {
       let response
 
@@ -211,7 +216,12 @@ export default function AdminCars() {
     }
 
     setSaving(true)
-    setUploadProgress({})
+    // Initialize progress for any files being uploaded
+    const initialProgress: Record<string, number> = {}
+    if (data.images && data.images.length > 0) initialProgress.images = 0
+    if (data.video) initialProgress.video = 0
+    setUploadProgress(initialProgress)
+
     try {
       let response
 

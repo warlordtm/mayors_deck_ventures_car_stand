@@ -6,7 +6,6 @@ import { useState } from "react"
 import { Car, Calendar, Users, Tag, BarChart3, FileText, Settings, Home, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Header } from "@/components/header"
-import { Toaster } from "@/components/ui/toaster"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: Home },
@@ -61,7 +60,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {children}
         </div>
       </div>
-      <Toaster />
     </div>
   )
 }
