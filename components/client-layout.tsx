@@ -8,6 +8,7 @@ import { SessionManager } from "@/components/session-manager"
 import { CookieConsent } from "@/components/cookie-consent"
 import { PageTransition } from "@/components/page-transition"
 import { Toaster } from "@/components/ui/toaster"
+import { PWAInstall } from "@/components/pwa-install"
 
 interface ClientLayoutProps {
   children: React.ReactNode
@@ -27,6 +28,7 @@ export function ClientLayout({ children }: ClientLayoutProps) {
       {!isAdmin && <Footer />}
       {!isAdmin && <WhatsAppFloat />}
       {!isAdmin && <CookieConsent />}
+      {!isAdmin && <PWAInstall />}
       <Toaster />
     </>
   )

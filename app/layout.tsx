@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   title: "Gaskiya Auto - Luxury Car Dealership",
   description: "Gaskiya Auto — where luxury meets performance. Discover our curated collection of premium vehicles.",
   generator: "Godwin Bamisaye",
+  manifest: "/manifest.json",
   icons: {
     icon: [
       {
@@ -37,6 +38,25 @@ export const metadata: Metadata = {
       },
     ],
     apple: "/apple-icon.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Gaskiya Auto",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Gaskiya Auto",
+    title: "Gaskiya Auto - Luxury Car Dealership",
+    description: "Where luxury meets performance. Discover our curated collection of premium vehicles.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Gaskiya Auto - Luxury Car Dealership",
+    description: "Where luxury meets performance. Discover our curated collection of premium vehicles.",
   },
 }
 
