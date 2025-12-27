@@ -42,7 +42,7 @@ const SAMPLE_CARS: Car[] = Array.from({ length: 8 }).map((_, i) => ({
 export default async function CarsPage() {
   const supabase = await createClient()
 
-  const { data: cars } = await supabase
+  const { data: cars, error: carsError } = await supabase
     .from("cars")
     .select(`
       *,

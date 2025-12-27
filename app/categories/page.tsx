@@ -8,17 +8,7 @@ export default async function CategoriesPage() {
 
   const { data: categories } = await supabase.from("categories").select("*").order("name")
 
-  // Development fallback: sample categories when DB is empty locally
-  const sampleCategories: Category[] = [
-    { id: "sample-toyota", name: "Toyota", slug: "toyota", description: "Reliable and efficient Toyota vehicles for everyday driving.", created_at: new Date().toISOString() },
-    { id: "sample-mercedes", name: "Mercedes-Benz", slug: "mercedes-benz", description: "Luxury Mercedes-Benz vehicles with premium features.", created_at: new Date().toISOString() },
-    { id: "sample-hyundai", name: "Hyundai", slug: "hyundai", description: "Modern Hyundai vehicles with advanced technology.", created_at: new Date().toISOString() },
-    { id: "sample-honda", name: "Honda", slug: "honda", description: "Dependable Honda vehicles known for reliability.", created_at: new Date().toISOString() },
-    { id: "sample-ford", name: "Ford", slug: "ford", description: "American-made Ford vehicles for every need.", created_at: new Date().toISOString() },
-  ]
-
-  const usingSample = !(categories && categories.length > 0) && process.env.NODE_ENV === "development"
-  const displayCategories = usingSample ? sampleCategories : (categories || [])
+  const displayCategories = categories || []
 
   return (
     <div className="min-h-screen py-20">
@@ -30,15 +20,12 @@ export default async function CategoriesPage() {
           <p className="text-lg text-muted-foreground">Browse our luxury collection by brand</p>
         </div>
 
-        {usingSample && (
-          <div className="mb-6 rounded-md border border-yellow-700/20 bg-yellow-950/30 p-4">
-            <p className="text-sm text-yellow-300">
-              Showing sample categories because your local database has no categories. Run the seed SQL to populate real data.
-            </p>
+        {displayCategories.length === 0 ? (
+          <div className="rounded-lg border border-border bg-card/50 p-12 text-center backdrop-blur">
+            <p className="text-xl text-muted-foreground">No categories available at the moment.</p>
           </div>
-        )}
-
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {displayCategories.map((category: Category) => (
             <Link
               key={category.id}
@@ -60,7 +47,8 @@ export default async function CategoriesPage() {
               </div>
             </Link>
           ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   )
