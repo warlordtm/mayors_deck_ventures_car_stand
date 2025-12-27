@@ -3,23 +3,30 @@
 import type React from "react"
 import Link from "next/link"
 import { useState } from "react"
-import { Car, Calendar, Users, Tag, BarChart3, FileText, Settings, Home, Menu, X } from "lucide-react"
+import { Home, LogOut, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Header } from "@/components/header"
+import { createClient } from "@/lib/supabase/client"
+import { useRouter } from "next/navigation"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: Home },
-  { name: "Bookings", href: "/admin/bookings", icon: Calendar },
-  { name: "Inquiries", href: "/admin/inquiries", icon: Tag },
-  { name: "Sales", href: "/admin/sales", icon: BarChart3 },
-  { name: "Customers", href: "/admin/customers", icon: Users },
-  { name: "Categories", href: "/admin/categories", icon: Tag },
-  { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    try {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+      router.push('/login')
+    } catch (error) {
+      console.error('Logout error:', error)
+      router.push('/login')
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -52,6 +59,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </Button>
               </Link>
             ))}
+
+            {/* Logout Button */}
+            <Button
+              variant="ghost"
+              onClick={handleLogout}
+              className={`w-full justify-start text-muted-foreground hover:bg-red-500 hover:text-white cursor-pointer ${isCollapsed ? 'px-3' : 'gap-3'}`}
+              title={isCollapsed ? "Logout" : undefined}
+            >
+              <LogOut className="h-5 w-5" />
+              {!isCollapsed && "Logout"}
+            </Button>
           </nav>
         </div>
 
