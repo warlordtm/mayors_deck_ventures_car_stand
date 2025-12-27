@@ -48,8 +48,8 @@ export function Footer() {
   return (
   <footer className="border-t border-border bg-card">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid gap-8 md:grid-cols-4">
-                <div>
+        <div className="space-y-8 md:grid md:grid-cols-4 md:gap-8 md:space-y-0">
+                <div className="md:col-span-1">
           <h3 className="mb-4 text-lg font-bold text-foreground">
             {settings.brand_name || 'Gaskiya Auto'}
           </h3>
@@ -82,40 +82,42 @@ export function Footer() {
 
         </div>
 
-          <div className="text-center md:text-left">
-            <h4 className="mb-4 text-sm font-semibold text-foreground">Quick Links</h4>
-            <div className="flex flex-col gap-2 items-center md:items-start">
-              <Link href="/inventory" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                Inventory
-              </Link>
-              <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                Categories
-              </Link>
+          <div className="flex gap-8 flex-row md:col-span-2 md:flex-col md:gap-8">
+            <div className="flex-1 text-center md:text-left">
+              <h4 className="mb-4 text-sm font-semibold text-foreground">Quick Links</h4>
+              <div className="flex flex-col gap-2 items-center md:items-start">
+                <Link href="/inventory" className="text-sm text-muted-foreground transition-colors hover:text-accent">
+                  Inventory
+                </Link>
+                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
+                  Categories
+                </Link>
+              </div>
+            </div>
+
+            <div className="flex-1 text-center md:text-left">
+              <h4 className="mb-4 text-sm font-semibold text-foreground">Categories</h4>
+              <div className="flex flex-col gap-2 items-center md:items-start">
+                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
+                  Supercars
+                </Link>
+                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
+                  SUVs
+                </Link>
+                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
+                  Sedans
+                </Link>
+                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
+                  Performance Cars
+                </Link>
+                <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
+                  Electric Cars
+                </Link>
+              </div>
             </div>
           </div>
 
-          <div className="text-center md:text-left">
-            <h4 className="mb-4 text-sm font-semibold text-foreground">Categories</h4>
-            <div className="flex flex-col gap-2 items-center md:items-start">
-              <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                Supercars
-              </Link>
-              <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                SUVs
-              </Link>
-              <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                Sedans
-              </Link>
-              <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                Performance Cars
-              </Link>
-              <Link href="/categories" className="text-sm text-muted-foreground transition-colors hover:text-accent">
-                Electric Cars
-              </Link>
-            </div>
-          </div>
-
-          <div className="text-center md:text-left">
+          <div className="md:col-span-1 text-center md:text-left">
             <h4 className="mb-4 text-sm font-semibold text-foreground">Contact</h4>
             <div className="flex flex-col gap-3 items-center md:items-start">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
