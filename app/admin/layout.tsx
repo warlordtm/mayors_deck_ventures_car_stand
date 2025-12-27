@@ -3,7 +3,7 @@
 import type React from "react"
 import Link from "next/link"
 import { useState } from "react"
-import { Home, LogOut, Menu, X } from "lucide-react"
+import { Car, Calendar, Users, Tag, BarChart3, FileText, Settings, Home, Menu, X, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Header } from "@/components/header"
 import { createClient } from "@/lib/supabase/client"
@@ -11,6 +11,13 @@ import { useRouter } from "next/navigation"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: Home },
+  { name: "Bookings", href: "/admin/bookings", icon: Calendar },
+  { name: "Inquiries", href: "/admin/inquiries", icon: Tag },
+  { name: "Sales", href: "/admin/sales", icon: BarChart3 },
+  { name: "Customers", href: "/admin/customers", icon: Users },
+  { name: "Categories", href: "/admin/categories", icon: Tag },
+  { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  { name: "Settings", href: "/admin/settings", icon: Settings },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
