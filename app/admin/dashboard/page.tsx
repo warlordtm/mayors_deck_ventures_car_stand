@@ -148,12 +148,25 @@ export default function AdminDashboardPage() {
     loadData()
   }, [router])
 
-  // Auto-fill description and engine based on category, model, and year
+  // Auto-fill additional information based on category, model, and year
   useEffect(() => {
     if (carForm.category_id && carForm.name && carForm.year) {
       const category = categories.find(c => c.id === carForm.category_id)?.name || ''
       const description = `Experience the pinnacle of automotive excellence with this ${carForm.year} ${carForm.name}. This ${category} masterpiece combines breathtaking performance with unparalleled luxury, featuring cutting-edge technology and premium materials throughout.`
-      setCarForm(prev => ({ ...prev, description }))
+
+      // Auto-fill other fields with sensible defaults
+      const updates: Partial<typeof carForm> = {
+        description,
+        transmission: carForm.transmission || 'Automatic',
+        fuel_type: carForm.fuel_type || 'Petrol',
+        condition: carForm.condition || 'Excellent',
+        warranty: carForm.warranty || '1 year remaining',
+        location: carForm.location || 'Abuja',
+        interior_features: carForm.interior_features || 'Leather upholstery, Premium audio system, Climate control, Navigation',
+        exterior_features: carForm.exterior_features || 'LED headlights, Alloy wheels, Carbon fiber accents, Sport exhaust'
+      }
+
+      setCarForm(prev => ({ ...prev, ...updates }))
     }
   }, [carForm.category_id, carForm.name, carForm.year, categories])
 

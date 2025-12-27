@@ -162,7 +162,7 @@ export function FeaturedVehicles() {
                         src={primaryImage?.image_url || "/placeholder.jpg"}
                         alt={car.name}
                         fill
-                        className="object-cover"
+                        className="object-contain"
                       />
                     </motion.div>
                   </div>
