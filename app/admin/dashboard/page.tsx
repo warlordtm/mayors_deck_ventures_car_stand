@@ -40,6 +40,14 @@ export default function AdminDashboardPage() {
     status: "available",
     is_featured: false,
     description: "",
+    transmission: "",
+    fuel_type: "",
+    mileage: "",
+    condition: "",
+    warranty: "",
+    location: "",
+    interior_features: "",
+    exterior_features: "",
     images: null as FileList | null,
     video: null as File | null
   })
@@ -68,15 +76,6 @@ export default function AdminDashboardPage() {
       const availableCars = cars?.filter(c => c.status === 'available').length || 0
       const soldCars = cars?.filter(c => c.status === 'sold').length || 0
 
-      // Fetch car impressions (last 30 days)
-      const thirtyDaysAgo = new Date()
-      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-      const { data: impressions } = await supabase
-        .from("car_impressions")
-        .select("id")
-        .gte("created_at", thirtyDaysAgo.toISOString())
-      const totalImpressions = impressions?.length || 0
-
       // Fetch monthly revenue (current month sales)
       const startOfMonth = new Date()
       startOfMonth.setDate(1)
@@ -91,7 +90,7 @@ export default function AdminDashboardPage() {
         totalCars,
         availableCars,
         soldCars,
-        totalImpressions,
+        totalImpressions: 0,
         monthlyRevenue,
       })
 
@@ -229,6 +228,14 @@ export default function AdminDashboardPage() {
             status: "available",
             is_featured: false,
             description: "",
+            transmission: "",
+            fuel_type: "",
+            mileage: "",
+            condition: "",
+            warranty: "",
+            location: "",
+            interior_features: "",
+            exterior_features: "",
             images: null,
             video: null
           })
@@ -337,17 +344,6 @@ export default function AdminDashboardPage() {
             </Card>
           </MotionDiv>
 
-          <MotionDiv {...staggerItem}>
-            <Card className="border-border bg-card/50 backdrop-blur">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">Car Impressions (30d)</CardTitle>
-                <Calendar className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-foreground">{stats.totalImpressions}</div>
-              </CardContent>
-            </Card>
-          </MotionDiv>
 
           <MotionDiv {...staggerItem}>
             <Card className="border-border bg-card/50 backdrop-blur">
@@ -681,6 +677,102 @@ export default function AdminDashboardPage() {
                   />
                   <Label htmlFor="is-featured">Featured</Label>
                 </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="car-transmission">Transmission</Label>
+                  <Select value={carForm.transmission} onValueChange={(value) => setCarForm({...carForm, transmission: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select transmission" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Automatic">Automatic</SelectItem>
+                      <SelectItem value="Manual">Manual</SelectItem>
+                      <SelectItem value="CVT">CVT</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="car-fuel">Fuel Type</Label>
+                  <Select value={carForm.fuel_type} onValueChange={(value) => setCarForm({...carForm, fuel_type: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select fuel type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Petrol">Petrol</SelectItem>
+                      <SelectItem value="Diesel">Diesel</SelectItem>
+                      <SelectItem value="Electric">Electric</SelectItem>
+                      <SelectItem value="Hybrid">Hybrid</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="car-mileage">Mileage</Label>
+                  <Input
+                    id="car-mileage"
+                    value={carForm.mileage}
+                    onChange={(e) => setCarForm({...carForm, mileage: e.target.value})}
+                    placeholder="e.g., 15000"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="car-condition">Condition</Label>
+                  <Select value={carForm.condition} onValueChange={(value) => setCarForm({...carForm, condition: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select condition" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Excellent">Excellent</SelectItem>
+                      <SelectItem value="Very Good">Very Good</SelectItem>
+                      <SelectItem value="Good">Good</SelectItem>
+                      <SelectItem value="Fair">Fair</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="car-warranty">Warranty</Label>
+                  <Input
+                    id="car-warranty"
+                    value={carForm.warranty}
+                    onChange={(e) => setCarForm({...carForm, warranty: e.target.value})}
+                    placeholder="e.g., 1 year remaining"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="car-location">Location</Label>
+                  <Input
+                    id="car-location"
+                    value={carForm.location}
+                    onChange={(e) => setCarForm({...carForm, location: e.target.value})}
+                    placeholder="e.g., Abuja"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="car-interior">Interior Features</Label>
+                <Textarea
+                  id="car-interior"
+                  value={carForm.interior_features}
+                  onChange={(e) => setCarForm({...carForm, interior_features: e.target.value})}
+                  placeholder="e.g., Leather upholstery, Premium audio system, Climate control, Navigation"
+                  rows={2}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="car-exterior">Exterior Features</Label>
+                <Textarea
+                  id="car-exterior"
+                  value={carForm.exterior_features}
+                  onChange={(e) => setCarForm({...carForm, exterior_features: e.target.value})}
+                  placeholder="e.g., LED headlights, Alloy wheels, Carbon fiber accents, Sport exhaust"
+                  rows={2}
+                />
               </div>
 
               <div className="space-y-2">

@@ -8,7 +8,6 @@ import { Calendar, Gauge, Fuel, Settings, MapPin, Phone, MessageCircle, Shield, 
 import { CarImageGallery } from "@/components/car-image-gallery"
 import type { CarImage } from "@/lib/types"
 import { FavoriteButton } from "@/components/favorite-button"
-import { ImpressionTracker } from "@/components/impression-tracker"
 
 export default async function CarDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -152,7 +151,6 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
 
   return (
     <div className="min-h-screen py-20">
-      <ImpressionTracker carId={car.id} />
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
         <div className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">

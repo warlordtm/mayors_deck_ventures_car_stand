@@ -26,6 +26,14 @@ interface Car {
   is_featured?: boolean
   created_at?: string
   images?: { image_url: string }[]
+  transmission?: string
+  fuel_type?: string
+  mileage?: string
+  condition?: string
+  warranty?: string
+  location?: string
+  interior_features?: string
+  exterior_features?: string
 }
 
 export default function AdminCars() {
@@ -248,8 +256,8 @@ export default function AdminCars() {
   ]
 
   const formFields = [
-    { name: "name", label: "Name", type: "text" as const, required: true },
-    { name: "model", label: "Model", type: "text" as const },
+    { name: "name", label: "Model", type: "text" as const, required: true },
+    { name: "model", label: "Engine", type: "text" as const },
     { name: "year", label: "Year", type: "number" as const },
     {
       name: "category_id",
@@ -258,8 +266,28 @@ export default function AdminCars() {
       required: true,
       options: categories.map((c) => ({ value: c.id, label: c.name })),
     },
-    { name: "price", label: "Price", type: "number" as const },
+    { name: "price", label: "Price (₦)", type: "number" as const },
     { name: "show_price", label: "Show Price", type: "switch" as const },
+    { name: "transmission", label: "Transmission", type: "select" as const, options: [
+      { value: "Automatic", label: "Automatic" },
+      { value: "Manual", label: "Manual" },
+      { value: "CVT", label: "CVT" },
+    ] },
+    { name: "fuel_type", label: "Fuel Type", type: "select" as const, options: [
+      { value: "Petrol", label: "Petrol" },
+      { value: "Diesel", label: "Diesel" },
+      { value: "Electric", label: "Electric" },
+      { value: "Hybrid", label: "Hybrid" },
+    ] },
+    { name: "mileage", label: "Mileage", type: "text" as const },
+    { name: "condition", label: "Condition", type: "select" as const, options: [
+      { value: "Excellent", label: "Excellent" },
+      { value: "Very Good", label: "Very Good" },
+      { value: "Good", label: "Good" },
+      { value: "Fair", label: "Fair" },
+    ] },
+    { name: "warranty", label: "Warranty", type: "text" as const },
+    { name: "location", label: "Location", type: "text" as const },
     { name: "status", label: "Status", type: "select" as const, options: [
       { value: "available", label: "Available" },
       { value: "sold", label: "Sold" },
@@ -267,6 +295,8 @@ export default function AdminCars() {
     ] },
     { name: "is_featured", label: "Featured", type: "switch" as const },
     { name: "description", label: "Description", type: "textarea" as const },
+    { name: "interior_features", label: "Interior Features", type: "textarea" as const },
+    { name: "exterior_features", label: "Exterior Features", type: "textarea" as const },
     { name: "video", label: "Video", type: "file" as const, accept: "video/*" },
     { name: "images", label: "Images", type: "file" as const, multiple: true },
   ]
@@ -308,7 +338,14 @@ export default function AdminCars() {
               <AdminForm
                 title=""
                 fields={formFields}
-                initialData={editingCar || { show_price: true, status: "available" }}
+                initialData={editingCar || {
+                  show_price: true,
+                  status: "available",
+                  transmission: "Automatic",
+                  fuel_type: "Petrol",
+                  condition: "Excellent",
+                  location: "Abuja"
+                }}
                 onSubmit={editingCar ? handleUpdate : handleCreate}
                 onCancel={() => { setShowForm(false); setEditingCar(null) }}
                 loading={saving}
