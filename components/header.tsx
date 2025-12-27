@@ -6,13 +6,21 @@ import { Menu, X, User, LogOut, Heart } from "lucide-react"
 import ThemeToggle from "@/components/theme-toggle"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [user, setUser] = useState<any>(null)
   const [isAdmin, setIsAdmin] = useState(false)
   const router = useRouter()
+  const pathname = usePathname()
+
+  const isActive = (href: string) => {
+    if (href === '/#contact') {
+      return pathname === '/' && typeof window !== 'undefined' && window.location.hash === '#contact'
+    }
+    return pathname === href
+  }
 
   useEffect(() => {
     const supabase = createClient()
@@ -67,24 +75,24 @@ export function Header() {
         </Link>
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-10 md:flex">
-          <Link href="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
+          <Link href="/" className={`text-sm font-medium transition-colors hover:text-accent ${isActive('/') ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}>
             Home
           </Link>
-          <Link href="/cars" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
+          <Link href="/cars" className={`text-sm font-medium transition-colors hover:text-accent ${isActive('/cars') ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}>
             Collection
           </Link>
-          <Link href="/about" className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent">
+          <Link href="/about" className={`text-sm font-medium transition-colors hover:text-accent ${isActive('/about') ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}>
             About
           </Link>
           <Link
             href="/categories"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+            className={`text-sm font-medium transition-colors hover:text-accent ${isActive('/categories') ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}
           >
             Categories
           </Link>
           <Link
             href="/#contact"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+            className={`text-sm font-medium transition-colors hover:text-accent ${isActive('/#contact') ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}
           >
             Contact
           </Link>
@@ -151,28 +159,28 @@ export function Header() {
           <div className="container mx-auto flex flex-col gap-4 p-6">
             <Link
               href="/"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+              className={`text-sm font-medium transition-colors hover:text-accent ${isActive('/') ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}
               onClick={() => setIsMenuOpen(false)}
             >
               Home
             </Link>
             <Link
               href="/cars"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+              className={`text-sm font-medium transition-colors hover:text-accent ${isActive('/cars') ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}
               onClick={() => setIsMenuOpen(false)}
             >
               Collection
             </Link>
             <Link
               href="/categories"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+              className={`text-sm font-medium transition-colors hover:text-accent ${isActive('/categories') ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}
               onClick={() => setIsMenuOpen(false)}
             >
               Categories
             </Link>
             <Link
               href="/#contact"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+              className={`text-sm font-medium transition-colors hover:text-accent ${isActive('/#contact') ? 'border-b-2 border-primary text-primary' : 'text-muted-foreground'}`}
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
