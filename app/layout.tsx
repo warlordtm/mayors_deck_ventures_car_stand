@@ -23,8 +23,19 @@ export const metadata: Metadata = {
   generator: "Godwin Bamisaye",
   manifest: "/manifest.json",
   icons: {
-    icon: "/gaskiyaautologo.png",
-    apple: "/gaskiyaautologo.png",
+    icon: [
+      {
+        url: "/favicon-16x16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
+      {
+        url: "/favicon-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+    ],
+    apple: "/icon-192x192.png",
   },
   appleWebApp: {
     capable: true,
@@ -54,6 +65,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/gaskiyaautologo.png" />
+      </head>
       <body className={`font-sans antialiased ${_playfair.variable}`}>
         <ThemeProvider
           attribute="class"
