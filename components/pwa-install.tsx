@@ -9,6 +9,10 @@ export function PWAInstall() {
   const [showInstall, setShowInstall] = useState(false)
 
   useEffect(() => {
+    // Only enable PWA on mobile devices
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    if (!isMobile) return
+
     // Register service worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
