@@ -49,24 +49,29 @@ export function PWAInstall() {
   }, [])
 
   const handleInstallClick = async () => {
+    // Hide the banner immediately after clicking
+    setShowInstall(false)
+
     if (deferredPrompt) {
       deferredPrompt.prompt()
       const { outcome } = await deferredPrompt.userChoice
 
       if (outcome === 'accepted') {
         console.log('User accepted the install prompt')
-        setShowInstall(false)
       } else {
         console.log('User dismissed the install prompt')
       }
 
       setDeferredPrompt(null)
     } else {
-      // Fallback for when programmatic install is not available
-      if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        alert('To install the app:\n1. Tap the browser menu (⋮)\n2. Select "Add to Home Screen"\n3. Tap "Add"')
+      // Try to trigger installation through browser menu
+      // This will work on some browsers that support programmatic triggering
+      if ('standalone' in window.navigator) {
+        // iOS Safari
+        alert('Tap the share button (⬆️) and select "Add to Home Screen"')
       } else {
-        alert('To install the app:\n1. Click the browser menu\n2. Select "Install [App Name]"\n3. Follow the prompts')
+        // Other browsers
+        alert('Look for "Add to Home Screen" or "Install App" in your browser menu')
       }
     }
   }
