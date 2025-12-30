@@ -22,12 +22,6 @@ export function PWAInstall() {
       })
     }
 
-    // Check if PWA is supported
-    if ('standalone' in window.navigator || window.matchMedia('(display-mode: standalone)').matches) {
-      // Already installed
-      return
-    }
-
     // Listen for the beforeinstallprompt event
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault()
@@ -37,21 +31,12 @@ export function PWAInstall() {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
-    // Show install banner after 2 seconds
-    const timer = setTimeout(() => {
-      setShowInstall(true)
-    }, 2000)
-
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-      clearTimeout(timer)
     }
   }, [])
 
   const handleInstallClick = async () => {
-    // Hide the banner immediately after clicking
-    setShowInstall(false)
-
     if (deferredPrompt) {
       deferredPrompt.prompt()
       const { outcome } = await deferredPrompt.userChoice
@@ -63,9 +48,8 @@ export function PWAInstall() {
       }
 
       setDeferredPrompt(null)
+      setShowInstall(false)
     }
-    // If no deferredPrompt, just hide the banner
-    // User can install manually through browser menu if they want
   }
 
   if (!showInstall) return null
