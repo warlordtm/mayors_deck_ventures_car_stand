@@ -7,6 +7,7 @@ import { Download, X } from 'lucide-react'
 export function PWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
   const [showInstall, setShowInstall] = useState(false)
+  const [canInstall, setCanInstall] = useState(false)
 
   useEffect(() => {
     // Register service worker
@@ -22,34 +23,51 @@ export function PWAInstall() {
       })
     }
 
+    // Check if PWA is supported
+    if ('standalone' in window.navigator || window.matchMedia('(display-mode: standalone)').matches) {
+      // Already installed
+      return
+    }
+
     // Listen for the beforeinstallprompt event
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault()
       setDeferredPrompt(e)
       setShowInstall(true)
+      setCanInstall(true)
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
+    // Show install button anyway for testing
+    setTimeout(() => {
+      if (!canInstall) {
+        setShowInstall(true)
+      }
+    }, 3000) // Show after 3 seconds
+
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     }
-  }, [])
+  }, [canInstall])
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return
+    if (deferredPrompt) {
+      deferredPrompt.prompt()
+      const { outcome } = await deferredPrompt.userChoice
 
-    deferredPrompt.prompt()
-    const { outcome } = await deferredPrompt.userChoice
+      if (outcome === 'accepted') {
+        console.log('User accepted the install prompt')
+        setShowInstall(false)
+      } else {
+        console.log('User dismissed the install prompt')
+      }
 
-    if (outcome === 'accepted') {
-      console.log('User accepted the install prompt')
+      setDeferredPrompt(null)
     } else {
-      console.log('User dismissed the install prompt')
+      // Fallback: try to trigger install manually
+      alert('To install the app, look for "Add to Home Screen" or "Install App" in your browser menu.')
     }
-
-    setDeferredPrompt(null)
-    setShowInstall(false)
   }
 
   if (!showInstall) return null
