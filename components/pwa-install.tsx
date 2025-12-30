@@ -63,17 +63,9 @@ export function PWAInstall() {
       }
 
       setDeferredPrompt(null)
-    } else {
-      // Try to trigger installation through browser menu
-      // This will work on some browsers that support programmatic triggering
-      if ('standalone' in window.navigator) {
-        // iOS Safari
-        alert('Tap the share button (⬆️) and select "Add to Home Screen"')
-      } else {
-        // Other browsers
-        alert('Look for "Add to Home Screen" or "Install App" in your browser menu')
-      }
     }
+    // If no deferredPrompt, just hide the banner
+    // User can install manually through browser menu if they want
   }
 
   if (!showInstall) return null
