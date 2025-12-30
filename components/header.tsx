@@ -232,7 +232,7 @@ export function Header() {
                   </Link>
                 </div>
               )}
-              <div className="mt-4">
+              <div className="mt-4 cursor-pointer">
                 <ThemeToggle />
               </div>
             </div>

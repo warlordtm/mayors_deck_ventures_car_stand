@@ -27,7 +27,7 @@ export default function ThemeToggle() {
       aria-label="Toggle color theme"
       title="Toggle color theme"
       onClick={toggleTheme}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-black/10 bg-card/80 p-1 text-sm shadow-sm transition-colors hover:bg-white/5"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-black/10 bg-card/80 p-1 text-sm shadow-sm cursor-pointer transition-colors hover:bg-white/5"
     >
       {isDark ? (
         <Moon className="h-5 w-5" />

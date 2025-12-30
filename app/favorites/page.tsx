@@ -159,7 +159,7 @@ export default function FavoritesPage() {
                       </div>
 
                       {car.show_price && car.price ? (
-                        <p className="text-xl font-bold text-foreground">₦{(car.price * 1600).toLocaleString('en-NG')}</p>
+                        <p className="text-xl font-bold text-foreground">₦{car.price.toLocaleString('en-NG')}</p>
                       ) : (
                         <p className="text-sm text-muted-foreground">Contact seller for best price</p>
                       )}
