@@ -1,17 +1,20 @@
 "use client"
 
-
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Download, X } from 'lucide-react'
+import { Download, X, Share } from 'lucide-react'
 
 export function PWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
   const [showInstall, setShowInstall] = useState(false)
+  const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
     // Only enable PWA on mobile devices
     const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    setIsIOS(isIOSDevice)
+
     if (!isMobile) return
 
     // Register service worker
@@ -27,7 +30,7 @@ export function PWAInstall() {
       })
     }
 
-    // Listen for the beforeinstallprompt event
+    // Listen for the beforeinstallprompt event (Android/Chrome)
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault()
       setDeferredPrompt(e)
@@ -35,6 +38,18 @@ export function PWAInstall() {
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+
+    // For iOS, show install instructions after a delay
+    if (isIOSDevice) {
+      const timer = setTimeout(() => {
+        setShowInstall(true)
+      }, 3000) // Show after 3 seconds of interaction
+
+      return () => {
+        clearTimeout(timer)
+        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+      }
+    }
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
@@ -65,11 +80,13 @@ export function PWAInstall() {
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-              <Download className="h-5 w-5 text-primary-foreground" />
+              {isIOS ? <Share className="h-5 w-5 text-primary-foreground" /> : <Download className="h-5 w-5 text-primary-foreground" />}
             </div>
             <div>
               <h3 className="font-semibold text-foreground">Install Gaskiya Auto</h3>
-              <p className="text-sm text-muted-foreground">Get the full app experience</p>
+              <p className="text-sm text-muted-foreground">
+                {isIOS ? 'Add to Home Screen for the best experience' : 'Get the full app experience'}
+              </p>
             </div>
           </div>
           <Button
@@ -82,12 +99,25 @@ export function PWAInstall() {
           </Button>
         </div>
         <div className="mt-4 flex gap-2">
-          <Button onClick={handleInstallClick} className="flex-1">
-            Install App
-          </Button>
-          <Button variant="outline" onClick={() => setShowInstall(false)}>
-            Not Now
-          </Button>
+          {isIOS ? (
+            <div className="w-full text-center">
+              <p className="text-sm text-muted-foreground mb-2">
+                Tap the share button <Share className="inline h-4 w-4" /> and select "Add to Home Screen"
+              </p>
+              <Button variant="outline" onClick={() => setShowInstall(false)} className="w-full">
+                Got it
+              </Button>
+            </div>
+          ) : (
+            <>
+              <Button onClick={handleInstallClick} className="flex-1">
+                Install App
+              </Button>
+              <Button variant="outline" onClick={() => setShowInstall(false)}>
+                Not Now
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </div>
