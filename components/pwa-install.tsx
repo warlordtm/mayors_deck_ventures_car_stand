@@ -39,19 +39,13 @@ export function PWAInstall() {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
-    // For iOS, show install instructions after a delay
-    if (isIOSDevice) {
-      const timer = setTimeout(() => {
-        setShowInstall(true)
-      }, 3000) // Show after 3 seconds of interaction
-
-      return () => {
-        clearTimeout(timer)
-        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
-      }
-    }
+    // Show install prompt after a delay on mobile
+    const timer = setTimeout(() => {
+      setShowInstall(true)
+    }, 3000) // Show after 3 seconds
 
     return () => {
+      clearTimeout(timer)
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     }
   }, [])
