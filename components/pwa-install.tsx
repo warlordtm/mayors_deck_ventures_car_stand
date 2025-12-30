@@ -37,8 +37,14 @@ export function PWAInstall() {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
+    // Show install banner after 2 seconds
+    const timer = setTimeout(() => {
+      setShowInstall(true)
+    }, 2000)
+
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+      clearTimeout(timer)
     }
   }, [])
 
