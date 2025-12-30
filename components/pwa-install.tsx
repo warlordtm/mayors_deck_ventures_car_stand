@@ -7,7 +7,6 @@ import { Download, X } from 'lucide-react'
 export function PWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null)
   const [showInstall, setShowInstall] = useState(false)
-  const [canInstall, setCanInstall] = useState(false)
 
   useEffect(() => {
     // Register service worker
@@ -34,22 +33,14 @@ export function PWAInstall() {
       e.preventDefault()
       setDeferredPrompt(e)
       setShowInstall(true)
-      setCanInstall(true)
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
 
-    // Show install button anyway for testing
-    setTimeout(() => {
-      if (!canInstall) {
-        setShowInstall(true)
-      }
-    }, 3000) // Show after 3 seconds
-
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
     }
-  }, [canInstall])
+  }, [])
 
   const handleInstallClick = async () => {
     if (deferredPrompt) {
@@ -64,9 +55,6 @@ export function PWAInstall() {
       }
 
       setDeferredPrompt(null)
-    } else {
-      // Fallback: try to trigger install manually
-      alert('To install the app, look for "Add to Home Screen" or "Install App" in your browser menu.')
     }
   }
 
