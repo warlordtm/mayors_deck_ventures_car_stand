@@ -61,6 +61,13 @@ export function PWAInstall() {
       }
 
       setDeferredPrompt(null)
+    } else {
+      // Fallback for when programmatic install is not available
+      if (/Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        alert('To install the app:\n1. Tap the browser menu (⋮)\n2. Select "Add to Home Screen"\n3. Tap "Add"')
+      } else {
+        alert('To install the app:\n1. Click the browser menu\n2. Select "Install [App Name]"\n3. Follow the prompts')
+      }
     }
   }
 
