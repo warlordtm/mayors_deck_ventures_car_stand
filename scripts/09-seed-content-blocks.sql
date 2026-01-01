@@ -1,6 +1,7 @@
 -- Seed initial content blocks for the website
 INSERT INTO content_blocks (key, title, content, image_url, display_order, is_active) VALUES
   ('hero', 'Premium Collection', 'Experience luxury redefined. Discover our exclusive collection of premium and supercars.', 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=1800&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y2Ftcnl8ZW58MHx8MHx8fDA%3D', 1, true),
+  ('trust_title', 'Why Coja Motors?', NULL, NULL, 0, true),
   ('trust_verified_vehicles', 'Verified Vehicles', 'Comprehensive inspection and certification for every car in our collection.', NULL, 1, true),
   ('trust_trusted_dealers', 'Trusted Dealers', 'Long-standing relationships with factory-trained dealers and partners.', NULL, 2, true),
   ('trust_transparent_pricing', 'Transparent Pricing', 'Clear, upfront pricing — no hidden fees, straightforward offers.', NULL, 3, true),

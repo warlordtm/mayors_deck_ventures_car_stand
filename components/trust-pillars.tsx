@@ -18,6 +18,7 @@ interface ContentBlock {
 
 export function TrustPillars() {
   const [pillars, setPillars] = useState<ContentBlock[]>([])
+  const [title, setTitle] = useState<string>("Why Coja Motors?")
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -25,9 +26,14 @@ export function TrustPillars() {
       try {
         const response = await fetch('/api/content')
         const data = await response.json()
+        // Find the trust title block
+        const titleBlock = data.contentBlocks?.find((block: ContentBlock) => block.key === 'trust_title')
+        if (titleBlock && titleBlock.title) {
+          setTitle(titleBlock.title)
+        }
         // Filter and deduplicate by key to prevent duplicates
         const pillarBlocks = data.contentBlocks
-          ?.filter((block: ContentBlock) => block.key.startsWith('trust_'))
+          ?.filter((block: ContentBlock) => block.key.startsWith('trust_') && block.key !== 'trust_title')
           .filter((block: ContentBlock, index: number, self: ContentBlock[]) => self.findIndex((b: ContentBlock) => b.key === block.key) === index)
           .sort((a: ContentBlock, b: ContentBlock) => a.display_order - b.display_order) || []
         setPillars(pillarBlocks.length > 0 ? pillarBlocks : [
@@ -67,7 +73,7 @@ export function TrustPillars() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
-            <h2 className="mb-3 text-4xl font-bold text-foreground">Why Gaskiya Auto?</h2>
+            <h2 className="mb-3 text-4xl font-bold text-foreground">{title}</h2>
             <p className="text-lg text-muted-foreground">Trust pillars that define our promise to every customer.</p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -84,7 +90,7 @@ export function TrustPillars() {
     <section className="py-20">
       <div className="container mx-auto px-4">
         <ScrollReveal className="mb-12 text-center">
-          <h2 className="mb-3 text-4xl font-bold text-foreground">Why Gaskiya Auto?</h2>
+          <h2 className="mb-3 text-4xl font-bold text-foreground">{title}</h2>
           <p className="text-lg text-muted-foreground">Trust pillars that define our promise to every customer.</p>
         </ScrollReveal>
 
