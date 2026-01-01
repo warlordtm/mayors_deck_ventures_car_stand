@@ -3,27 +3,10 @@
 import Link from "next/link"
 import { Phone, Mail, MapPin } from "lucide-react"
 import { SiInstagram, SiTiktok } from "react-icons/si"
-import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
-import { createClient } from "@/lib/supabase/client"
 
 export function Footer() {
   const pathname = usePathname()
-  const [settings, setSettings] = useState<Record<string, string | null>>({})
-
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const res = await fetch("/api/site-settings")
-        const data = await res.json()
-        setSettings(data.settings || {})
-      } catch (err) {
-        console.error("Failed to load site settings", err)
-      }
-    }
-
-    fetchSettings()
-  }, [])
 
   // Hide footer on admin routes
   if (pathname?.startsWith("/admin")) return null
@@ -36,11 +19,11 @@ export function Footer() {
           {/* Brand */}
           <div>
             <h3 className="text-lg font-semibold text-foreground">
-              {settings.brand_name || "Gaskiya Auto"}
+              Coja Motors
             </h3>
 
             <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-              {settings.brand_tagline || "Luxury. Confidence. Trust."}
+              Luxury. Confidence. Trust.
             </p>
 
             <div className="mt-4 flex items-center gap-4">
@@ -125,12 +108,12 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-muted-foreground">
               <li className="flex items-start gap-2">
                 <Phone className="mt-0.5 h-4 w-4" />
-                <span>{settings.contact_phone || "+234 814 449 3084"}</span>
+                <span>+234 814 449 3084</span>
               </li>
 
               <li className="flex items-start gap-2">
                 <Mail className="mt-0.5 h-4 w-4" />
-                <span>{settings.contact_email || "hello@gaskiya.autos"}</span>
+                <span>contact@cojamotors.com</span>
               </li>
 
               <li className="flex items-start gap-2">
@@ -146,7 +129,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 border-t border-border pt-6 text-center text-xs text-muted-foreground">
           © {new Date().getFullYear()}{" "}
-          {settings.brand_name || "Gaskiya Auto"}. All rights reserved.
+          Coja Motors. All rights reserved.
         </div>
       </div>
     </footer>

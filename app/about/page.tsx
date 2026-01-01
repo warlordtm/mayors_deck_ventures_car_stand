@@ -8,7 +8,7 @@ export default function AboutPage() {
       <SectionWrapper className="py-24">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
-            <h1 className="mb-4 text-5xl font-bold font-display text-foreground">About Gaskiya Auto</h1>
+            <h1 className="mb-4 text-5xl font-bold font-display text-foreground">About Coja Motors</h1>
             <p className="text-xl text-muted-foreground">Where Trust Meets Luxury</p>
           </div>
 
@@ -16,24 +16,20 @@ export default function AboutPage() {
             <div className="order-2 lg:order-1">
               <div className="relative aspect-square max-w-md mx-auto lg:mx-0">
                 <Image
-                  src="/gaskiyauto.jpeg"
-                  alt="Gaskiya Auto Team"
+                  src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+                  alt="Luxury car showroom"
                   fill
                   className="rounded-2xl shadow-2xl object-cover"
                 />
               </div>
             </div>
             <div className="order-1 lg:order-2 space-y-6">
-              <h2 className="text-3xl font-bold font-display text-foreground">Our Founder</h2>
+              <h2 className="text-3xl font-bold font-display text-foreground">Our Mission</h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Founded by visionary entrepreneur Gaskiya Kasim, Gaskiya Auto was born from a passion for
-                exceptional automobiles and a commitment to integrity. With years of experience in the automotive
-                industry, Gaskiya envisioned a dealership that prioritizes transparency, quality, and customer
-                satisfaction above all else.
+                Coja Motors was born from a passion for exceptional automobiles and a commitment to integrity. We prioritize transparency, quality, and customer satisfaction above all else.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                "Gaskiya" means "truth" in Hausa, reflecting our core values of honesty and reliability in every
-                transaction and interaction.
+                "Coja" means "helper" in some African languages, reflecting our commitment to assisting customers in finding their perfect vehicle with honesty and reliability in every transaction and interaction.
               </p>
             </div>
           </div>
