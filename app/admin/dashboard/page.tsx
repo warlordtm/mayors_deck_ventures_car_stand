@@ -557,19 +557,6 @@ export default function AdminDashboardPage() {
               </Card>
             </Link>
 
-            <Link href="/admin/settings">
-              <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">
-                <CardContent className="flex items-center gap-4 p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-card/10">
-                    <Users className="h-6 w-6 text-foreground" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground">Settings</h3>
-                    <p className="text-sm text-muted-foreground">Configure site settings</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
 
             <Link href="/admin/users">
               <Card className="border-border bg-card/50 backdrop-blur transition-all hover:bg-card/80 hover:scale-105 hover:shadow-md cursor-pointer">

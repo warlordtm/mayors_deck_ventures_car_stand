@@ -17,7 +17,6 @@ const navigation = [
   { name: "Customers", href: "/admin/customers", icon: Users },
   { name: "Categories", href: "/admin/categories", icon: Tag },
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -51,7 +50,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             >
               {isCollapsed ? <Menu className="h-5 w-5" /> : <X className="h-5 w-5" />}
             </Button>
-            {!isCollapsed && <h1 className="text-xl font-bold text-foreground">Gaskiya Auto</h1>}
+            {!isCollapsed && <h1 className="text-xl font-bold text-foreground">Coja Motors</h1>}
           </div>
           <nav className="flex flex-col gap-2 p-4">
             {navigation.map((item) => (

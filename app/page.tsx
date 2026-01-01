@@ -63,7 +63,7 @@ export default function HomePage() {
                 <h3 className="mb-2 text-xl font-semibold text-foreground">Email</h3>
                 <p className="mb-4 text-muted-foreground">Send us a message anytime</p>
                 <a href="mailto:contact@elitemotors.com" className="text-lg text-foreground hover:underline">
-                  contact.gaskiyaautos@gmail.com
+                  contact.cojamotors@gmail.com
                 </a>
               </CardContent>
             </Card>
