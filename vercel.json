@@ -8,6 +8,6 @@
     }
   },
   "env": {
-    "NEXT_PUBLIC_SITE_URL": "https://gaskiyaautos.vercel.app"
+    "NEXT_PUBLIC_SITE_URL": "https://cojamotors.vercel.app"
   }
 }
