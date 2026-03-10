@@ -44,7 +44,43 @@ export interface CarImage {
   created_at: string
 }
 
-export interface SiteSetting {
+export interface Powerbike {
+  id: string
+  slug?: string | null
+  name: string
+  model: string
+  year: number
+  category_id: string | null
+  brand: string
+  price: number | null
+  show_price: boolean
+  description: string | null
+  engine: string | null
+  mileage: string | null
+  transmission: string | null
+  fuel_type: string | null
+  color: string | null
+  interior_features: string | null
+  exterior_features: string | null
+  condition: string | null
+  warranty: string | null
+  location: string | null
+  status: "available" | "sold" | "reserved"
+  is_featured: boolean
+  created_at: string
+  updated_at: string
+  category?: Category
+  images?: PowerbikeImage[]
+}
+
+export interface PowerbikeImage {
+  id: string
+  powerbike_id: string
+  image_url: string
+  is_primary: boolean
+  display_order: number
+  created_at: string
+}
   id: string
   key: string
   value: string | null

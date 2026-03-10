@@ -10,7 +10,8 @@ VALUES
   ('sample-suvs', 'SUVs', 'suvs', 'Premium SUVs blending space, presence, and performance.', now()),
   ('sample-sedans', 'Sedans', 'sedans', 'Refined saloons offering comfort and craftsmanship.', now()),
   ('sample-performance', 'Performance Cars', 'performance-cars', 'Track-capable and driver-focused models with sport-tuned dynamics.', now()),
-  ('sample-electric', 'Electric Cars', 'electric-cars', 'Cutting-edge electric vehicles offering range, tech, and instant torque.', now())
+  ('sample-electric', 'Electric Cars', 'electric-cars', 'Cutting-edge electric vehicles offering range, tech, and instant torque.', now()),
+  ('sample-powerbikes', 'Powerbikes', 'powerbikes', 'High-performance motorcycles and powerbikes for the ultimate riding experience.', now())
 ON CONFLICT (id) DO NOTHING;
 
 -- Cars (linked to sample categories)
