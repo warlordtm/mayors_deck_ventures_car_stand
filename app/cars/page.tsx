@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
-import type { Car, Category } from "@/lib/types"
+import type { Car, Powerbike, Category } from "@/lib/types"
 import CarsClient from "./client"
 
 const SAMPLE_CARS: Car[] = Array.from({ length: 8 }).map((_, i) => ({
@@ -52,6 +52,16 @@ export default async function CarsPage() {
     .eq("status", "available")
     .order("created_at", { ascending: false })
 
+  const { data: powerbikes, error: powerbikesError } = await supabase
+    .from("powerbikes")
+    .select(`
+      *,
+      category:categories(*),
+      images:powerbike_images(*)
+    `)
+    .eq("status", "available")
+    .order("created_at", { ascending: false })
+
   const { data: categories } = await supabase
     .from("categories")
     .select("*")
@@ -59,9 +69,10 @@ export default async function CarsPage() {
 
   // Use sample cars if no real data or in development
   const displayCars = (cars && cars.length > 0) ? cars : SAMPLE_CARS
+  const displayPowerbikes = powerbikes || []
   const displayCategories = categories || []
 
   return (
-    <CarsClient initialCars={displayCars} initialCategories={displayCategories} />
+    <CarsClient initialCars={displayCars} initialPowerbikes={displayPowerbikes} initialCategories={displayCategories} />
   )
 }

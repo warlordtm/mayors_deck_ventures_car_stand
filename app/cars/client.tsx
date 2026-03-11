@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
-import type { Car, Category } from "@/lib/types"
+import type { Car, Powerbike, Category } from "@/lib/types"
 import { createClient } from "@/lib/supabase/client"
 import { CarCard } from "@/components/car-card"
+import { PowerbikeCard } from "@/components/powerbike-card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -17,11 +18,13 @@ import {
 
 interface CarsClientProps {
   initialCars: Car[]
+  initialPowerbikes: Powerbike[]
   initialCategories: Category[]
 }
 
-export default function CarsClient({ initialCars, initialCategories }: CarsClientProps) {
+export default function CarsClient({ initialCars, initialPowerbikes, initialCategories }: CarsClientProps) {
   const [cars, setCars] = useState<Car[]>(initialCars)
+  const [powerbikes, setPowerbikes] = useState<Powerbike[]>(initialPowerbikes)
   const [categories, setCategories] = useState<Category[]>(initialCategories)
   const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState<string>("")
@@ -34,14 +37,20 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
   const fetchData = async () => {
     try {
       setLoading(true)
-      const [carsRes, categoriesRes] = await Promise.all([
+      const [carsRes, powerbikesRes, categoriesRes] = await Promise.all([
         fetch('/api/cars'),
+        fetch('/api/powerbikes'),
         fetch('/api/categories')
       ])
 
       if (carsRes.ok) {
         const carsData = await carsRes.json()
         setCars(carsData.cars || [])
+      }
+
+      if (powerbikesRes.ok) {
+        const powerbikesData = await powerbikesRes.json()
+        setPowerbikes(powerbikesData.powerbikes || [])
       }
 
       if (categoriesRes.ok) {
@@ -89,21 +98,27 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
     }
   }, [cars])
 
-  const filteredAndSortedCars = useMemo(() => {
-    let filtered = cars.filter((car) => {
-      const matchesSearch =
-        car.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        car.brand?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        car.model?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        car.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filter and sort vehicles
+  const allVehicles = [
+    ...cars.map(car => ({ ...car, type: 'car' as const })),
+    ...powerbikes.map(bike => ({ ...bike, type: 'powerbike' as const }))
+  ]
 
-      const matchesCategory = selectedCategory === "all" || car.category?.slug === selectedCategory
+  const filteredAndSortedVehicles = useMemo(() => {
+    let filtered = allVehicles.filter((vehicle) => {
+      const matchesSearch =
+        vehicle.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        vehicle.brand?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        vehicle.model?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        vehicle.description?.toLowerCase().includes(searchTerm.toLowerCase())
+
+      const matchesCategory = selectedCategory === "all" || vehicle.category?.slug === selectedCategory
 
       const matchesPrice = (() => {
         if (priceRange === "all") return true
-        if (!car.price) return false
+        if (!vehicle.price) return false
 
-        const priceInNaira = car.price
+        const priceInNaira = vehicle.price
         switch (priceRange) {
           case "under-50m":
             return priceInNaira < 50000000
@@ -121,7 +136,7 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
       return matchesSearch && matchesCategory && matchesPrice
     })
 
-    // Sort cars
+    // Sort vehicles
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "newest":
@@ -140,7 +155,7 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
     })
 
     return filtered
-  }, [cars, searchTerm, selectedCategory, priceRange, sortBy])
+  }, [allVehicles, searchTerm, selectedCategory, priceRange, sortBy])
 
   const clearFilters = () => {
     setSearchTerm("")
@@ -156,7 +171,7 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
       <div className="container mx-auto px-4">
         <div className="mb-12">
           <h1 className="mb-4 font-display text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">Our Collection</h1>
-          <p className="text-lg text-muted-foreground">Explore our complete inventory of luxury vehicles</p>
+          <p className="text-lg text-muted-foreground">Explore our complete inventory of luxury vehicles and powerbikes</p>
         </div>
 
         {/* Search and Filters */}
@@ -166,7 +181,7 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search cars by name, brand, or model..."
+                placeholder="Search vehicles by name, brand, or model..."
                 value={searchTerm || ""}
                 onChange={(e) => setSearchTerm(e.target.value || "")}
                 className="pl-9"
@@ -175,7 +190,7 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
 
             {/* Category Filter */}
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full md:w-45">
                 <SelectValue placeholder="All Brands" />
               </SelectTrigger>
               <SelectContent>
@@ -190,7 +205,7 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
 
             {/* Price Range Filter */}
             <Select value={priceRange} onValueChange={setPriceRange}>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full md:w-45">
                 <SelectValue placeholder="All Prices" />
               </SelectTrigger>
               <SelectContent>
@@ -204,7 +219,7 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
 
             {/* Sort */}
             <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-full md:w-[180px]">
+              <SelectTrigger className="w-full md:w-45">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -306,12 +321,12 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-muted-foreground">
-            {filteredAndSortedCars.length} {filteredAndSortedCars.length === 1 ? 'vehicle' : 'vehicles'} found
+            {filteredAndSortedVehicles.length} {filteredAndSortedVehicles.length === 1 ? 'vehicle' : 'vehicles'} found
           </p>
         </div>
 
-        {/* Cars Grid */}
-        {filteredAndSortedCars.length === 0 ? (
+        {/* Vehicles Grid */}
+        {filteredAndSortedVehicles.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-lg text-muted-foreground mb-4">No vehicles found matching your criteria.</p>
             <Button onClick={clearFilters} variant="outline">
@@ -320,8 +335,12 @@ export default function CarsClient({ initialCars, initialCategories }: CarsClien
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredAndSortedCars.map((car: Car) => (
-              <CarCard key={car.id} car={car} />
+            {filteredAndSortedVehicles.map((vehicle: any) => (
+              vehicle.type === 'car' ? (
+                <CarCard key={`car-${vehicle.id}`} car={vehicle as Car} />
+              ) : (
+                <PowerbikeCard key={`powerbike-${vehicle.id}`} powerbike={vehicle as Powerbike} />
+              )
             ))}
           </div>
         )}
