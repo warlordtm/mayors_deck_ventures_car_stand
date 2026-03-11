@@ -33,13 +33,36 @@ export default async function CategoriesPage() {
       console.error("Error fetching cars:", carsError)
     }
 
-    // Create map of category_id to latest car image
+    // Fetch latest powerbike images for each category
+    const { data: powerbikesWithImages, error: powerbikesError } = await supabase
+      .from("powerbikes")
+      .select("category_id, created_at, images:powerbike_images(image_url, is_primary)")
+      .eq("status", "available")
+      .order("created_at", { ascending: false })
+
+    if (powerbikesError) {
+      console.error("Error fetching powerbikes:", powerbikesError)
+    }
+
+    // Create map of category_id to latest vehicle image (cars or powerbikes)
     const categoryImages = new Map<string, string>()
+    
+    // Add car images first
     carsWithImages?.forEach((car: any) => {
       if (car.car_images && car.car_images.length > 0 && !categoryImages.has(car.category_id)) {
         const primaryImage = car.car_images.find((img: any) => img.is_primary)
         if (primaryImage) {
           categoryImages.set(car.category_id, primaryImage.image_url)
+        }
+      }
+    })
+
+    // Add powerbike images for categories that don't have car images
+    powerbikesWithImages?.forEach((bike: any) => {
+      if (bike.images && bike.images.length > 0 && !categoryImages.has(bike.category_id)) {
+        const primaryImage = bike.images.find((img: any) => img.is_primary)
+        if (primaryImage) {
+          categoryImages.set(bike.category_id, primaryImage.image_url)
         }
       }
     })
