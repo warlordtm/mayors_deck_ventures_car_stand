@@ -90,13 +90,16 @@ export function FeaturedVehicles() {
   }
 
   // Combine personalized cars and featured vehicles
-  const allVehicles = [
-    ...personalizedCars.map(car => ({ ...car, type: 'car' })),
-    ...cars.map(car => ({ ...car, type: 'car' })),
-    ...powerbikes.map(bike => ({ ...bike, type: 'powerbike' }))
-  ]
-
-  const displayVehicles = showPersonalized ? allVehicles : allVehicles.filter(v => v.type === 'car' || allVehicles.findIndex(x => x.id === v.id && x.type === 'car') === -1).concat(powerbikes.map(bike => ({ ...bike, type: 'powerbike' })))
+  const displayVehicles = showPersonalized 
+    ? [
+        ...personalizedCars.map(car => ({ ...car, type: 'car' })),
+        ...cars.map(car => ({ ...car, type: 'car' })),
+        ...powerbikes.map(bike => ({ ...bike, type: 'powerbike' }))
+      ]
+    : [
+        ...cars.map(car => ({ ...car, type: 'car' })),
+        ...powerbikes.map(bike => ({ ...bike, type: 'powerbike' }))
+      ]
 
   return (
     <section className="py-20">
