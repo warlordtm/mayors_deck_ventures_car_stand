@@ -18,8 +18,8 @@ const _playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "Gaskiya Auto - Luxury Car Dealership",
-  description: "Gaskiya Auto — where luxury meets performance. Discover our curated collection of premium vehicles.",
+  title: "Cojamotors - Luxury Car Dealership",
+  description: "Cojamotors — where luxury meets performance. Discover our curated collection of premium vehicles.",
   generator: "Godwin Bamisaye",
   manifest: "/manifest.json",
   icons: {
@@ -40,20 +40,20 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Gaskiya Auto",
+    title: "Cojamotors",
   },
   formatDetection: {
     telephone: false,
   },
   openGraph: {
     type: "website",
-    siteName: "Gaskiya Auto",
-    title: "Gaskiya Auto - Luxury Car Dealership",
+    siteName: "Cojamotors",
+    title: "Cojamotors - Luxury Car Dealership",
     description: "Where luxury meets performance. Discover our curated collection of premium vehicles.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gaskiya Auto - Luxury Car Dealership",
+    title: "Cojamotors - Luxury Car Dealership",
     description: "Where luxury meets performance. Discover our curated collection of premium vehicles.",
   },
 }
