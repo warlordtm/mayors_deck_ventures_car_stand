@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import type { Car } from "@/lib/types"
 import { CarCard } from "@/components/car-card"
+import { PowerbikeCard } from "@/components/powerbike-card"
 import { notFound } from "next/navigation"
 import React from "react"
 
@@ -22,6 +23,18 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       *,
       category:categories(*),
       images:car_images(*)
+    `)
+    .eq("category_id", category.id)
+    .eq("status", "available")
+    .order("created_at", { ascending: false })
+
+  // Fetch powerbikes in this category
+  const { data: powerbikes } = await supabase
+    .from("powerbikes")
+    .select(`
+      *,
+      category:categories(*),
+      images:powerbike_images(*)
     `)
     .eq("category_id", category.id)
     .eq("status", "available")
@@ -67,6 +80,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
     },
   ]
 
+  const hasVehicles = (cars && cars.length > 0) || (powerbikes && powerbikes.length > 0)
+
   return (
     <div className="min-h-screen py-20">
       <div className="container mx-auto px-4">
@@ -75,15 +90,27 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           {category.description && <p className="text-lg text-muted-foreground">{category.description}</p>}
         </div>
 
-        {((cars && cars.length > 0) || process.env.NODE_ENV === "development") ? (
+        {hasVehicles || process.env.NODE_ENV === "development" ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {(cars && cars.length > 0 ? cars : sampleCars).map((car: Car) => (
-              <CarCard key={car.id} car={car} />
-            ))}
+            {cars && cars.length > 0 ? (
+              cars.map((car: Car) => (
+                <CarCard key={`car-${car.id}`} car={car} />
+              ))
+            ) : null}
+            {powerbikes && powerbikes.length > 0 ? (
+              powerbikes.map((powerbike: any) => (
+                <PowerbikeCard key={`powerbike-${powerbike.id}`} powerbike={powerbike} />
+              ))
+            ) : null}
+            {(!cars || cars.length === 0) && (!powerbikes || powerbikes.length === 0) && process.env.NODE_ENV === "development" && (
+              sampleCars.map((car: Car) => (
+                <CarCard key={car.id} car={car} />
+              ))
+            )}
           </div>
         ) : (
           <div className="rounded-lg border border-border bg-card/50 p-12 text-center backdrop-blur">
-            <p className="text-xl text-muted-foreground">No cars available in this category at the moment.</p>
+            <p className="text-xl text-muted-foreground">No vehicles available in this category at the moment.</p>
           </div>
         )}
       </div>

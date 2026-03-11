@@ -15,12 +15,13 @@ import type { Car } from "@/lib/types"
 
 export function FeaturedVehicles() {
   const [cars, setCars] = useState<Car[]>([])
+  const [powerbikes, setPowerbikes] = useState<any[]>([])
   const [personalizedCars, setPersonalizedCars] = useState<Car[]>([])
   const [loading, setLoading] = useState(true)
   const [showPersonalized, setShowPersonalized] = useState(false)
 
   useEffect(() => {
-    const fetchFeaturedCars = async () => {
+    const fetchFeaturedVehicles = async () => {
       try {
         // Fetch all cars for personalized recommendations
         const allCarsResponse = await fetch('/api/cars?limit=50')
@@ -38,17 +39,22 @@ export function FeaturedVehicles() {
         }
 
         // Fetch regular featured cars
-        const featuredResponse = await fetch('/api/cars?featured=true&limit=6')
-        const featuredData = await featuredResponse.json()
-        setCars(featuredData.cars || [])
+        const featuredCarsResponse = await fetch('/api/cars?featured=true&limit=6')
+        const featuredCarsData = await featuredCarsResponse.json()
+        setCars(featuredCarsData.cars || [])
+
+        // Fetch regular featured powerbikes
+        const featuredPowerbikesResponse = await fetch('/api/powerbikes?featured=true&limit=6')
+        const featuredPowerbikesData = await featuredPowerbikesResponse.json()
+        setPowerbikes(featuredPowerbikesData.powerbikes || [])
       } catch (error) {
-        console.error('Error fetching cars:', error)
+        console.error('Error fetching vehicles:', error)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchFeaturedCars()
+    fetchFeaturedVehicles()
   }, [])
 
   if (loading) {
@@ -69,7 +75,7 @@ export function FeaturedVehicles() {
     )
   }
 
-  if (cars.length === 0) {
+  if (cars.length === 0 && powerbikes.length === 0) {
     return (
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -83,8 +89,14 @@ export function FeaturedVehicles() {
     )
   }
 
-  // Combine personalized and featured cars
-  const displayCars = showPersonalized ? [...personalizedCars, ...cars] : cars
+  // Combine personalized cars and featured vehicles
+  const allVehicles = [
+    ...personalizedCars.map(car => ({ ...car, type: 'car' })),
+    ...cars.map(car => ({ ...car, type: 'car' })),
+    ...powerbikes.map(bike => ({ ...bike, type: 'powerbike' }))
+  ]
+
+  const displayVehicles = showPersonalized ? allVehicles : allVehicles.filter(v => v.type === 'car' || allVehicles.findIndex(x => x.id === v.id && x.type === 'car') === -1).concat(powerbikes.map(bike => ({ ...bike, type: 'powerbike' })))
 
   return (
     <section className="py-20">
@@ -116,12 +128,13 @@ export function FeaturedVehicles() {
           animate="animate"
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {displayCars.map((car, idx) => {
-            const primaryImage = car.images?.find(img => img.is_primary) || car.images?.[0]
+          {displayVehicles.map((vehicle, idx) => {
+            const primaryImage = vehicle.images?.find((img: any) => img.is_primary) || vehicle.images?.[0]
             const isPersonalized = showPersonalized && idx < personalizedCars.length
+            const href = vehicle.type === 'car' ? `/cars/${vehicle.id}` : `/powerbikes/${vehicle.id}`
 
             return (
-              <Link key={car.id} href={`/cars/${car.id}`} className="block">
+              <Link key={`${vehicle.type}-${vehicle.id}`} href={href} className="block">
                 <MotionArticle
                   variants={bounceStaggerItem}
                   whileHover={{
@@ -152,6 +165,23 @@ export function FeaturedVehicles() {
                       </span>
                     </motion.div>
                   )}
+                  {vehicle.type === 'powerbike' && (
+                    <motion.div
+                      initial={{ scale: 0, rotate: -10 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{
+                        delay: idx * 0.1 + 0.5,
+                        type: "spring",
+                        damping: 15,
+                        stiffness: 200
+                      }}
+                      className="absolute top-3 right-3 z-10"
+                    >
+                      <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/80 px-2 py-1 text-xs font-semibold text-white shadow-lg">
+                        🏍 Powerbike
+                      </span>
+                    </motion.div>
+                  )}
                   <div className="relative aspect-[4/3] overflow-hidden rounded-t-2xl">
                     <motion.div
                       whileHover={{ scale: 1.05 }}
@@ -160,7 +190,7 @@ export function FeaturedVehicles() {
                     >
                       <Image
                         src={primaryImage?.image_url || "/placeholder.jpg"}
-                        alt={car.name}
+                        alt={vehicle.name}
                         fill
                         className="object-contain"
                       />
@@ -173,7 +203,7 @@ export function FeaturedVehicles() {
                       transition={{ delay: idx * 0.08 + 0.3, duration: 0.6 }}
                       className="text-xl font-bold font-display text-foreground"
                     >
-                      {car.name}
+                      {vehicle.name}
                     </motion.h3>
                     <motion.p
                       initial={{ opacity: 0, x: -20 }}
@@ -181,7 +211,7 @@ export function FeaturedVehicles() {
                       transition={{ delay: idx * 0.08 + 0.4, duration: 0.6 }}
                       className="text-sm text-muted-foreground"
                     >
-                      {car.year} • Premium
+                      {vehicle.year} • {vehicle.type === 'car' ? 'Premium' : 'Performance'}
                     </motion.p>
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -189,8 +219,8 @@ export function FeaturedVehicles() {
                       transition={{ delay: idx * 0.08 + 0.5, duration: 0.6 }}
                       className="mt-4 flex items-center justify-between"
                     >
-                      {car.show_price && car.price ? (
-                        <p className="text-2xl font-bold text-foreground">₦{car.price.toLocaleString('en-NG')}</p>
+                      {vehicle.show_price && vehicle.price ? (
+                        <p className="text-2xl font-bold text-foreground">₦{vehicle.price.toLocaleString('en-NG')}</p>
                       ) : (
                         <p className="text-2xl font-bold text-foreground">Price on Request</p>
                       )}
