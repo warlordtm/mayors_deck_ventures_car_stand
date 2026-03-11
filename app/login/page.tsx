@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { MotionDiv, scaleIn } from "@/components/motion-wrappers"
 
 export default function LoginPage() {
@@ -21,9 +21,13 @@ export default function LoginPage() {
   const [resetEmail, setResetEmail] = useState("")
   const [resetMessage, setResetMessage] = useState("")
   const router = useRouter()
+  const authCheckRef = useRef(false)
 
-  // Handle Supabase auth redirects
+  // Handle Supabase auth redirects - only run once
   useEffect(() => {
+    if (authCheckRef.current) return
+    authCheckRef.current = true
+
     const handleAuthCallback = async () => {
       const supabase = createClient()
       const { data, error } = await supabase.auth.getSession()
@@ -49,7 +53,7 @@ export default function LoginPage() {
 
     // Check for auth callback on page load
     handleAuthCallback()
-  }, [router])
+  }, [])
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault()
